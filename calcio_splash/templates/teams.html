@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="teams" class="page-head-section text-center">
+  <div class="heading-about page-title-section">
+    <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <div class="wow bounceInDown" data-wow-delay="0.4s">
+          <div class="section-heading">
+              <h2>Le Squadre</h2>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-2 col-lg-offset-5">
+      <hr class="marginbot-50">
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row">
+    {% if team_list %}
+    {% for team in team_list %}
+      <div class="col-md-3">
+        <div class="wow bounceInUp" data-wow-delay="0.2s">
+          <div class="team boxed-grey">
+            <div class="inner">
+              <h5><a href="{% url 'teams-detail' team.id %}">{{ team.name }}</a></h5>
+              <p class="subtitle">Boh</p>
+              <div class="avatar"><img src="{{ team.logo }}" alt="" class="img-responsive img-circle" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% else %}
+      <div>Nessuna squadra si è ancora iscritta</div>
+    {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

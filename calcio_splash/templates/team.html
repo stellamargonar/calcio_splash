@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="teams" class="page-head-section text-center">
+
+  <div class="heading-about page-title-section">
+    <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <div class="wow bounceInDown" data-wow-delay="0.4s">
+          <div class="section-heading">
+              <h2>{{ team.name }}</h2>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+    {% if players %}
+    {% for player in players %}
+      <div class="col-md-3">
+        <div class="wow bounceInUp" data-wow-delay="0.2s">
+          <div class="team boxed-grey">
+            <div class="inner">
+              <h5>{{ player.name }} {{ player.surname }}</h5>
+              <p class="subtitle">{{ player.role }}</p>
+              <!-- <div class="avatar"><img src="img/team/1.jpg" alt="" class="img-responsive img-circle" /></div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% else %}
+      <div>Nessun giocatore in questa squadra </div>
+    {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

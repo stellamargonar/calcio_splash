@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="teams" class="page-head-section text-center">
+
+  <div class="heading-about page-title-section">
+    <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+        <div class="wow bounceInDown" data-wow-delay="0.4s">
+          <div class="section-heading">
+              <h2>Le Partite</h2>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  {% if match_list %}
+  {% for match in match_list %}
+  <div class="container">
+    <div class="white-match">
+      <div class="col-md-4">
+          <div class="match-left">
+              <div class="team-img">
+                  <a href="#"><img src="images/fixture-team1.png" width="80" height="77" alt=""></a>
+              </div>
+              <div class="team-name team-left">
+                  <h5>{{ match.team_a }}</h5>
+                  <p>boh</p>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="team-date">
+              <h5>{{ match.match_date_time }}</h5>
+              <p>Parco Bastie</p>
+          </div>
+      </div>
+      <div class="col-md-4">
+          <div class="match-right">
+              <div class="team-name team-right text-right">
+                  <h5>{{ match.team_b }}</h5>
+                  <p>boh</p>
+              </div>
+              <div class="team-img">
+                  <a href="#"><img src="images/fixture-team2.png" width="64" height="84" alt=""></a>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</section>
+{% endblock %}

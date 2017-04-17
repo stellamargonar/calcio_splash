@@ -1,0 +1,132 @@
+.team-img, .team-name{
+    float: left;
+}
+.team-name h1{
+    font-size: 21px;
+    color: #24252f;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+.team-name p{
+    font-size: 14px;
+    color: #7a7b81;
+    margin: 0;
+}
+.team-date{
+    text-align: center;
+}
+@media screen and (max-width:991px) {
+	.team-date {
+		display: inline-block;
+		width: 100%;
+	}
+	.white-match .col-md-4,
+	.black-match .col-md-4	{
+		display: inline-block;
+		width: 100%;
+	}
+
+	.white-match .team-img,
+	.black-match .team-img {
+		float: none;
+		text-align: center;
+		margin: 10px 0px;
+	}
+
+	.white-match .team-name,
+	.black-match .team-name {
+		margin: 0px !important;
+		float: none;
+		text-align: center;
+	}
+
+	.white-match .team-date,
+	.black-match .team-date {
+		padding: 25px 0px;
+		position: relative;
+		margin: 10px 0px;
+	}
+
+	.white-match .team-date:after,
+	.black-match .team-date:after {
+		position: absolute;
+		bottom: 0;
+		content: '-';
+		text-align: center;
+	}
+
+	.white-match .team-date:before,
+	.black-match .team-date:before {
+		position: absolute;
+		top: 0;
+		content: '-';
+		text-align: center;
+	}
+	.img-responsive {
+		display:inline-block;
+	}
+}
+.team-date h1{
+    font-size: 16px;
+    color: #24252f;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+.team-date p{
+    font-size: 14px;
+    color: #7a7b81;
+    margin: 0;
+}
+.team-left{
+    margin: 16px 0 0 20px;
+}
+.team-date {
+    text-align: center;
+    margin: 20px 0 0 0;
+}
+.team-right {
+    margin: 16px 20px 0 0;
+}
+.white-match {
+    background: #fff;
+    display: block;
+    overflow: hidden;
+    margin: 0 15px;
+    border-bottom: 1px solid #f2f2f3;
+    padding: 18px 30px;
+}
+.black-match {
+    background: #fbfbfb;
+    display: block;
+    overflow: hidden;
+    /*margin: 0 15px;*/
+    border-bottom: 1px solid #f2f2f3;
+    padding: 18px 45px;
+}
+
+.page-head-section {
+    padding-top: 110px;
+    padding-bottom: 50px;
+	  display:block;
+    position:relative;
+    z-index:120;
+}
+
+.page-title-section {
+    color: white;
+    display: block;
+    width: 100%;
+    position: relative;
+    padding: 60px 0;
+    background-image: url(../img/slider-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.regulation li {
+  padding-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
