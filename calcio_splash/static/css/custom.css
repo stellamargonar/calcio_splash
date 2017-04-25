@@ -1,5 +1,10 @@
 .team-img, .team-name{
     float: left;
+    padding: 10px;
+}
+.team-img img {
+  max-width: 300px;
+  height: 100px;
 }
 .team-name h1{
     font-size: 21px;
@@ -12,9 +17,6 @@
     font-size: 14px;
     color: #7a7b81;
     margin: 0;
-}
-.team-date{
-    text-align: center;
 }
 @media screen and (max-width:991px) {
 	.team-date {
@@ -67,27 +69,30 @@
 		display:inline-block;
 	}
 }
-.team-date h1{
+.match-date h1{
     font-size: 16px;
     color: #24252f;
     font-weight: 700;
     margin: 0;
     padding: 0;
 }
-.team-date p{
+.match-date p{
     font-size: 14px;
     color: #7a7b81;
     margin: 0;
 }
-.team-left{
+.match-left{
     margin: 16px 0 0 20px;
+    display: grid;
 }
-.team-date {
+.match-date {
     text-align: center;
     margin: 20px 0 0 0;
+    display: grid;
 }
-.team-right {
+.match-right {
     margin: 16px 20px 0 0;
+    display: grid;
 }
 .white-match {
     background: #fff;

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="match" class="page-head-section text-center">
+
+  <div class="heading-about page-title-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <div class="wow bounceInDown" data-wow-delay="0.4s">
+            <div class="section-heading">
+              <div class="row">
+                <div class="col-md-6">
+                  <h2>{{ match.team_a.name  }}</h2>
+                </div>
+                <div class="col-md-6">
+                  <h2>{{ match.team_b.name }}</h2>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-5">
+                  <h1>{{ match.team_a_score }}</h1>
+                </div>
+                <div class="col-xs-2"><h1>-</h1></div>
+                <div class="col-xs-5">
+                  <h1>{{ match.team_b_score }}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+
+  <div class="container">
+    <div class="row">
+      <h5>{{ match.match_date_time }}</h5>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      {% if match.goals %}
+      <div class="col-xs-6">
+        <ul>
+          {% for goal in match.goals %}
+          {% if goal.team.id == match.team_a.id %}
+          <li>{{ goal.minute }}' {{ goal.player }}</li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="col-xs-6">
+        <ul>
+          {% for goal in goals %}
+          {% if goal.team.id == match.team_b.id %}
+          <li>{{ goal.minute }}' {{ goal.player }}</li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

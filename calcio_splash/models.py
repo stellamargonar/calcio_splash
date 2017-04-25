@@ -20,6 +20,13 @@ class Match(models.Model):
 
     # aggiungere risultati
 
+class Goal(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='match')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='team')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player')
+    minute = models.IntegerField()
+
 admin.site.register(Team)
 admin.site.register(Player)
 admin.site.register(Match)
+admin.site.register(Goal)
