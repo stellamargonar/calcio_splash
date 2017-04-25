@@ -16,6 +16,6 @@ urlpatterns = [
     url(r'^matches/$', views.MatchListView.as_view(), name='matches'),
     url(r'^match/(?P<pk>\d+)$', views.MatchDetailView.as_view(), name='match-detail'),
 
-
+    url(r'^tournament/(?P<pk>\d+)$', views.TournamentDetailView.as_view(), name='tournament-detail'),
 
 ]

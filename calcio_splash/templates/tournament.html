@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<section id="teams" class="page-head-section text-center">
+
+  <div class="heading-about page-title-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+          <div class="wow bounceInDown" data-wow-delay="0.4s">
+            <div class="section-heading">
+              <h2>Torneo {{ tournament.name }}</h2>
+              <h5>edizione {{ tournament.edition_year }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-2 col-lg-offset-5">
+      <hr class="marginbot-50">
+    </div>
+  </div>
+
+  <div class="container">
+    {% if tournament.groups %}
+    {% for group in tournament.groups_clean %}
+    <div class="row">
+      <div class="col-md-12">
+        <h3>{{ group.name }}</h3>
+      </div>
+      <div class="col-md-6">
+        <table>
+          <tr>
+            <th>&nbsp;</th>
+            <th>Punti</th>
+            <th>Goal fatti</th>
+            <th>Goal subiti</th>
+            <th>Diff reti</th>
+          </tr>
+          {% for team_name, team in group.teams.items %}
+          <tr>
+            <td>{{team_name}}</td>
+            <td>{{team.points}}</td>
+            <td>{{team.goals_done}}</td>
+            <td>{{team.goals_taken}}</td>
+            <td>{{team.goals_diff}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="col-md-6">
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Nessun girone in questo torneo</p>
+    {% endif %}
+  </div>
+
+
+</section>
+{% endblock %}
