@@ -112,7 +112,7 @@
 }
 
 .page-head-section {
-    padding-top: 110px;
+    padding-top: 0px;
     padding-bottom: 50px;
 	  display:block;
     position:relative;
@@ -124,10 +124,20 @@
     display: block;
     width: 100%;
     position: relative;
-    padding: 60px 0;
+    padding: 120px 0 0 60px;
     background-image: url(../img/slider-bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+}
+.page-title-section.chi-siamo {
+  color: white;
+  display: block;
+  width: 100%;
+  position: relative;
+  padding: 200px 0;
+  background-image: url(../img/slider-bg-fuoriposto.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .regulation li {
