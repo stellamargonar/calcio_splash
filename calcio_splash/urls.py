@@ -9,6 +9,7 @@ from calcio_splash import views
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
     url(r'^regulation/$', TemplateView.as_view(template_name='regulation.html'), name='regulation'),
+    url(r'^fuoriposto/$', TemplateView.as_view(template_name='fuoriposto.html'), name='fuoriposto'),
 
     url(r'^admin/', admin.site.urls),
     url(r'^teams/$', views.TeamListView.as_view(), name='teams'),
