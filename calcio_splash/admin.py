@@ -1,9 +1,11 @@
+from django import forms
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect, HttpResponseServerError
 
 from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
 from calcio_splash.helpers import MatchHelper
+from calcio_splash.forms import MatchForm, PlayerAdminInline
 
 class CalcioSplashAdminSite(admin.AdminSite):
     def get_urls(self):
@@ -22,6 +24,7 @@ admin_site = CalcioSplashAdminSite()
 
 
 class TeamAdmin(admin.ModelAdmin):
+    inlines = (PlayerAdminInline, )
     list_display = ['name']
 
 admin_site.register(Team, TeamAdmin)
@@ -34,7 +37,27 @@ admin_site.register(Player, PlayerAdmin)
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['team_a', 'team_b']
+    list_display = ['get_group', 'get_team_a', 'get_team_b']
+    form = MatchForm
+    actions = ['go_to_match_page']
+
+    def get_group(self, obj):
+        return obj.group.name
+
+    def get_team_a(self, obj):
+        return obj.team_a.name
+
+    def get_team_b(self, obj):
+        return obj.team_b.name
+
+    def go_to_match_page(modeladmin, request, queryset):
+        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        return HttpResponseRedirect("admin/match_goals/" + selected[0] )
+
+    get_group.short_description = 'Group'
+    get_team_a.short_description = 'Team A'
+    get_team_b.short_description = 'Team B'
+    go_to_match_page.short_description = 'Start Match'
 
 admin_site.register(Match, MatchAdmin)
 
@@ -49,7 +72,6 @@ class TournamentAdmin(admin.ModelAdmin):
     list_display = ['name', 'edition_year']
 
 admin_site.register(Tournament, TournamentAdmin)
-
 
 class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
     template_name = 'admin/match_goal.html'

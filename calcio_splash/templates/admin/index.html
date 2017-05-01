@@ -1,0 +1,20 @@
+{% extends "admin/index.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="submit-row">
+  <a href="{% url 'admin:calcio_splash_team_add' %}" class="button">
+    {% trans "Iscrivi Squadra" %}
+  </a>
+  &nbsp;
+  <a href="{% url 'admin:calcio_splash_match_add' %}" class="button">
+    {% trans "Crea Partita" %}
+  </a>
+</div>
+{{block.super}}
+{% endblock %}

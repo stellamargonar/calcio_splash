@@ -5,6 +5,8 @@ from django.contrib import admin
 class Team(models.Model):
     name = models.CharField(max_length=100)
 
+    def __unicode__(self):
+        return u'{}'.format(self.name)
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
