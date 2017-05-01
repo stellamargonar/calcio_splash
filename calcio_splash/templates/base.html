@@ -65,8 +65,8 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Info <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'regulation' %}">Regolamento</a></li>
-              <li><a href="#">Modulo Iscrizione</a></li>
-              <li><a href="#">Contatti</a></li>
+              <li><a href="#">Iscrizioni</a></li>
+              <li><a href="{% url 'contacts' %}">Contatti</a></li>
             </ul>
           </li>
         </ul>
@@ -131,6 +131,9 @@
 <!-- Custom Theme JavaScript -->
 <script src="{% static "js/custom.js" %}"></script>
 <!-- <script src="contactform/contactform.js"></script> -->
+
+{% block scripts %}
+{% endblock %}
 
 </body>
 
