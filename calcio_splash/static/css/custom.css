@@ -135,3 +135,16 @@
   margin-right: 10px;
   margin-left: 10px;
 }
+
+.match-goal .team-player {
+  list-style: none;
+}
+
+.match-goal .team {
+  margin: 50px;
+  text-align: center;
+}
+.match-goal .team-score {
+  margin-top: 50px;
+  text-align: center;
+}

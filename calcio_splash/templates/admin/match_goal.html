@@ -1,0 +1,61 @@
+{% extends "admin/admin-base.html" %}
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-lg-2 col-lg-offset-5">
+      <hr class="marginbot-100">
+    </div>
+  </div>
+
+
+<section class="match-goal">
+  <div class="container">
+    <div class="row">
+
+      <!-- TEAM A -->
+      <div class="col-xs-5">
+        <h3 class="team">{{match.team_a.name}}</h3>
+        <ul>
+          {% for player in match.team_a.player_set.all %}
+          <li class="team-player">
+            <a href="" class="btn btn-primary btn-block">
+              {{player.surname}} {{player.name}}
+            </a>
+            <br />
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+
+      <!-- TIMER & info -->
+      <div class="col-xs-2">
+        <div id="match_timer"></div>
+
+
+        <h1 class="team-score">{{match.team_a_score}} - {{match.team_b_score}}</h1>
+
+
+      </div>
+
+
+      <!-- TEAM B -->
+      <div class="col-xs-5">
+        <h3 class="team">{{match.team_b.name}}</h3>
+        <ul>
+          {% for player in match.team_b.player_set.all %}
+          <li class="team-player">
+            <a href="" class="btn btn-primary btn-block">
+              {{player.surname}} {{player.name}}
+            </a>
+            <br />
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

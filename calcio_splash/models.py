@@ -37,11 +37,3 @@ class Goal(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='goals')
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='goals')
     minute = models.IntegerField()
-
-
-admin.site.register(Team)
-admin.site.register(Player)
-admin.site.register(Match)
-admin.site.register(Goal)
-admin.site.register(Tournament)
-admin.site.register(Group)
