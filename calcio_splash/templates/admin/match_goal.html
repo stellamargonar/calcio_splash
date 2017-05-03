@@ -10,7 +10,7 @@
 
 
 <section class="match-goal">
-  <div class="container">
+  <form class="container">
     <div class="row">
 
       <!-- TEAM A -->
@@ -18,10 +18,10 @@
         <h3 class="team">{{match.team_a.name}}</h3>
         <ul>
           {% for player in match.team_a.player_set.all %}
-          <li class="team-player">
-            <a href="" class="btn btn-primary btn-block">
+          <li class="team-player" data-player={{player.id}} data-team={{match.team_a.id}} data-match={{match.id}}>
+            <div class="btn btn-primary btn-block">
               {{player.surname}} {{player.name}}
-            </a>
+            </div>
             <br />
           </li>
           {% endfor %}
@@ -31,6 +31,12 @@
 
       <!-- TIMER & info -->
       <div class="col-xs-2">
+        <div id="button_start" class="btn btn-primary">
+          Fischio d'inizio
+        </div>
+        <div id="button_end" class="btn btn-primary">
+          Game Over
+        </div>
         <div id="match_timer"></div>
 
 
@@ -45,10 +51,10 @@
         <h3 class="team">{{match.team_b.name}}</h3>
         <ul>
           {% for player in match.team_b.player_set.all %}
-          <li class="team-player">
-            <a href="" class="btn btn-primary btn-block">
+          <li class="team-player" data-player={{player.id}} data-team={{match.team_b.id}} data-match={{match.id}}>
+            <div class="btn btn-primary btn-block">
               {{player.surname}} {{player.name}}
-            </a>
+            </div>
             <br />
           </li>
           {% endfor %}
@@ -56,6 +62,7 @@
       </div>
 
     </div>
-  </div>
+    {% csrf_token %}
+  </form>
 </section>
 {% endblock %}

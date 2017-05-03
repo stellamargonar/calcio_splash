@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.views.generic import TemplateView
-from django.http import HttpResponseRedirect, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseServerError
 
 from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
 from calcio_splash.helpers import MatchHelper
@@ -15,7 +15,7 @@ class CalcioSplashAdminSite(admin.AdminSite):
         # This doesn't work with urls += ...
         urls = urls + [
             url(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
-            url(r'^score_goal/$', create_goal),
+            url(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
 
         ]
         return urls
@@ -83,18 +83,22 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
         context['match'] = MatchHelper.build_match(match)
         return context
 
-def create_goal(request):
+def create_goal(request, id):
     error_msg = u"No POST data sent."
     if request.method == "POST":
         post = request.POST.copy()
-        print(post)
-        if post.has_key('team') and post.has_key('player'):
+        if post.get('team') and post.get('player'):
             team = post['team']
             player = post['player']
-            match = post['match']
-
-            new_goal = Goal.objects.create(team=team, player=player, match=match)
-            return HttpResponseRedirect()
+            minute = post['minute']
+            matchId = id
+            new_goal = Goal.objects.create(
+                team=Team.objects.get(pk=team),
+                player=Player.objects.get(pk=player),
+                match=Match.objects.get(pk=matchId),
+                minute=minute
+            )
+            return HttpResponse()
         else:
             error_msg = u"Insufficient POST data (need 'player, match and team')"
     return HttpResponseServerError(error_msg)
