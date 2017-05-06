@@ -29,9 +29,12 @@ class MatchListView(ListView):
     context_object_name = 'match_list'
 
     def get_queryset(self):
-        return Match.objects.all().order_by('-match_date_time')
+        group_id = self.kwargs['pk_group']
+        return Match.objects.filter(group__id=group_id).order_by('-match_date_time')
 
     def get_context_data(self, **kwargs):
+        print(kwargs)
+
         context = super().get_context_data(**kwargs)
 
         context['object_list'] = [
@@ -64,6 +67,5 @@ class TournamentDetailView(DetailView):
         ]
 
         context['tournament'] = tournament
-
 
         return context

@@ -28,10 +28,57 @@
     {% for group in tournament.groups_clean %}
     <div class="row">
       <div class="col-md-12">
-        <h3>{{ group.name }}</h3>
+        <h3>Girone: {{ group.name }}</h3>
       </div>
-      <div class="col-md-6">
-        <table>
+    </div>
+
+    <!-- GROUP MATCHES -->
+    <div class="row">
+      {% if group.matches %}
+      {% for match in group.matches.all %}
+      <div class="container">
+        <div class="white-match">
+          <div class="col-sm-4">
+              <div class="match-left">
+                  <div class="team-img">
+                      <a href="#"><img src="images/fixture-team1.png" width="80" height="77" alt=""></a>
+                  </div>
+                  <div class="team-name">
+                      <h5><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></h5>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+              <div class="match-date">
+                  <h5><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time }}</a></h5>
+                  <p>Parco Bastie</p>
+                  {% if match.team_a_score is not None %}
+                  <h2>{{ match.team_a_score }} - {{ match.team_b_score }}</h2>
+                  {% endif %}
+              </div>
+          </div>
+          <div class="col-sm-4">
+              <div class="match-right">
+                <div class="team-img">
+                    <a href="#"><img src="images/fixture-team2.png" width="64" height="84" alt=""></a>
+                </div>
+                  <div class="team-name">
+                      <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
+                  </div>
+
+              </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <!-- /GROUP MATCHES -->
+
+    <!-- GROUP CLASSIFICA -->
+    <div class="row">
+      <div class="col-md-12">
+        <table class="group-rank">
           <tr>
             <th>&nbsp;</th>
             <th>Punti</th>
@@ -50,10 +97,9 @@
           {% endfor %}
         </table>
       </div>
-
-      <div class="col-md-6">
-      </div>
     </div>
+    <!-- /GROUP CLASSIFICA -->
+
     {% endfor %}
     {% else %}
     <p>Nessun girone in questo torneo</p>
