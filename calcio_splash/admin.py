@@ -1,11 +1,13 @@
 from django import forms
 from django.contrib import admin
+from django.core import serializers
 from django.views.generic import TemplateView
-from django.http import HttpResponse, HttpResponseServerError
+from django.http import JsonResponse, HttpResponseServerError
 
 from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
 from calcio_splash.helpers import MatchHelper
 from calcio_splash.forms import MatchForm, PlayerAdminInline
+
 
 class CalcioSplashAdminSite(admin.AdminSite):
     def get_urls(self):
@@ -16,7 +18,7 @@ class CalcioSplashAdminSite(admin.AdminSite):
         urls = urls + [
             url(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
             url(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
-
+            url(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
         ]
         return urls
 
@@ -80,8 +82,9 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
         context = super().get_context_data(**kwargs)
         match = Match.objects.get(id=id)
 
-        context['match'] = MatchHelper.build_match(match)
+        context['match'], context['player_goals'] = MatchHelper.build_match(match)
         return context
+
 
 def create_goal(request, id):
     error_msg = u"No POST data sent."
@@ -98,7 +101,45 @@ def create_goal(request, id):
                 match=Match.objects.get(pk=matchId),
                 minute=minute
             )
-            return HttpResponse()
+
+            # return the new match score
+            match, player_map = MatchHelper.build_match(Match.objects.get(pk=matchId))
+            return JsonResponse({
+                'team_a_score': match.team_a_score,
+                'team_b_score': match.team_b_score,
+                'playerMap': player_map
+            }, safe=False)
         else:
             error_msg = u"Insufficient POST data (need 'player, match and team')"
     return HttpResponseServerError(error_msg)
+
+def delete_last_goal(request, id):
+    error_msg = u"No POST data sent."
+    if not(request.method == "POST"):
+        return HttpResponseServerError(error_msg)
+
+    post = request.POST.copy()
+    if not(post.get('team') and post.get('player')):
+        return HttpResponseServerError(u"Insufficient POST data (need 'player, match and team')")
+
+    team = post['team']
+    player = post['player']
+    matchId = id
+    goals = Goal.objects.filter(
+        team=Team.objects.get(pk=team),
+        player=Player.objects.get(pk=player),
+        match=Match.objects.get(pk=matchId)
+    ).order_by('-minute')
+
+    if len(goals) == 0:
+        return HttpResponseServerError(u'No goal find for this player')
+
+    goals[0].delete()
+
+    # return the new match score
+    match, player_map = MatchHelper.build_match(Match.objects.get(pk=matchId))
+    return JsonResponse({
+        'team_a_score': match.team_a_score,
+        'team_b_score': match.team_b_score,
+        'playerMap': player_map
+    })

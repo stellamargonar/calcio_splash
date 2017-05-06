@@ -2,7 +2,7 @@
   var timerId = '#match_timer';
   var startButtonId = '#button_start';
   var endButtonId = '#button_end';
-  var playerButtonSelector = '.team-player';
+  var playerButtonSelector = '.team-player>.btn';
   var timer;
 
   $(function() {
@@ -18,9 +18,15 @@
     $(timerId).hide();
 
     $(playerButtonSelector).click(function(){
-        var playerId = $(this).data('player');
         goal($(this).data('player'), $(this).data('team'), $(this).data('match'));
-    }).attr('disabled', 'disabled');
+    });
+    $(playerButtonSelector).attr('disabled', true);
+
+    $(playerButtonSelector).on('taphold', function(event) {
+      event.stopPropagation();
+      if (confirm('Eliminare ultimo goal?'))
+        deleteGoal($(this).data('player'), $(this).data('team'), $(this).data('match'));
+    });
 
     var csrftoken = getCookie('csrftoken');
     $.ajaxSetup({
@@ -38,7 +44,7 @@
     $(endButtonId).show();
 
     $(timerId).show();
-    $(playerButtonSelector).attr('disabled', 'enabled');
+    $(playerButtonSelector).attr('disabled', false);
     setTimerText(0,0);
     startTimer();
   }
@@ -46,7 +52,8 @@
   function endMatch() {
     stopTimer();
     $(timerId).hide();
-    $(endButtonId).attr("disabled","disabled");
+    $(endButtonId).attr("disabled", true);
+    $(playerButtonSelector).attr('disabled', true);
   }
 
 	function startTimer() {
@@ -71,7 +78,7 @@
     if (seconds  < 10) {
       seconds = '0' + seconds;
     }
-    $(timerId).html(minutes + ":" + seconds);
+    $(timerId).html('<h2>' + minutes + ":" + seconds + '</h2>');
   }
 
   function stopTimer() {
@@ -80,7 +87,6 @@
 
   function goal(playerId, teamId, matchId) {
     var minute = $(timerId).text().split(':')[0];
-    console.log('request', 'match_goals/' + matchId + '/score_goal/')
     $.ajax({
       type: "POST",
       url: 'match_goals/' + matchId + '/score_goal',
@@ -89,13 +95,41 @@
         team: teamId,
         minute: minute
       },
-      success: function() {
+      success: function(data) {
         // SUCCESS
-        // TODO reload match and goals
+        updateScores(data)
+      },
+      error: function(error) {
+        alert(error);
       }
     });
   }
-  // using jQuery
+
+  function deleteGoal(playerId, teamId, matchId) {
+    $.ajax({
+      type: "POST",
+      url: 'match_goals/' + matchId + '/undo',
+      data: {
+        player: playerId,
+        team: teamId
+      },
+      success: function(data) {
+        // SUCCESS
+        updateScores(data)
+      },
+      error: function(obj, error) {
+        alert(error);
+      }
+    });
+  }
+
+  function updateScores(data) {
+    $('.team-score').text(data.team_a_score + ' - ' + data.team_b_score);
+    for (var playerId in data.playerMap) {
+      $('#player_' + playerId).text('(' + data.playerMap[playerId] + ')')
+    }
+  }
+
   function getCookie(name) {
       var cookieValue = null;
       if (document.cookie && document.cookie !== '') {

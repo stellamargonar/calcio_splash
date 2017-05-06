@@ -5,7 +5,7 @@ class GroupHelper:
     def build_group(group):
         teams = dict()
         for match in group.matches.all():
-            match = MatchHelper.build_match(match)
+            match, _ = MatchHelper.build_match(match)
 
             team_a = teams.get(match.team_a.name, {})
             team_a['goals_done'] = team_a.get('goals_done', 0) + match.team_a_score
@@ -45,14 +45,19 @@ class MatchHelper:
         # compute score
         team_a_score = 0
         team_b_score = 0
+
+        players_map = dict()
+
         for goal in goals:
             if goal.team == match.team_a:
                 team_a_score += 1
             if goal.team == match.team_b:
                 team_b_score += 1
 
+            players_map[goal.player.id] = players_map.get(goal.player.id, 0) + 1
+
         match.goals = goals
         match.team_a_score = team_a_score
         match.team_b_score = team_b_score
 
-        return match
+        return match, players_map

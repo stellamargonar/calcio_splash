@@ -1,4 +1,5 @@
 {% extends "admin/admin-base.html" %}
+{% load filters %}
 
 {% block content %}
 
@@ -18,9 +19,16 @@
         <h3 class="team">{{match.team_a.name}}</h3>
         <ul>
           {% for player in match.team_a.player_set.all %}
-          <li class="team-player" data-player={{player.id}} data-team={{match.team_a.id}} data-match={{match.id}}>
-            <div class="btn btn-primary btn-block">
+          <li class="team-player">
+            <div class="btn btn-primary btn-block"
+                data-player={{player.id}} data-team={{match.team_a.id}} data-match={{match.id}}>
               {{player.surname}} {{player.name}}
+
+              <span id="player_{{player.id}}">
+                {% if player_goals|get_value_from_dict:player.id %}
+                  ({{ player_goals|get_value_from_dict:player.id }})
+                {% endif %}
+              </span>
             </div>
             <br />
           </li>
@@ -30,17 +38,20 @@
 
 
       <!-- TIMER & info -->
-      <div class="col-xs-2">
-        <div id="button_start" class="btn btn-primary">
-          Fischio d'inizio
-        </div>
-        <div id="button_end" class="btn btn-primary">
-          Game Over
-        </div>
-        <div id="match_timer"></div>
-
+      <div class="col-xs-2 text-center">
 
         <h1 class="team-score">{{match.team_a_score}} - {{match.team_b_score}}</h1>
+
+        <div id="button_start" class="btn btn-warning btn-block">
+          Fischio d'inizio
+        </div>
+        <div id="button_end" class="btn btn-danger btn-block">
+          Game Over
+        </div>
+        <div id="match_timer" class="match-timer"><h1></h1></div>
+
+
+
 
 
       </div>
@@ -51,9 +62,16 @@
         <h3 class="team">{{match.team_b.name}}</h3>
         <ul>
           {% for player in match.team_b.player_set.all %}
-          <li class="team-player" data-player={{player.id}} data-team={{match.team_b.id}} data-match={{match.id}}>
-            <div class="btn btn-primary btn-block">
+          <li class="team-player">
+            <div class="btn btn-primary btn-block"
+                data-player={{player.id}} data-team={{match.team_b.id}} data-match={{match.id}}>
               {{player.surname}} {{player.name}}
+
+              <span id="player_{{player.id}}">
+                {% if player_goals|get_value_from_dict:player.id %}
+                  ({{ player_goals|get_value_from_dict:player.id }})
+                {% endif %}
+              </span>
             </div>
             <br />
           </li>

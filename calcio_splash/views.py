@@ -35,7 +35,7 @@ class MatchListView(ListView):
         context = super().get_context_data(**kwargs)
 
         context['object_list'] = [
-            MatchHelper.build_match(match) for match in context['object_list']
+            MatchHelper.build_match(match)[0] for match in context['object_list']
         ]
         return context
 
@@ -45,7 +45,7 @@ class MatchDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['match'] = MatchHelper.build_match(context['match'])
+        context['match'], _ = MatchHelper.build_match(context['match'])
         return context
 
 
