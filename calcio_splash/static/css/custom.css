@@ -124,11 +124,26 @@
     display: block;
     width: 100%;
     position: relative;
-    padding: 120px 0 0 60px;
+    padding-top: 120px;
     background-image: url(../img/slider-bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
+@@media(min-width:767px) {
+  .page-title-section {
+    padding: 120px 0 0 60px;
+  }
+}
+@media(max-width:767px) {
+  .row > div {
+    padding-top: 30px;
+  }
+  hr.marginbot-50 {
+    margin-bottom: 20px !important;
+  }
+
+}
+
 .page-title-section.chi-siamo {
   color: white;
   display: block;

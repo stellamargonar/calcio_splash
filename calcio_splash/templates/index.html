@@ -32,27 +32,27 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
-        <!-- TODO COPIATO DA CALCIO SPLASH MARCO -->
+      <div class="col-md-4">
+        <h4>Calcio Splash Ala!</h4>
+        <p>Finalmente anche a Ala .... bla bla</p>
+      </div>
+      <div class="col-md-4">
         <h4>Sabato 5 agosto</h4>
         <ul>
-          <li>9.00 : Inizio Partite</li>
-          <li>18.00 : Happy Hour, prezzi pazzi fino alle 19! Aperol Spritz a 1 €!v
-          <li>21.30 - 22.30 : MATIC apre la serata</li>
-          <li>23.00 : Si balla con RADIO STUDIO PIÙ</li>
-          <li>02.30 : Chiusura serata</li>
+          <li>10.00 : Inizio Partite</li>
+          <li>22.30 : Fine Partite</li>
+          <li>01.00 : Chiusura serata</li>
         </ul>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <h4>Domenica 6 agosto</h4>
         <ul>
-          <li>9.00 : Inizio partite</li>
-          <li>18.00 : Happy Hour, prezzi pazzi fino alle 19 con MUSICA LIVE di WAIRA</li>
-          <li>19.00 : FINALI 3° e 4° POSTO</li>
-          <li>20.00 : FINALI 1° e 2° POSTO</li>
-          <li>22.00 : Premiazioni</li>
+          <li>10.00 : Inizio Partite</li>
+          <li>22.30 : Fine Partite</li>
+          <li>01.00 : Chiusura serata</li>
         </ul>
       </div>
+
     </div>
   </div>
 </section>
@@ -64,11 +64,78 @@
     <div class="container">
       <div class="row">
         <h1>Vuoi partecipare?</h1>
-        <h2>Scarica <a href="">QUI</a> il modulo</h2>
-        <p>Le iscrizioni si chiuderanno il 30 luglio o al raggiungimento di 20 squadre maschili e 8 femminili</p>
+        <h2>Scarica <a href="/iscrizioni">QUI</a> il modulo</h2>
+        <p>Le iscrizioni si apriranno il 3 luglio e si chiuderanno al raggiungimento di 20 squadre maschili e 8 femminili</p>
       </div>
     </div>
   </div>
 </section>
+
+
+<section class="home-section ">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <div id="map"></div>
+      </div>
+      <div class="col-md-5">
+        <h4>Dove Siamo</h4>
+        <p>Il torneo si terrà presso il campo dell'Oratorio di Ala in Via Zigatteria.</p>
+        <p>Non è possibile parcheggiare all'interno del cortile, ma nelle vicinanze
+          sono presenti numerosi parcheggi.
+        </p>
+        <p>Per tutti i partecipanti al torneo, la struttura mette a disposizione
+          spogliatoi comprensivi di docce</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function initMap() {
+    var uluru = {lat: 45.755278, lng: 11.005139};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: uluru
+    });
+    var marker = new google.maps.Marker({
+      position: uluru,
+      map: map,
+      title: 'Oratorio'
+    });
+
+    var infowindow = new google.maps.InfoWindow({
+      content: 'Oratorio'
+    });
+    var parkWindow = new google.maps.InfoWindow({
+      content: 'Parcheggio'
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+    var parkingCoordinates = [
+      {lat: 45.755443, lng: 11.003566},
+      {lat: 45.754942, lng: 11.001256},
+      {lat: 45.758318, lng: 11.007256}
+    ];
+    parkingCoordinates.forEach(function(coord) {
+      var pMarker = new google.maps.Marker({
+        position: coord,
+        map: map,
+        title: 'Parcheggio',
+        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+      });
+      pMarker.addListener('click', function() {
+        parkWindow.open(map, pMarker);
+      });
+    });
+  }
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDawp4kuntkqTqmsl30KANJ0Ld4C9sc5xw&callback=initMap">
+</script>
 
 {% endblock %}
