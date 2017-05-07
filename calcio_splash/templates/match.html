@@ -45,9 +45,9 @@
       {% if match.goals %}
       <div class="col-xs-6">
         <ul>
-          {% for goal in match.goals %}
+          {% for goal in match.goals.all %}
           {% if goal.team.id == match.team_a.id %}
-          <li>{{ goal.minute }}' {{ goal.player }}</li>
+          <li>{{ goal.minute }}' {{ goal.player.name }} {{ goal.player.surname }}</li>
           {% endif %}
           {% endfor %}
         </ul>
@@ -55,9 +55,9 @@
 
       <div class="col-xs-6">
         <ul>
-          {% for goal in goals %}
+          {% for goal in match.goals.all %}
           {% if goal.team.id == match.team_b.id %}
-          <li>{{ goal.minute }}' {{ goal.player }}</li>
+          <li>{{ goal.minute }}' {{ goal.player.name }} {{ goal.player.surname }}</li>
           {% endif %}
           {% endfor %}
         </ul>

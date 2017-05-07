@@ -141,7 +141,21 @@
   hr.marginbot-50 {
     margin-bottom: 20px !important;
   }
-
+  .white-match {
+    margin: 0 5px;
+    border-bottom: 1px solid #f2f2f3;
+    padding: 18px 5px;
+  }
+  .white-match > div {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .match-left, .match-rigth {
+    margin: 10px 0 0 0;
+  }
+  .match-date h2 {
+    font-size: 22px;
+  }
 }
 
 .page-title-section.chi-siamo {

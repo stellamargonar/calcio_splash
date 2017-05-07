@@ -4,8 +4,10 @@ class GroupHelper:
     @staticmethod
     def build_group(group):
         teams = dict()
+        matches = list()
         for match in group.matches.all():
             match, _ = MatchHelper.build_match(match)
+            matches += [match]
 
             team_a = teams.get(match.team_a.name, {})
             team_a['goals_done'] = team_a.get('goals_done', 0) + match.team_a_score
@@ -22,7 +24,7 @@ class GroupHelper:
                 2 if match.team_b_score > match.team_a_score else \
                 1 if match.team_b_score == match.team_a_score else 0
             teams[match.team_b.name] = team_b
-
+        group.group_matches = matches
         # post process teams
         group.teams = {
             team_name: {
