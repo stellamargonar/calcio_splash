@@ -22,22 +22,32 @@
     </div>
   </div>
 
-
+<section>
+  <div class="section-heading">
+    <h2>Torneo Maschile</h2>
+    <i class="fa fa-2x fa-angle-down"></i>
+  </div>
   <div class="container">
     <div class="row">
     {% if team_list %}
     {% for team in team_list %}
+    {% if team.gender == 'M' %}
       <div class="col-md-3">
         <div class="wow bounceInUp" data-wow-delay="0.2s">
           <div class="team boxed-grey">
             <div class="inner">
-              <h5><a href="{% url 'team-detail' team.id %}">{{ team.name }}</a></h5>
-              <p class="subtitle">Boh</p>
               <div class="avatar"><img src="{{ team.logo }}" alt="" class="img-responsive img-circle" /></div>
+              <h5><a href="{% url 'team-detail' team.id %}">{{ team.name }}</a></h5>
+              <ul class="team-player">
+                {% for player in team.player_set.all %}
+                <li class="team-player">{{player.name}} {{player.surname}}</li>
+                {% endfor %}
+              </ul>
             </div>
           </div>
         </div>
       </div>
+    {% endif %}
     {% endfor %}
     {% else %}
       <div>Nessuna squadra si è ancora iscritta</div>
@@ -45,4 +55,45 @@
     </div>
   </div>
 </section>
+
+<div class="row">
+  <div class="col-lg-2 col-lg-offset-5">
+    <hr class="marginbot-50">
+  </div>
+</div>
+
+<section>
+  <div class="section-heading">
+    <h2>Torneo Femminile</h2>
+    <i class="fa fa-2x fa-angle-down"></i>
+  </div>
+  <div class="container">
+    <div class="row">
+    {% if team_list %}
+    {% for team in team_list %}
+    {% if team.gender == 'F' %}
+      <div class="col-md-3">
+        <div class="wow bounceInUp" data-wow-delay="0.2s">
+          <div class="team boxed-grey">
+            <div class="inner">
+              <div class="avatar"><img src="{{ team.logo }}" alt="" class="img-responsive img-circle" /></div>
+              <h5><a href="{% url 'team-detail' team.id %}">{{ team.name }}</a></h5>
+              <ul class="team-player">
+                {% for player in team.player_set.all %}
+                <li class="team-player">{{player.name}} {{player.surname}}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+      <div>Nessuna squadra si è ancora iscritta</div>
+    {% endif %}
+    </div>
+  </div>
+</section>
+
 {% endblock %}

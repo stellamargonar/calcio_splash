@@ -34,7 +34,9 @@
             <div class="inner">
               <h5>{{ player.name }} {{ player.surname }}</h5>
               <p class="subtitle">{{ player.role }}</p>
-              <!-- <div class="avatar"><img src="img/team/1.jpg" alt="" class="img-responsive img-circle" /></div> -->
+              {% if player.goals.all|length > 0 %}
+              <p>Goal segnati {{ player.goals.all|length }}</p>
+              {% endif %}
             </div>
           </div>
         </div>

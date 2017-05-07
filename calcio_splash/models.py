@@ -5,6 +5,18 @@ from django.contrib import admin
 class Team(models.Model):
     name = models.CharField(max_length=100)
 
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDER_CHOICES = (
+        (MALE, 'Maschile'),
+        (FEMALE, 'Femminile'),
+    )
+    gender = models.CharField(
+        max_length=2,
+        choices=GENDER_CHOICES,
+        default=MALE
+    )
+
     def __unicode__(self):
         return u'{}'.format(self.name)
 

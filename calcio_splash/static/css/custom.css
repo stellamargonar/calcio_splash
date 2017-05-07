@@ -225,3 +225,8 @@ table.group-rank {
   margin-right: auto;
   border: 0px;
 }
+
+.team-player {
+  list-style: none;
+  padding-left: 0px;
+}
