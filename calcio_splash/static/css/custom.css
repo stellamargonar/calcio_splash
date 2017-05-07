@@ -146,6 +146,12 @@
   margin-left: 10px;
 }
 
+.match-goal {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 .match-goal .team-player {
   list-style: none;
 }
@@ -154,6 +160,11 @@
   margin: 50px;
   text-align: center;
 }
+
+.match-goal ul {
+  padding: 10px 30px 10px;
+}
+
 .match-goal .team-score {
   margin-top: 50px;
   text-align: center;

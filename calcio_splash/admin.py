@@ -4,6 +4,8 @@ from django.core import serializers
 from django.views.generic import TemplateView
 from django.http import JsonResponse, HttpResponseServerError
 
+from datetime import datetime
+
 from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
 from calcio_splash.helpers import MatchHelper
 from calcio_splash.forms import MatchForm, PlayerAdminInline
@@ -19,6 +21,8 @@ class CalcioSplashAdminSite(admin.AdminSite):
             url(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
             url(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
             url(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
+            url(r'match_goals/(?P<id>\d+)/start$', start_match),
+            url(r'match_goals/(?P<id>\d+)/end$', end_match),
         ]
         return urls
 
@@ -30,7 +34,7 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 admin_site.register(Team, TeamAdmin)
-
+admin_site.register(Goal)
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name']
@@ -87,40 +91,36 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
 
 
 def create_goal(request, id):
-    error_msg = u"No POST data sent."
-    if request.method == "POST":
-        post = request.POST.copy()
-        if post.get('team') and post.get('player'):
-            team = post['team']
-            player = post['player']
-            minute = post['minute']
-            matchId = id
-            new_goal = Goal.objects.create(
-                team=Team.objects.get(pk=team),
-                player=Player.objects.get(pk=player),
-                match=Match.objects.get(pk=matchId),
-                minute=minute
-            )
+    error_response = _validate_post_request(request, ['team', 'player', 'minute'])
+    if error_response:
+        return error_response
+    post = request.POST.copy()
 
-            # return the new match score
-            match, player_map = MatchHelper.build_match(Match.objects.get(pk=matchId))
-            return JsonResponse({
-                'team_a_score': match.team_a_score,
-                'team_b_score': match.team_b_score,
-                'playerMap': player_map
-            }, safe=False)
-        else:
-            error_msg = u"Insufficient POST data (need 'player, match and team')"
-    return HttpResponseServerError(error_msg)
+    team = post['team']
+    player = post['player']
+    minute = post['minute']
+    matchId = id
+    new_goal = Goal.objects.create(
+        team=Team.objects.get(pk=team),
+        player=Player.objects.get(pk=player),
+        match=Match.objects.get(pk=matchId),
+        minute=minute
+    )
+
+    # return the new match score
+    match, player_map = MatchHelper.build_match(Match.objects.get(pk=matchId))
+    return JsonResponse({
+        'team_a_score': match.team_a_score,
+        'team_b_score': match.team_b_score,
+        'playerMap': player_map
+    }, safe=False)
+
 
 def delete_last_goal(request, id):
-    error_msg = u"No POST data sent."
-    if not(request.method == "POST"):
-        return HttpResponseServerError(error_msg)
-
+    error_response = _validate_post_request(request, ['team', 'player'])
+    if error_response:
+        return error_response
     post = request.POST.copy()
-    if not(post.get('team') and post.get('player')):
-        return HttpResponseServerError(u"Insufficient POST data (need 'player, match and team')")
 
     team = post['team']
     player = post['player']
@@ -143,3 +143,41 @@ def delete_last_goal(request, id):
         'team_b_score': match.team_b_score,
         'playerMap': player_map
     })
+
+def start_match(request, id):
+    error_response = _validate_post_request(request, ['time'])
+    if error_response:
+        return error_response
+
+    post = request.POST.copy()
+    time = datetime.fromtimestamp(int(post['time'])/1000)
+    matchId = id
+    Match.objects.filter(pk=matchId).update(start_time=time)
+    return JsonResponse({
+        'time': post['time']
+    })
+
+
+def end_match(request, id):
+    error_response = _validate_post_request(request, ['time'])
+    if error_response:
+        return error_response
+
+    post = request.POST.copy()
+    time = datetime.fromtimestamp(int(post['time'])/1000)
+    matchId = id
+    Match.objects.filter(pk=matchId).update(end_time=time)
+    return JsonResponse({
+        'time': post['time']
+    })
+
+
+def _validate_post_request(request, required_params):
+    error_msg = u"No POST data sent."
+    if not(request.method == "POST"):
+        return HttpResponseServerError(error_msg)
+
+    post = request.POST.copy()
+    if any(not(post.get(param)) for param in required_params):
+        return HttpResponseServerError(u"Insufficient POST data (need {}})".format(required_params))
+    return None

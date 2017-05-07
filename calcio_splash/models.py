@@ -33,6 +33,9 @@ class Match(models.Model):
     next_match = models.ForeignKey('self', null=True, related_name='prev_matches')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='matches')
 
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+
 
 class Goal(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='goals')

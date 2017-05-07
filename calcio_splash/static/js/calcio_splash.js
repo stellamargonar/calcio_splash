@@ -10,18 +10,13 @@
       startMatch();
     });
 
-    $(endButtonId).hide();
     $(endButtonId).bind('click', function(event) {
       endMatch();
     });
 
-    $(timerId).hide();
-
     $(playerButtonSelector).click(function(){
         goal($(this).data('player'), $(this).data('team'), $(this).data('match'));
     });
-    $(playerButtonSelector).attr('disabled', true);
-
     $(playerButtonSelector).on('taphold', function(event) {
       event.stopPropagation();
       if (confirm('Eliminare ultimo goal?'))
@@ -36,7 +31,41 @@
             }
         }
     });
+
+    var startTime = $(timerId).data('match-start');
+    var endTime = $(timerId).data('match-end');
+
+    if (startTime == null && endTime == null) {
+      initUIUnstarted();
+    } else if (endTime == null) {
+      initUIStarted(startTime);
+    } else {
+      initUIEnded();
+    }
   });
+
+  function initUIUnstarted() {
+    $(endButtonId).hide();
+    $(timerId).hide();
+    $(playerButtonSelector).attr('disabled', true);
+  }
+
+  function initUIStarted(startTime) {
+    $(startButtonId).hide();
+    $(endButtonId).show();
+    $(timerId).show();
+    $(playerButtonSelector).attr('disabled', false);
+
+    // init timer with
+    startTimer(startTime);
+  }
+
+
+  function initUIEnded() {
+    $(startButtonId).hide();
+    $(endButtonId).attr('disabled', true);
+    $(timerId).hide();
+  }
 
 
   function startMatch() {
@@ -45,19 +74,51 @@
 
     $(timerId).show();
     $(playerButtonSelector).attr('disabled', false);
-    setTimerText(0,0);
-    startTimer();
+    startMatchTime($(timerId).data('match-id'));
+  }
+
+  function startMatchTime(matchId) {
+    $.ajax({
+      type: "POST",
+      url: 'match_goals/' + matchId + '/start',
+      data: {
+        time: new Date().getTime()
+      },
+      success: function(data) {
+        setTimerText(0,0);
+        startTimer(data.time);
+      },
+      error: function(data, error) {
+        alert(error);
+      }
+    });
   }
 
   function endMatch() {
+    endMatchTime($(timerId).data('match-id'));
     stopTimer();
     $(timerId).hide();
     $(endButtonId).attr("disabled", true);
     $(playerButtonSelector).attr('disabled', true);
   }
 
-	function startTimer() {
-		var startTime = new Date().getTime();
+  function endMatchTime(matchId) {
+    $.ajax({
+      type: "POST",
+      url: 'match_goals/' + matchId + '/end',
+      data: {
+        time: new Date().getTime()
+      },
+      success: function(data) {
+      },
+      error: function(data, error) {
+        alert(error);
+      }
+    });
+  }
+
+	function startTimer(startTime) {
+    startTime = startTime || new Date().getTime();
 
 		// Update the count down every 1 second
 		timer = setInterval(function() {
@@ -99,7 +160,7 @@
         // SUCCESS
         updateScores(data)
       },
-      error: function(error) {
+      error: function(data, error) {
         alert(error);
       }
     });
