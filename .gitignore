@@ -102,3 +102,6 @@ ENV/
 
 # db stuff
 db.sqlite3
+
+# fab stuff
+fabfile/settings-local.json

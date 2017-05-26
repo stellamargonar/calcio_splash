@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -121,3 +122,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+local_settings = os.environ.get('DJANGO_EXTRA_SETTINGS')
+if local_settings:
+    import importlib
+
+    local_settings_folder = os.path.dirname(local_settings)
+    local_settings_filename = os.path.basename(local_settings).replace('.py', '')
+    sys.path.insert(0, local_settings_folder)
+    globals().update(importlib.import_module(local_settings_filename).__dict__)
