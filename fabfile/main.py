@@ -68,3 +68,10 @@ def deploy(mode='git'):
 def deploy_local():
     """ full deploy, using local code"""
     deploy(mode='local')
+
+
+@with_settings(**s)
+def manage(command):
+    """ execute a generic python manage.py <command>"""
+    with cd(env.remote_path), venv(), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
+        run("python manage.py " + command)

@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'calcio_splash.apps.CalcioSplashConfig',
     'storages',
+    'raven.contrib.django.raven_compat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
