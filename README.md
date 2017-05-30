@@ -60,3 +60,15 @@ Both scripts will:
 * apply migrations to the DB;
 * update the static files;
 * restart the uWSGI server
+
+# Goodies
+
+You can run management commands with `fab`; if you want to create a superuser, for example, you can simply:
+```
+$ fab manage:createsuperuser
+```
+
+Be aware, though, that to pass parameters you have to enclose the whole command between doublequotes:
+```
+$ fab manage:"createsuperuser --help"
+```
