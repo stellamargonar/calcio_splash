@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Squadfree - Free bootstrap 3 one page template</title>
+  <title>Calcio Splash Ala</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" type="text/css">
@@ -44,7 +44,7 @@
           <i class="fa fa-bars"></i>
         </button>
         <a class="navbar-brand" href="{% url 'home' %}">
-          <h1>Ala Splash</h1>
+          <h1>Calcio Splash Ala</h1>
         </a>
       </div>
 
@@ -75,20 +75,25 @@
     <!-- /.container -->
   </nav>
 
-  	<!-- Section: intro -->
-      <!-- <section id="intro" class="intro">
 
-  		<div class="slogan">
-  			<h2>WELCOME TO <span class="text_color">SQUAD</span> </h2>
-  			<h4>WE ARE GROUP OF GENTLEMEN MAKING AWESOME WEB WITH BOOTSTRAP</h4>
-  		</div>
-  		<div class="page-scroll">
-  			<a href="#service" class="btn btn-circle">
-  				<i class="fa fa-angle-double-down animated"></i>
-  			</a>
-  		</div>
-      </section> -->
-  	<!-- /Section: intro -->
+  {% block header_container %}
+  <section id="intro" class="page-head-section text-center">
+    <div class="heading-about page-title-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="wow bounceInDown" data-wow-delay="0.4s">
+              <div class="section-heading">
+                {% block header %}
+                {% endblock %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}
 
   {% block content %}
   {% endblock %}

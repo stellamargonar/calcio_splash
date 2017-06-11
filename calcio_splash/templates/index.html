@@ -1,21 +1,23 @@
 {% extends "base.html" %}
-{% block content %}
+
+{% block header_container %}
 <section id="intro" class="intro">
 
   <div class="slogan">
-    <h2>ALA CALCIO SPLASH</h2>
+    <h2>CALCIO SPLASH ALA</h2>
     <h4>Prima Edizione: 5-6 Agosto 2017</h4>
   </div>
   <div class="page-scroll">
-    <a href="#service" class="btn btn-circle">
+    <a href="#programma" class="btn btn-circle">
       <i class="fa fa-angle-double-down animated"></i>
     </a>
   </div>
 </section>
+{% endblock %}
 
-
+{% block content %}
 <!-- Section: Programma -->
-<section class="home-section ">
+<section class="home-section" id="programma">
   <div class="heading-about text-center">
     <div class="container">
       <div class="row">

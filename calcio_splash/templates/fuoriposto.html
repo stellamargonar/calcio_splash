@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block content %}
-<section class="page-head-section text-center">
+{% block header_container %}
+<section class="page-head-section text-center" id="intro">
   <div class="heading-about page-title-section chi-siamo">
     <div class="container">
       <div class="row">
@@ -16,8 +16,11 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block content %}
 <!-- Section: services -->
-<section id="service" class="home-section text-center">
+<section id="service" class="text-center">
 
   <div class="heading-about">
     <div class="container">

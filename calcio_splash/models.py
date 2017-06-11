@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib import admin
 
-# Create your models here.
+
 class Team(models.Model):
     name = models.CharField(max_length=100)
 
@@ -17,8 +16,9 @@ class Team(models.Model):
         default=MALE
     )
 
-    def __unicode__(self):
-        return u'{}'.format(self.name)
+    def __str__(self):
+        return self.name
+
 
 class Player(models.Model):
     name = models.CharField(max_length=50)
@@ -26,15 +26,24 @@ class Player(models.Model):
     date_of_birth = models.DateField()
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return '{} {}'.format(self.name, self.surname)
+
 
 class Tournament(models.Model):
     name = models.CharField(max_length=250)
     edition_year = models.IntegerField()
 
+    def __str__(self):
+        return self.name
+
 
 class Group(models.Model):
     name = models.CharField(max_length=50)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='groups')
+
+    def __str__(self):
+        return self.name
 
 
 class Match(models.Model):
@@ -48,9 +57,15 @@ class Match(models.Model):
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
+
 
 class Goal(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='goals')
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='goals')
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='goals')
     minute = models.IntegerField()
+
+    def __str__(self):
+        return "{}: goal by {} ({}) at {}'".format(self.match, self.player, self.team, self.minute)

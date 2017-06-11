@@ -1,21 +1,13 @@
 {% extends "base.html" %}
+
+{% block header %}
+<h2>Torneo {{ tournament.name }}</h2>
+<h5>edizione {{ tournament.edition_year }}</h5>
+{% endblock %}
+
+
 {% block content %}
 <section id="teams" class="page-head-section text-center">
-
-  <div class="heading-about page-title-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-          <div class="wow bounceInDown" data-wow-delay="0.4s">
-            <div class="section-heading">
-              <h2>Torneo {{ tournament.name }}</h2>
-              <h5>edizione {{ tournament.edition_year }}</h5>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-lg-2 col-lg-offset-5">
