@@ -51,17 +51,23 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'fuoriposto' %}">Chi Siamo</a></li>
-          <li><a href="{% url 'teams' %}">Squadre</a></li>
-          <li class="dropdown">
+          <li class="{% block header_menu_class_home %}{% endblock %}">
+            <a href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="{% block header_menu_class_chi_siamo %}{% endblock %}">
+            <a href="{% url 'fuoriposto' %}">Chi Siamo</a>
+          </li>
+          <li class="{% block header_menu_class_teams %}{% endblock %}">
+            <a href="{% url 'teams' %}">Squadre</a>
+          </li>
+          <li class="dropdown {% block header_menu_class_tournament %}{% endblock %}">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Torneo <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'tournament-detail' 1 %}">Maschile</a></li>
               <li><a href="{% url 'tournament-detail' 2 %}">Femminile</a></li>
             </ul>
           </li>
-          <li class="dropdown">
+          <li class="dropdown {% block header_menu_class_info %}{% endblock %}">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Info <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'regulation' %}">Regolamento</a></li>
