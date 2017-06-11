@@ -1,8 +1,7 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.generic import DetailView, ListView, TemplateView
-from calcio_splash.models import Goal, Match, Player, Team, Tournament
+from django.views.generic import DetailView, ListView
+from calcio_splash.models import Match, Player, Team, Tournament
 from calcio_splash.helpers import GroupHelper, MatchHelper
+
 
 class TeamListView(ListView):
     model = Team
@@ -11,6 +10,7 @@ class TeamListView(ListView):
 
     def get_queryset(self):
         return Team.objects.all()
+
 
 class TeamDetailView(DetailView):
     model = Team
@@ -22,6 +22,7 @@ class TeamDetailView(DetailView):
         # Add in a QuerySet of all the books
         context['players'] = Player.objects.filter(team=context['object'].id)
         return context
+
 
 class MatchListView(ListView):
     model = Match
@@ -41,6 +42,7 @@ class MatchListView(ListView):
             MatchHelper.build_match(match)[0] for match in context['object_list']
         ]
         return context
+
 
 class MatchDetailView(DetailView):
     model = Match
@@ -69,3 +71,7 @@ class TournamentDetailView(DetailView):
         context['tournament'] = tournament
 
         return context
+
+
+def exception(request):
+    1 / 0
