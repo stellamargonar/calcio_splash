@@ -18,7 +18,9 @@ def code_update_local():
 @with_settings(**s)
 def code_update_git():
     """ update remote code by copying from git"""
-    raise NotImplemented()
+    with cd(env.remote_path):
+        run("git fetch --all")
+        run("git reset --hard origin/master")
 
 
 @with_settings(**s)
