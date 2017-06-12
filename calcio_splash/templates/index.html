@@ -38,7 +38,10 @@
     <div class="row">
       <div class="col-md-4">
         <h4>Calcio Splash Ala!</h4>
-        <p>Finalmente anche a Ala .... bla bla</p>
+        <p>Tenetevi liberi: ad agosto arriva a Ala il primo torneo di calcetto saponato
+        organizzato dall'Associazione Fuori Posto!</p>
+        <p>Non conosci la nostra Associazione? Segui <b><a href="https://www.facebook.com/AssociazioneFuoriPosto/">la nostra pagina</a></b> per 
+          rimanere aggiornato sulle prossime attività
       </div>
       <div class="col-md-4">
         <h4>Sabato 5 agosto</h4>
@@ -69,7 +72,8 @@
       <div class="row">
         <h1>Vuoi partecipare?</h1>
         <h2>Scarica <a href="/iscrizioni">QUI</a> il modulo</h2>
-        <p>Le iscrizioni si apriranno il 3 luglio e si chiuderanno al raggiungimento di 20 squadre maschili e 8 femminili</p>
+        <p>Le iscrizioni si apriranno il 3 luglio e si chiuderanno al
+          raggiungimento di 16 squadre maschili e 8 femminili</p>
       </div>
     </div>
   </div>
@@ -84,12 +88,11 @@
       </div>
       <div class="col-md-5">
         <h4>Dove Siamo</h4>
-        <p>Il torneo si terrà presso il campo dell'Oratorio di Ala in Via Zigatteria.</p>
-        <p>Non è possibile parcheggiare all'interno del cortile, ma nelle vicinanze
-          sono presenti numerosi parcheggi.
+        <p>Il torneo si terrà presso il campo del parco Bastie di Ala.</p>
+        <p>Nella mappa puoi trovare alcuni parcheggi gratuiti nelle vicinanze.
         </p>
         <p>Per tutti i partecipanti al torneo, la struttura mette a disposizione
-          spogliatoi comprensivi di docce</p>
+          spogliatoi.</p>
       </div>
     </div>
   </div>
@@ -100,7 +103,7 @@
 {% block scripts %}
 <script>
   function initMap() {
-    var uluru = {lat: 45.755278, lng: 11.005139};
+    var uluru = {lat: 45.754187, lng: 11.000220};
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
       center: uluru
@@ -108,11 +111,11 @@
     var marker = new google.maps.Marker({
       position: uluru,
       map: map,
-      title: 'Oratorio'
+      title: 'Calcio Splash Ala'
     });
 
     var infowindow = new google.maps.InfoWindow({
-      content: 'Oratorio'
+      content: 'Parco Bastie'
     });
     var parkWindow = new google.maps.InfoWindow({
       content: 'Parcheggio'
