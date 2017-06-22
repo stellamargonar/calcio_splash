@@ -61,6 +61,31 @@ Both scripts will:
 * update the static files;
 * restart the uWSGI server
 
+## How to Back-Up
+
+It's better to backup both database and custom configuration. This project ships with `django-dbbackup`, you can
+configure it in your server-side configuration and use it to backup your data in any storage supported by django;
+to backup your configuration, you can use `rsync` or anything you like; glue everything together with `crontab`
+and you'll be okay.
+
+If you want to use S3, for example, this would be your settings:
+
+```
+DBBACKUP_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DBBACKUP_STORAGE_OPTIONS = {
+    'access_key': AWS_ACCESS_KEY_ID,
+    'secret_key': AWS_SECRET_ACCESS_KEY,
+    'bucket_name': AWS_BACKUP_BUCKET,
+    'location': 'db',
+}
+```
+
+This is what you want to add to your crontab:
+```
+export DJANGO_EXTRA_SETTINGS="/path/to/custom/conf.py" && cd /var/www/calcio_splash >/dev/null && source /var/www/venv/calcio_splash/bin/activate && python manage.py dbbackup
+aws s3 cp --recursive /path/to/conf/ s3://aws_backup_bucket/conf/ --exclude *.pyc --exclude '*~'
+```
+
 # Goodies
 
 You can run management commands with `fab`; if you want to create a superuser, for example, you can simply:

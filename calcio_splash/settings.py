@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'calcio_splash.apps.CalcioSplashConfig',
     'storages',
+    'dbbackup',
     'raven.contrib.django.raven_compat',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,6 +119,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': '/var/backups'}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
