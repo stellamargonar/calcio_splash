@@ -1,6 +1,8 @@
 (function ($) {
   var timerId = '#match_timer';
   var startButtonId = '#button_start';
+  var endPrimoTempoButtonId = '#button_pause';
+  var startSecondoTempoButtonId = '#button_restart';
   var endButtonId = '#button_end';
   var playerButtonSelector = '.team-player>.btn';
   var timer;
@@ -8,6 +10,14 @@
   $(function() {
     $(startButtonId).bind('click', function(event) {
       startMatch();
+    });
+
+    $(endPrimoTempoButtonId).bind('click', function(event) {
+      pauseMatch();
+    });
+
+    $(startSecondoTempoButtonId).bind('click', function(event) {
+      restartMatch();
     });
 
     $(endButtonId).bind('click', function(event) {
@@ -45,7 +55,10 @@
   });
 
   function initUIUnstarted() {
+    $(endPrimoTempoButtonId).hide();
+    $(startSecondoTempoButtonId).hide();
     $(endButtonId).hide();
+
     $(timerId).hide();
     $(playerButtonSelector).attr('disabled', true);
   }
@@ -70,7 +83,8 @@
 
   function startMatch() {
     $(startButtonId).hide();
-    $(endButtonId).show();
+    // $(endButtonId).show();
+    $(endPrimoTempoButtonId).show();
 
     $(timerId).show();
     $(playerButtonSelector).attr('disabled', false);
@@ -100,6 +114,21 @@
     $(timerId).hide();
     $(endButtonId).attr("disabled", true);
     $(playerButtonSelector).attr('disabled', true);
+  }
+
+  function pauseMatch() {
+    stopTimer();
+    $(timerId).hide();
+    $(endPrimoTempoButtonId).hide();
+    $(startSecondoTempoButtonId).show();
+  }
+
+
+  function restartMatch() {
+    startTimer();
+    $(timerId).show();
+    $(startSecondoTempoButtonId).hide();
+    $(endButtonId).show();
   }
 
   function endMatchTime(matchId) {

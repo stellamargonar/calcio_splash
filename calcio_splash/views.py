@@ -1,5 +1,5 @@
 from django.views.generic import DetailView, ListView
-from calcio_splash.models import Match, Player, Team, Tournament
+from calcio_splash.models import Group, Match, Player, Team, Tournament
 from calcio_splash.helpers import GroupHelper, MatchHelper
 
 
@@ -52,6 +52,23 @@ class MatchDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['match'], _ = MatchHelper.build_match(context['match'])
         return context
+
+
+class GroupDetailView(DetailView):
+    model = Group
+    template_name = 'group.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        group = context['group']
+
+        # load each group team stats
+        group = GroupHelper.build_group(group)
+
+        context['group'] = group
+
+        return context
+
 
 
 class TournamentDetailView(DetailView):

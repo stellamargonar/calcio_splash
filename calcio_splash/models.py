@@ -54,8 +54,8 @@ class Match(models.Model):
     next_match = models.ForeignKey('self', null=True, related_name='prev_matches')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='matches')
 
-    start_time = models.DateTimeField(null=True)
-    end_time = models.DateTimeField(null=True)
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)

@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^team/(?P<pk>\d+)$', views.TeamDetailView.as_view(), name='team-detail'),
     url(r'^match/(?P<pk>\d+)$', views.MatchDetailView.as_view(), name='match-detail'),
 
+    url(r'^group/(?P<pk>\d+)$', views.GroupDetailView.as_view(), name='group-detail'),
     url(r'^tournament/(?P<pk>\d+)$', views.TournamentDetailView.as_view(), name='tournament-detail'),
     url(r'^tournament/(?P<pk>\d+)/group/(?P<pk_group>\d+)/matches/$', views.MatchListView.as_view(), name='matches'),
 ]

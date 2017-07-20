@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block header_menu_class_tournament %}active{% endblock %}
+
+{% block header %}
+<h2>Girone: {{ group.name }}</h2>
+{% endblock %}
+
+
+{% block content %}
+<section id="teams" class="page-head-section text-center">
+
+
+  <div class="container">
+    <!-- GROUP CLASSIFICA -->
+    <div class="row">
+      <div class="col-md-12">
+        <table class="group-rank">
+          <tr>
+            <th>&nbsp;</th>
+            <th>Punti</th>
+            <th>Goal fatti</th>
+            <th>Goal subiti</th>
+            <th>Diff reti</th>
+          </tr>
+          {% for team_name, team in group.teams.items %}
+          <tr>
+            <td>{{team_name}}</td>
+            <td>{{team.points}}</td>
+            <td>{{team.goals_done}}</td>
+            <td>{{team.goals_taken}}</td>
+            <td>{{team.goals_diff}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <!-- /GROUP CLASSIFICA -->
+
+    <!-- GROUP MATCHES -->
+    <div class="row">
+      {% if group.matches %}
+      {% for match in group.group_matches %}
+      <div class="white-match">
+        <div class="col-sm-4 col-xs-5">
+            <div class="match-left">
+                <!-- <div class="team-img hidden-xs">
+                    <a href="#"><img src="images/fixture-team1.png" width="80" height="77" alt=""></a>
+                </div> -->
+                <div class="team-name">
+                    <h5><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-2">
+            <div class="match-date">
+                {% if match.start_time %}
+                <h2>{{ match.team_a_score }} - {{ match.team_b_score }}</h2>
+                {% endif %}
+                <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
+                <p>Parco Bastie</p>
+
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-5">
+            <div class="match-right">
+              <!-- <div class="team-img hidden-xs">
+                  <a href="#"><img src="images/fixture-team2.png" width="64" height="84" alt=""></a>
+              </div> -->
+                <div class="team-name">
+                    <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
+                </div>
+
+            </div>
+        </div>
+      </div>
+
+      {% endfor %}
+      {% endif %}
+    </div>
+    <!-- /GROUP MATCHES -->
+
+
+  </div>
+
+
+</section>
+{% endblock %}
