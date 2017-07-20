@@ -23,6 +23,8 @@ class CalcioSplashAdminSite(admin.AdminSite):
             url(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
             url(r'match_goals/(?P<id>\d+)/start$', start_match),
             url(r'match_goals/(?P<id>\d+)/end$', end_match),
+            url(r'match_goals/(?P<id>\d+)/endprimotempo$', end_primo_tempo),
+            url(r'match_goals/(?P<id>\d+)/startsecondotempo$', start_secondo_tempo),
         ]
         return urls
 
@@ -99,6 +101,11 @@ def create_goal(request, id):
     team = post['team']
     player = post['player']
     minute = post['minute']
+
+    match = Match.objects.get(pk=id)
+    if match.start_secondo_tempo is not None:
+        minute = int(minute) + (((match.end_primo_tempo - match.start_time).seconds//60)%60)
+
     matchId = id
     new_goal = Goal.objects.create(
         team=Team.objects.get(pk=team),
@@ -170,6 +177,35 @@ def end_match(request, id):
     return JsonResponse({
         'time': post['time']
     })
+
+
+def end_primo_tempo(request, id):
+    error_response = _validate_post_request(request, ['time'])
+    if error_response:
+        return error_response
+
+    post = request.POST.copy()
+    time = datetime.fromtimestamp(int(post['time'])/1000)
+    matchId = id
+    Match.objects.filter(pk=matchId).update(end_primo_tempo=time)
+    return JsonResponse({
+        'time': post['time']
+    })
+
+
+def start_secondo_tempo(request, id):
+    error_response = _validate_post_request(request, ['time'])
+    if error_response:
+        return error_response
+
+    post = request.POST.copy()
+    time = datetime.fromtimestamp(int(post['time'])/1000)
+    matchId = id
+    Match.objects.filter(pk=matchId).update(start_secondo_tempo=time)
+    return JsonResponse({
+        'time': post['time']
+    })
+
 
 
 def _validate_post_request(request, required_params):

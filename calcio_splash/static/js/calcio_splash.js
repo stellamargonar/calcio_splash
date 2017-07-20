@@ -45,14 +45,67 @@
     var startTime = $(timerId).data('match-start');
     var endTime = $(timerId).data('match-end');
 
-    if (startTime == null && endTime == null) {
-      initUIUnstarted();
-    } else if (endTime == null) {
-      initUIStarted(startTime);
-    } else {
-      initUIEnded();
+    var startSecondoTempo = $(timerId).data('match-start-secondo');
+    var endPrimoTempo = $(timerId).data('match-end-primo');
+
+    var tempo = null;
+    if (endPrimoTempo == null) {
+      tempo = 1;
+    } else if (startSecondoTempo != null) {
+      tempo = 2;
     }
+    initUI(
+      startTime != null,
+      endTime != null,
+      tempo,
+      startSecondoTempo || startTime );
   });
+
+  function initUI(started, ended, tempo, startTime) {
+    if (started && ended) {
+      $(startButtonId).hide();
+      $(endButtonId).attr('disabled', true);
+      $(timerId).hide();
+    }
+    else if (!started) {
+      $(endPrimoTempoButtonId).hide();
+      $(startSecondoTempoButtonId).hide();
+      $(endButtonId).hide();
+
+      $(timerId).hide();
+      $(playerButtonSelector).attr('disabled', true);
+    }
+    else {
+      $(startButtonId).hide();
+      $(playerButtonSelector).attr('disabled', false);
+
+      if (tempo == 1) {
+        $(timerId).show();
+        $(endPrimoTempoButtonId).show();
+        $(startSecondoTempoButtonId).hide();
+        $(endButtonId).hide();
+
+        // init timer with
+        startTimer(startTime);
+      }
+      else if (tempo == 2) {
+        $(timerId).show();
+        $(endPrimoTempoButtonId).hide();
+        $(startSecondoTempoButtonId).hide();
+        $(endButtonId).show();
+
+        // init timer with
+        startTimer(startTime);
+      }
+      else {
+        $(endPrimoTempoButtonId).hide();
+        $(startSecondoTempoButtonId).show();
+        $(endButtonId).hide();
+      }
+
+    }
+
+  }
 
   function initUIUnstarted() {
     $(endPrimoTempoButtonId).hide();
@@ -117,6 +170,7 @@
   }
 
   function pauseMatch() {
+    endPrimoTempo($(timerId).data('match-id'));
     stopTimer();
     $(timerId).hide();
     $(endPrimoTempoButtonId).hide();
@@ -125,6 +179,7 @@
 
 
   function restartMatch() {
+    startSecondoTempo($(timerId).data('match-id'));
     startTimer();
     $(timerId).show();
     $(startSecondoTempoButtonId).hide();
@@ -135,6 +190,35 @@
     $.ajax({
       type: "POST",
       url: 'match_goals/' + matchId + '/end',
+      data: {
+        time: new Date().getTime()
+      },
+      success: function(data) {
+      },
+      error: function(data, error) {
+        alert(error);
+      }
+    });
+  }
+
+  function endPrimoTempo(matchId) {
+    $.ajax({
+      type: "POST",
+      url: 'match_goals/' + matchId + '/endprimotempo',
+      data: {
+        time: new Date().getTime()
+      },
+      success: function(data) {
+      },
+      error: function(data, error) {
+        alert(error);
+      }
+    });
+  }
+  function startSecondoTempo(matchId) {
+    $.ajax({
+      type: "POST",
+      url: 'match_goals/' + matchId + '/startsecondotempo',
       data: {
         time: new Date().getTime()
       },

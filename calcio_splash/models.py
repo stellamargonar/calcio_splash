@@ -56,6 +56,8 @@ class Match(models.Model):
 
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
+    end_primo_tempo = models.DateTimeField(null=True, blank=True)
+    start_secondo_tempo = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)

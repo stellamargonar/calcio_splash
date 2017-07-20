@@ -59,6 +59,8 @@
           class="match-timer"
           data-match-start={% with timestamp=match.start_time|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
           data-match-end={% with timestamp=match.end_time|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
+          data-match-end-primo={% with timestamp=match.end_primo_tempo|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
+          data-match-start-secondo={% with timestamp=match.start_secondo_tempo|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
           data-match-id={{match.id}}
         >
           <h1></h1>
