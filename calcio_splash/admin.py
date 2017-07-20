@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.core import serializers
 from django.views.generic import TemplateView
-from django.http import JsonResponse, HttpResponseServerError
+from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
 
 from datetime import datetime
 
@@ -58,7 +58,7 @@ class MatchAdmin(admin.ModelAdmin):
 
     def go_to_match_page(modeladmin, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        return HttpResponseRedirect("admin/match_goals/" + selected[0] )
+        return HttpResponseRedirect("admin/calcio_splash/match_goals/" + selected[0] )
 
     get_group.short_description = 'Group'
     get_team_a.short_description = 'Team A'
