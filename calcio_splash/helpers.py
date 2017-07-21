@@ -76,3 +76,27 @@ class MatchHelper:
         match.team_b_score = team_b_score
 
         return match, players_map
+
+
+class AlboDoroHelper:
+    @staticmethod
+    def build_albo(tournament):
+        tournament.players = AlboDoroHelper.players_by_scores(tournament)
+        return tournament
+        # return {
+        #     'year': tournament.
+        #     'players': AlboDoroHelper.players_by_scores(tournament)
+        # }
+
+    @staticmethod
+    def players_by_scores(tournament):
+        players = dict()
+        for group in tournament.groups.all():
+            for match in group.matches.all():
+                for goal in match.goals.all():
+                    players[goal.player] = players.get(goal.player, 0) + 1
+
+        player_list = [(player, goals) for player, goals in players.items()]
+        player_list.sort(key=lambda x: -x[1])
+        print(player_list)
+        return player_list

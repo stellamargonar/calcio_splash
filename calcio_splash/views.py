@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView
 from calcio_splash.models import Group, Match, Player, Team, Tournament
-from calcio_splash.helpers import GroupHelper, MatchHelper
+from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper
 
 
 class TeamListView(ListView):
@@ -87,6 +87,22 @@ class TournamentDetailView(DetailView):
 
         context['tournament'] = tournament
 
+        return context
+
+
+class AlboView(ListView):
+    model = Tournament
+    template_name = 'albodoro.html'
+
+    def get_queryset(self):
+        year = self.kwargs['year']
+        return Tournament.objects.filter(edition_year=year)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = [
+            AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
+        ]
         return context
 
 

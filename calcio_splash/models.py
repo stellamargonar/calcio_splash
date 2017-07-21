@@ -33,6 +33,13 @@ class Player(models.Model):
 class Tournament(models.Model):
     name = models.CharField(max_length=250)
     edition_year = models.IntegerField()
+    team_1 = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE, related_name='rankings_1')
+    team_2 = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE, related_name='rankings_2')
+    team_3 = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE, related_name='rankings_3')
+
+    goalkeeper = models.ForeignKey(Player, null=True, blank=True, on_delete=models.CASCADE, related_name='goalkeeper')
+    top_scorer = models.ForeignKey(Player, null=True, blank=True, on_delete=models.CASCADE, related_name='top_scorer')
+
 
     def __str__(self):
         return self.name
