@@ -13,6 +13,7 @@
 
   <div class="container">
     <!-- GROUP CLASSIFICA -->
+    {% if not group.is_final %}
     <div class="row">
       <div class="col-md-12">
         <table class="group-rank">
@@ -35,6 +36,7 @@
         </table>
       </div>
     </div>
+    {% endif %}
     <!-- /GROUP CLASSIFICA -->
 
     <!-- GROUP MATCHES -->

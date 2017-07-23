@@ -80,10 +80,10 @@ class TournamentDetailView(DetailView):
         tournament = context['tournament']
 
         # load each group team stats
-        tournament.groups_clean = [
+        tournament.groups_clean = sorted([
             GroupHelper.build_group(group)
             for group in tournament.groups.all()
-        ]
+        ], key=lambda x: (-len(x.group_matches), x.name))
 
         context['tournament'] = tournament
 

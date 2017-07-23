@@ -83,10 +83,6 @@ class AlboDoroHelper:
     def build_albo(tournament):
         tournament.players = AlboDoroHelper.players_by_scores(tournament)
         return tournament
-        # return {
-        #     'year': tournament.
-        #     'players': AlboDoroHelper.players_by_scores(tournament)
-        # }
 
     @staticmethod
     def players_by_scores(tournament):

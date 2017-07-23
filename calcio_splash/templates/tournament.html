@@ -27,6 +27,7 @@
     </div>
 
     <!-- GROUP CLASSIFICA -->
+    {% if not group.is_final %}
     <div class="row">
       <div class="col-md-12">
         <table class="group-rank">
@@ -50,6 +51,30 @@
       </div>
     </div>
     <!-- /GROUP CLASSIFICA -->
+
+    {% else %}
+    <div class="row">
+      <div class="col-md-12">
+        <table class="group-rank">
+          <tr>
+            <th colspan="2">Partita</th>
+            <th colspan="2">Risultato</th>
+          </tr>
+          {% for match in group.group_matches %}
+          <tr>
+            <td>{{match.team_a}}</td>
+            <td>{{match.team_b}}</td>
+
+            <td>{{match.team_a_score}}</td>
+            <td>{{match.team_b_score}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+
+    {% endif %}
 
     {% endfor %}
     {% else %}
