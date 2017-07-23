@@ -23,6 +23,7 @@
   </div>
 
   <div class="container">
+    <div class="row">
     {% if team_list %}
       {% for team in team_list %}
         {% if team.gender == 'M' %}
@@ -40,12 +41,14 @@
                 </div>
               </div>
             </div>
+            <br />
           </div>
         {% endif %}
       {% endfor %}
     {% else %}
       <div>Nessuna squadra si è ancora iscritta</div>
     {% endif %}
+  </div>
     </div>
   </div>
 </section>
