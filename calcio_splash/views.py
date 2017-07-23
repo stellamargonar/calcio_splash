@@ -83,7 +83,7 @@ class TournamentDetailView(DetailView):
         tournament.groups_clean = sorted([
             GroupHelper.build_group(group)
             for group in tournament.groups.all()
-        ], key=lambda x: (-len(x.group_matches), x.name))
+        ], key=lambda x: (-len(x.group_matches), x.id))
 
         context['tournament'] = tournament
 

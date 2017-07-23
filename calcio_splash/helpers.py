@@ -6,7 +6,7 @@ class GroupHelper:
     def build_group(group):
         teams = dict()
         matches = list()
-        for match in group.matches.all():
+        for match in group.matches.all().order_by('match_date_time'):
             match, _ = MatchHelper.build_match(match)
             matches += [match]
 
