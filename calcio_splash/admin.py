@@ -44,10 +44,61 @@ class PlayerAdmin(admin.ModelAdmin):
 admin_site.register(Player, PlayerAdmin)
 
 
+class MatchEndedListFilter(admin.SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'terminata'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'ended'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('ended', 'Finita'),
+            ('playing', 'In Corso'),
+            ('unstarted', ''),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'ended':
+            return queryset.filter(end_time__lte=datetime.now())
+        if self.value() == 'playing':
+            return queryset.filter(start_time__lte=datetime.now(), end_time=None)
+        if self.value() == 'unstarted':
+            return queryset.filter(start_time=None)
+
+
+class MatchTournamentListFilter(admin.SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'torneo'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'tournament'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('maschile', 'Maschile'),
+            ('femminile', 'Femminile'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'maschile':
+            return queryset.filter(group__tournament__name='Maschile')
+        if self.value() == 'femminile':
+            return queryset.filter(group__tournament__name='Femminile')
+
+
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['get_group', 'get_team_a', 'get_team_b']
+    list_display = ['get_tournament', 'get_group', 'get_team_a', 'get_team_b', 'get_score']
     form = MatchForm
     actions = ['go_to_match_page']
+    list_filter = ('group', MatchEndedListFilter, MatchTournamentListFilter)
+    search_fields = ['team_a__name', 'team_b__name']
+
+
+    def get_tournament(self, obj):
+        return obj.group.tournament.name
 
     def get_group(self, obj):
         return obj.group.name
@@ -58,6 +109,13 @@ class MatchAdmin(admin.ModelAdmin):
     def get_team_b(self, obj):
         return obj.team_b.name
 
+    def get_score(self, obj):
+        match, _ = MatchHelper.build_match(obj)
+        if match.end_time is None:
+            return '-'
+        return '{} - {}'.format(match.team_a_score, match.team_b_score)
+
+
     def go_to_match_page(modeladmin, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
         return HttpResponseRedirect("admin/calcio_splash/match_goals/" + selected[0] )
@@ -65,7 +123,10 @@ class MatchAdmin(admin.ModelAdmin):
     get_group.short_description = 'Group'
     get_team_a.short_description = 'Team A'
     get_team_b.short_description = 'Team B'
+    get_score.short_description = 'Risultato'
+    get_tournament.short_description = 'Torneo'
     go_to_match_page.short_description = 'Start Match'
+    get_group.admin_order_field = 'group'
 
 admin_site.register(Match, MatchAdmin)
 
