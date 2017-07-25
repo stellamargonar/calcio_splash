@@ -56,7 +56,7 @@ class MatchEndedListFilter(admin.SimpleListFilter):
         return (
             ('ended', 'Finita'),
             ('playing', 'In Corso'),
-            ('unstarted', ''),
+            ('unstarted', 'Non Iniziata'),
         )
 
     def queryset(self, request, queryset):
@@ -90,7 +90,7 @@ class MatchTournamentListFilter(admin.SimpleListFilter):
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['get_tournament', 'get_group', 'get_team_a', 'get_team_b', 'get_score']
+    list_display = [ 'get_datetime', 'get_tournament', 'get_group', 'get_team_a', 'get_team_b', 'get_score']
     form = MatchForm
     actions = ['go_to_match_page']
     list_filter = ('group', MatchEndedListFilter, MatchTournamentListFilter)
@@ -115,6 +115,8 @@ class MatchAdmin(admin.ModelAdmin):
             return '-'
         return '{} - {}'.format(match.team_a_score, match.team_b_score)
 
+    def get_datetime(self, obj):
+        return obj.match_date_time.strftime('%d/%m %H:%M')
 
     def go_to_match_page(modeladmin, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
@@ -127,6 +129,7 @@ class MatchAdmin(admin.ModelAdmin):
     get_tournament.short_description = 'Torneo'
     go_to_match_page.short_description = 'Start Match'
     get_group.admin_order_field = 'group'
+    get_datetime.admin_order_field = 'match_date_time'
 
 admin_site.register(Match, MatchAdmin)
 
