@@ -33,16 +33,14 @@
       <div>Nessun giocatore in questa squadra </div>
     {% endif %}
     </div>
-
+<!-- HIDE MATCHES FOR NOW -->
+<!--
     <div class="row">
       {% if matches %}
       {% for match in matches %}
       <div class="white-match">
         <div class="col-sm-4 col-xs-5">
             <div class="match-left">
-                <!-- <div class="team-img hidden-xs">
-                    <a href="#"><img src="images/fixture-team1.png" width="80" height="77" alt=""></a>
-                </div> -->
                 <div class="team-name">
                     <h5><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></h5>
                 </div>
@@ -54,15 +52,10 @@
                 <h2>{{ match.team_a_score }} - {{ match.team_b_score }}</h2>
                 {% endif %}
                 <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
-                <!-- <p>Parco Bastie</p> -->
-
             </div>
         </div>
         <div class="col-sm-4 col-xs-5">
             <div class="match-right">
-              <!-- <div class="team-img hidden-xs">
-                  <a href="#"><img src="images/fixture-team2.png" width="64" height="84" alt=""></a>
-              </div> -->
                 <div class="team-name">
                     <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
                 </div>
@@ -74,7 +67,8 @@
       {% endfor %}
       {% endif %}
     </div>
-    <!-- /GROUP MATCHES -->
+  -->
+    <!-- END TEAM MATCHES -->
 
   </div>
 </section>
