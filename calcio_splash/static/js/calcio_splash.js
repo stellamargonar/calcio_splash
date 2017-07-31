@@ -4,6 +4,7 @@
   var endPrimoTempoButtonId = '#button_pause';
   var startSecondoTempoButtonId = '#button_restart';
   var endButtonId = '#button_end';
+  var resetButtonId = '#button_reset';
   var playerButtonSelector = '.team-player>.btn';
   var timer;
 
@@ -23,6 +24,10 @@
     $(endButtonId).bind('click', function(event) {
       endMatch();
     });
+
+    $(resetButtonId).bind('click', function(event) {
+      resetMatch($(timerId).data('match-id'));
+    })
 
     $(playerButtonSelector).click(function(){
         goal($(this).data('player'), $(this).data('team'), $(this).data('match'));
@@ -295,6 +300,20 @@
         alert(error);
       }
     });
+  }
+
+  function resetMatch(matchId) {
+    if (confirm('Resettare partita?'))
+      $.ajax({
+        type: 'POST',
+        url: 'match_goals/' + matchId + '/reset',
+        success: function(data){
+          location.reload();
+        },
+        error: function(obj, error){
+          alert(error);
+        }
+      })
   }
 
   function updateScores(data) {

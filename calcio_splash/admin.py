@@ -25,6 +25,7 @@ class CalcioSplashAdminSite(admin.AdminSite):
             url(r'match_goals/(?P<id>\d+)/end$', end_match),
             url(r'match_goals/(?P<id>\d+)/endprimotempo$', end_primo_tempo),
             url(r'match_goals/(?P<id>\d+)/startsecondotempo$', start_secondo_tempo),
+            url(r'match_goals/(?P<id>\d+)/reset$', reset_match),
         ]
         return urls
 
@@ -214,6 +215,12 @@ def delete_last_goal(request, id):
         'team_b_score': match.team_b_score,
         'playerMap': player_map
     })
+
+def reset_match(request, id):
+    post = request.POST.copy()
+    Match.objects.filter(pk=id).update(start_time=None, end_time=None, end_primo_tempo=None, start_secondo_tempo=None)
+    Goal.objects.filter(match_id=id).delete()
+    return JsonResponse({"status": "ok"})
 
 def start_match(request, id):
     error_response = _validate_post_request(request, ['time'])
