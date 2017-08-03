@@ -16,7 +16,12 @@
 
       <!-- TEAM A -->
       <div class="col-xs-5">
-        <h3 class="team">{{match.team_a.name}}</h3>
+        <div class="team-player">
+          <div class="btn btn-primary btn-block"
+            data-team={{match.team_a.id}} data-match={{match.id}}>
+              <h3 class="team">{{match.team_a.name}}</h3>
+          </div>
+        </div>
         <ul>
           {% for player in match.team_a.player_set.all %}
           <li class="team-player">
@@ -73,7 +78,12 @@
 
       <!-- TEAM B -->
       <div class="col-xs-5">
-        <h3 class="team">{{match.team_b.name}}</h3>
+        <div class="team-player">
+          <div class="btn btn-primary btn-block"
+            data-team={{match.team_b.id}} data-match={{match.id}}>
+              <h3 class="team">{{match.team_b.name}}</h3>
+          </div>
+        </div>
         <ul>
           {% for player in match.team_b.player_set.all %}
           <li class="team-player">

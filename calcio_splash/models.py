@@ -75,7 +75,7 @@ class Match(models.Model):
 class Goal(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='goals')
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='goals')
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='goals')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='goals', null=True, blank=True)
     minute = models.IntegerField()
 
     def __str__(self):

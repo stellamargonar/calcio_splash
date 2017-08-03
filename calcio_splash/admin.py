@@ -158,13 +158,13 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
 
 
 def create_goal(request, id):
-    error_response = _validate_post_request(request, ['team', 'player', 'minute'])
+    error_response = _validate_post_request(request, ['team', 'minute'])
     if error_response:
         return error_response
     post = request.POST.copy()
 
     team = post['team']
-    player = post['player']
+    player = post.get('player')
     minute = post['minute']
 
     match = Match.objects.get(pk=id)
@@ -174,7 +174,7 @@ def create_goal(request, id):
     matchId = id
     new_goal = Goal.objects.create(
         team=Team.objects.get(pk=team),
-        player=Player.objects.get(pk=player),
+        player=Player.objects.get(pk=player) if player else None,
         match=Match.objects.get(pk=matchId),
         minute=minute
     )
@@ -189,17 +189,17 @@ def create_goal(request, id):
 
 
 def delete_last_goal(request, id):
-    error_response = _validate_post_request(request, ['team', 'player'])
+    error_response = _validate_post_request(request, ['team'])
     if error_response:
         return error_response
     post = request.POST.copy()
 
     team = post['team']
-    player = post['player']
+    player = post.get('player')
     matchId = id
     goals = Goal.objects.filter(
         team=Team.objects.get(pk=team),
-        player=Player.objects.get(pk=player),
+        player=Player.objects.get(pk=player) if player else None,
         match=Match.objects.get(pk=matchId)
     ).order_by('-minute')
 

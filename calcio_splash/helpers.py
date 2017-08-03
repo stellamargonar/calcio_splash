@@ -68,8 +68,8 @@ class MatchHelper:
                 team_a_score += 1
             if goal.team == match.team_b:
                 team_b_score += 1
-
-            players_map[goal.player.id] = players_map.get(goal.player.id, 0) + 1
+            if goal.player:
+                players_map[goal.player.id] = players_map.get(goal.player.id, 0) + 1
 
         match.goals = goals
         match.team_a_score = team_a_score
