@@ -37,7 +37,6 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 admin_site.register(Team, TeamAdmin)
-admin_site.register(Goal)
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name']
@@ -145,6 +144,52 @@ class TournamentAdmin(admin.ModelAdmin):
     list_display = ['name', 'edition_year']
 
 admin_site.register(Tournament, TournamentAdmin)
+
+class TournamentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'edition_year']
+
+class GoalGroupListFilter(admin.SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = 'girone'
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'group'
+
+    def lookups(self, request, model_admin):
+        return [
+            (group.name, group.name)
+            for group in Group.objects.all()
+        ]
+        # return (
+        #     ('maschile', 'Maschile'),
+        #     ('femminile', 'Femminile'),
+        # )
+
+    def queryset(self, request, queryset):
+        return queryset.filter(match__group__name=self.value())
+        # if self.value() == 'maschile':
+        #     return queryset.filter(group__tournament__name='Maschile')
+        # if self.value() == 'femminile':
+        #     return queryset.filter(group__tournament__name='Femminile')
+
+
+class GoalAdmin(admin.ModelAdmin):
+    list_display = ['get_match', 'get_team', 'get_player']
+    list_filter = ('match', 'player') #, GoalGroupListFilter)
+
+    def get_match(self, obj):
+        return obj.match.team_a.name + obj.match.team_b.name
+
+    def get_team(self, obj):
+        return obj.team.name
+
+    def get_player(self, obj):
+        if obj.player:
+            return obj.player.name
+        return ''
+
+admin_site.register(Goal, GoalAdmin)
 
 class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
     template_name = 'admin/match_goal.html'
