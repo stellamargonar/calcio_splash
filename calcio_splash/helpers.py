@@ -95,5 +95,5 @@ class AlboDoroHelper:
 
         player_list = [(player, goals) for player, goals in players.items()]
         player_list.sort(key=lambda x: -x[1])
-        print(player_list)
+        # print(player_list)
         return player_list
