@@ -90,7 +90,8 @@ class AlboDoroHelper:
         for group in tournament.groups.all():
             for match in group.matches.all():
                 for goal in match.goals.all():
-                    players[goal.player] = players.get(goal.player, 0) + 1
+                    if goal.player:
+                        players[goal.player] = players.get(goal.player, 0) + 1
 
         player_list = [(player, goals) for player, goals in players.items()]
         player_list.sort(key=lambda x: -x[1])
