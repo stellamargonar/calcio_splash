@@ -66,7 +66,10 @@
               <li><a href="{% url 'tournament-detail' 1 %}">Maschile</a></li>
               <li><a href="{% url 'tournament-detail' 2 %}">Femminile</a></li>
             </ul>
-          </li> 
+          </li>
+          <li class="{% block header_menu_class_teams %}{% endblock %}">
+            <a href="{% url 'albo' %}">Classifiche</a>
+          </li>
           <li class="dropdown {% block header_menu_class_info %}{% endblock %}">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Info <b class="caret"></b></a>
             <ul class="dropdown-menu">
