@@ -24,6 +24,9 @@ class TeamDetailView(DetailView):
         context['matches'] = Match.objects.filter(team_a=context['object'].id)
         context['matches'] = context['matches'] | Match.objects.filter(team_b=context['object'].id)
         context['matches'].order_by('match_date_time')
+        context['matches'] = [
+            MatchHelper.build_match(match)[0] for match in context['matches']
+        ]
         return context
 
 
