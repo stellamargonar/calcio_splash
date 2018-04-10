@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^tournament/(?P<pk>\d+)/group/(?P<pk_group>\d+)/matches/$', views.MatchListView.as_view(), name='matches'),
 
     url(r'^classifiche/(?P<year>\d+)/$', views.AlboView.as_view(), name='albo'),
+    url(r'^classifiche/(?P<gender>\w+)/$', views.AlboMarcatori.as_view(), name='albomarcatori'),
 ]
 
 handler404 = TemplateView.as_view(template_name='errors/404.html')

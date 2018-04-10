@@ -70,8 +70,12 @@
                 <li class="dropdown"  {% block header_menu_class_albo %}{% endblock %}>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Classifiche <b class="caret"></b></a>
                     <ul class="dropdown-menu">
+                        <li><a href="{% url 'albomarcatori' 'M' %}">Albo d'oro Maschile</a></li>
+                        <li><a href="{% url 'albomarcatori' 'F' %}">Albo d'oro Femminile</a></li>
+
                         <li><a href="{% url 'albo' 2018 %}">Edizione 2018</a></li>
                         <li><a href="{% url 'albo' 2017 %}">Edizione 2017</a></li>
+
                     </ul>
                 </li>
                 <li class="dropdown {% block header_menu_class_info %}{% endblock %}">

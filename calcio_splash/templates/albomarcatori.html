@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block header_menu_class_tournament %}active{% endblock %}
+
+{% block header %}
+    <h2>Classifica Marcatori</h2>
+{% endblock %}
+
+
+{% block content %}
+    <section id="teams" class="page-head-section text-center">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <table class="group-rank" width="75%">
+                        <tr>
+                            <th>Reti Totali</th>
+                            <th>Giocatore</th>
+                            <th>Team</th>
+                            <th style="width: 10%;">2017</th>
+                            <th style="width: 10%;">2018</th>
+                        </tr>
+                        {% for player in classifica %}
+                            {% if player.total > 0 %}
+                                <tr>
+                                    <td><b>{{ player.total }}</b></td>
+                                    <td><b>{{ player.player }}</b></td>
+
+                                    <td>{{ player.team }}</td>
+
+                                    <td style="width: 10%;">{{ player.2017 }}</td>
+                                    <td style="width: 10%;">{{ player.2018 }}</td>
+
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

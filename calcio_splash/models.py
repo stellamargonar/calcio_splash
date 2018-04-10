@@ -40,7 +40,6 @@ class Tournament(models.Model):
     goalkeeper = models.ForeignKey(Player, null=True, blank=True, on_delete=models.CASCADE, related_name='goalkeeper')
     top_scorer = models.ForeignKey(Player, null=True, blank=True, on_delete=models.CASCADE, related_name='top_scorer')
 
-
     def __str__(self):
         return self.name
 

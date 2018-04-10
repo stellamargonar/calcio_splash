@@ -1,5 +1,10 @@
+from collections import OrderedDict
+
+from django.db.models import Count, Sum
 from django.views.generic import DetailView, ListView
-from calcio_splash.models import Group, Match, Player, Team, Tournament
+
+from calcio_splash.forms import TeamSelectField
+from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal
 from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper
 
 
@@ -76,7 +81,6 @@ class GroupDetailView(DetailView):
         return context
 
 
-
 class TournamentDetailView(DetailView):
     model = Tournament
     template_name = 'tournament.html'
@@ -109,6 +113,46 @@ class AlboView(ListView):
         context['object_list'] = [
             AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
         ]
+        return context
+
+
+class AlboMarcatori(ListView):
+    model = Player
+    template_name = 'albomarcatori.html'
+
+    def get_queryset(self):
+        gender = self.kwargs['gender']
+        return Player.objects.filter(team__gender=gender)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        player_classifica = []
+        player_qs = context['object_list']
+
+        players_sorted = player_qs.values('name', 'surname')\
+            .annotate(score=Count('goals'))\
+            .order_by('-score')
+
+        agg_field = 'match__group__tournament__edition_year'
+        for player in players_sorted:
+            agg = Goal.objects\
+                .filter(player__name=player['name'], player__surname=player['surname'])\
+                .values(agg_field)\
+                .annotate(dcount=Count(agg_field))
+
+            player_data = {
+                'player': '{} {}'.format(player['name'], player['surname']),
+                'total': player['score'],
+                'team': Team.objects.filter(player__surname=player['surname'], player__name=player['name']).last(),
+            }
+            player_data.update({
+                item[agg_field]: item['dcount']
+                for item in agg
+            })
+            player_classifica.append(player_data)
+
+        context['classifica'] = player_classifica
         return context
 
 
