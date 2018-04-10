@@ -105,3 +105,6 @@ db.sqlite3
 
 # fab stuff
 fabfile/settings-local.json
+
+.idea/
+calcio_splash/templates/index-static.html

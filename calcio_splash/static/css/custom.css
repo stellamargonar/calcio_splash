@@ -1,3 +1,13 @@
+.slogan  h3{
+    color: white;
+    font-size: 30px;
+}
+
+.programma p {
+    font-size: 24px;
+    text-align: center;
+}
+
 .team-img, .team-name{
     float: left;
     padding: 10px;
