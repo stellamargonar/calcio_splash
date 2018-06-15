@@ -3,6 +3,7 @@ from django.db import models
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
+    year = models.IntegerField(null=False, blank=False, default=2017)
 
     MALE = 'M'
     FEMALE = 'F'
@@ -76,6 +77,3 @@ class Goal(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='goals')
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='goals', null=True, blank=True)
     minute = models.IntegerField()
-
-    # def __str__(self):
-    #     return "{}: goal by {} ({}) at {}'".format(self.match, self.player, self.team, self.minute)

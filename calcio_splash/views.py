@@ -1,9 +1,7 @@
-from collections import OrderedDict
-
-from django.db.models import Count, Sum
+from django.db.models import Count
+from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
-from calcio_splash.forms import TeamSelectField
 from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal
 from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper
 
@@ -14,7 +12,7 @@ class TeamListView(ListView):
     context_object_name = 'team_list'
 
     def get_queryset(self):
-        return Team.objects.all()
+        return Team.objects.filter(year=timezone.now().year).all()
 
 
 class TeamDetailView(DetailView):

@@ -1,6 +1,7 @@
 from calcio_splash.models import Group, Match, Team
 from collections import OrderedDict
 
+
 class GroupHelper:
     @staticmethod
     def build_group(group):
@@ -47,9 +48,6 @@ class GroupHelper:
         if match.team_a_score > match.team_b_score:
             return 3, 0
         return 0, 3
-
-
-
 
 
 class MatchHelper:
