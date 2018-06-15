@@ -120,7 +120,7 @@ class AlboMarcatori(ListView):
 
     def get_queryset(self):
         gender = self.kwargs['gender']
-        return Player.objects.filter(team__gender=gender)
+        return Player.objects.filter(teams__gender=gender)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

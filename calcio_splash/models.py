@@ -25,7 +25,7 @@ class Player(models.Model):
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     date_of_birth = models.DateField()
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    teams = models.ManyToManyField(Team, related_name='player')
 
     def __str__(self):
         return '{} {}'.format(self.name, self.surname)

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.core import serializers
 from django.views.generic import TemplateView
 from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
@@ -29,17 +30,38 @@ class CalcioSplashAdminSite(admin.AdminSite):
         ]
         return urls
 
+
 admin_site = CalcioSplashAdminSite()
 
 
+class TeamYearFilter(SimpleListFilter):
+    title = 'Filtra per anno'
+    parameter_name = 'year'
+
+    def lookups(self, request, model_admin):
+        years = Team.objects.values('year').distinct()
+        return [
+            (year['year'], year['year']) for year in years
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(year=self.value())
+        return queryset
+
+
 class TeamAdmin(admin.ModelAdmin):
-    inlines = (PlayerAdminInline, )
+    inlines = (PlayerAdminInline,)
     list_display = ['name']
+    list_filter = (TeamYearFilter,)
+
 
 admin_site.register(Team, TeamAdmin)
 
+
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name']
+
 
 admin_site.register(Player, PlayerAdmin)
 
@@ -90,12 +112,11 @@ class MatchTournamentListFilter(admin.SimpleListFilter):
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = [ 'get_datetime', 'get_tournament', 'get_group', 'get_team_a', 'get_team_b', 'get_score']
+    list_display = ['get_datetime', 'get_tournament', 'get_group', 'get_team_a', 'get_team_b', 'get_score']
     form = MatchForm
     actions = ['go_to_match_page']
     list_filter = ('group', MatchEndedListFilter, MatchTournamentListFilter)
     search_fields = ['team_a__name', 'team_b__name']
-
 
     def get_tournament(self, obj):
         return obj.group.tournament.name
@@ -120,7 +141,7 @@ class MatchAdmin(admin.ModelAdmin):
 
     def go_to_match_page(modeladmin, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        return HttpResponseRedirect("admin/calcio_splash/match_goals/" + selected[0] )
+        return HttpResponseRedirect("admin/calcio_splash/match_goals/" + selected[0])
 
     get_group.short_description = 'Group'
     get_team_a.short_description = 'Team A'
@@ -131,11 +152,13 @@ class MatchAdmin(admin.ModelAdmin):
     get_group.admin_order_field = 'group'
     get_datetime.admin_order_field = 'match_date_time'
 
+
 admin_site.register(Match, MatchAdmin)
 
 
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['name']
+
 
 admin_site.register(Group, GroupAdmin)
 
@@ -143,10 +166,9 @@ admin_site.register(Group, GroupAdmin)
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ['name', 'edition_year']
 
+
 admin_site.register(Tournament, TournamentAdmin)
 
-class TournamentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'edition_year']
 
 class GoalGroupListFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -161,22 +183,14 @@ class GoalGroupListFilter(admin.SimpleListFilter):
             (group.name, group.name)
             for group in Group.objects.all()
         ]
-        # return (
-        #     ('maschile', 'Maschile'),
-        #     ('femminile', 'Femminile'),
-        # )
 
     def queryset(self, request, queryset):
         return queryset.filter(match__group__name=self.value())
-        # if self.value() == 'maschile':
-        #     return queryset.filter(group__tournament__name='Maschile')
-        # if self.value() == 'femminile':
-        #     return queryset.filter(group__tournament__name='Femminile')
 
 
 class GoalAdmin(admin.ModelAdmin):
     list_display = ['get_match', 'get_team', 'get_player']
-    list_filter = ('match', 'player') #, GoalGroupListFilter)
+    list_filter = ('match', 'player')
 
     def get_match(self, obj):
         return obj.match.team_a.name + obj.match.team_b.name
@@ -189,7 +203,9 @@ class GoalAdmin(admin.ModelAdmin):
             return obj.player.name
         return ''
 
+
 admin_site.register(Goal, GoalAdmin)
+
 
 class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
     template_name = 'admin/match_goal.html'
@@ -214,7 +230,7 @@ def create_goal(request, id):
 
     match = Match.objects.get(pk=id)
     if match.start_secondo_tempo is not None:
-        minute = int(minute) + (((match.end_primo_tempo - match.start_time).seconds//60)%60)
+        minute = int(minute) + (((match.end_primo_tempo - match.start_time).seconds // 60) % 60)
 
     matchId = id
     new_goal = Goal.objects.create(
@@ -261,11 +277,13 @@ def delete_last_goal(request, id):
         'playerMap': player_map
     })
 
+
 def reset_match(request, id):
     post = request.POST.copy()
     Match.objects.filter(pk=id).update(start_time=None, end_time=None, end_primo_tempo=None, start_secondo_tempo=None)
     Goal.objects.filter(match_id=id).delete()
     return JsonResponse({"status": "ok"})
+
 
 def start_match(request, id):
     error_response = _validate_post_request(request, ['time'])
@@ -273,7 +291,7 @@ def start_match(request, id):
         return error_response
 
     post = request.POST.copy()
-    time = datetime.fromtimestamp(int(post['time'])/1000)
+    time = datetime.fromtimestamp(int(post['time']) / 1000)
     matchId = id
     Match.objects.filter(pk=matchId).update(start_time=time)
     return JsonResponse({
@@ -287,7 +305,7 @@ def end_match(request, id):
         return error_response
 
     post = request.POST.copy()
-    time = datetime.fromtimestamp(int(post['time'])/1000)
+    time = datetime.fromtimestamp(int(post['time']) / 1000)
     matchId = id
     Match.objects.filter(pk=matchId).update(end_time=time)
     return JsonResponse({
@@ -301,7 +319,7 @@ def end_primo_tempo(request, id):
         return error_response
 
     post = request.POST.copy()
-    time = datetime.fromtimestamp(int(post['time'])/1000)
+    time = datetime.fromtimestamp(int(post['time']) / 1000)
     matchId = id
     Match.objects.filter(pk=matchId).update(end_primo_tempo=time)
     return JsonResponse({
@@ -315,7 +333,7 @@ def start_secondo_tempo(request, id):
         return error_response
 
     post = request.POST.copy()
-    time = datetime.fromtimestamp(int(post['time'])/1000)
+    time = datetime.fromtimestamp(int(post['time']) / 1000)
     matchId = id
     Match.objects.filter(pk=matchId).update(start_secondo_tempo=time)
     return JsonResponse({
@@ -323,13 +341,12 @@ def start_secondo_tempo(request, id):
     })
 
 
-
 def _validate_post_request(request, required_params):
     error_msg = u"No POST data sent."
-    if not(request.method == "POST"):
+    if not (request.method == "POST"):
         return HttpResponseServerError(error_msg)
 
     post = request.POST.copy()
-    if any(not(post.get(param)) for param in required_params):
+    if any(not (post.get(param)) for param in required_params):
         return HttpResponseServerError(u"Insufficient POST data (need {}})".format(required_params))
     return None

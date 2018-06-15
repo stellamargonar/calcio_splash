@@ -1,15 +1,16 @@
 from django import forms
 from django.contrib import admin
-from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
+from calcio_splash.models import Group, Match, Player, Team
 
 
 class TeamSelectField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-         return obj.name
+        return obj.name
+
 
 class GroupSelectField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-         return obj.name
+        return obj.name
 
 
 class MatchForm(forms.ModelForm):
@@ -23,10 +24,10 @@ class MatchForm(forms.ModelForm):
 
 
 class TeamForm(forms.ModelForm):
-
     class Meta:
         model = Match
         exclude = ['next_match']
 
+
 class PlayerAdminInline(admin.TabularInline):
-    model = Player
+    model = Player.teams.through
