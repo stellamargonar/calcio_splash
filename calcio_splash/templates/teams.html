@@ -34,7 +34,7 @@
                   <div class="avatar"><img src="{{ team.logo }}" alt="" class="img-responsive img-circle" /></div>
                   <h5><a href="{% url 'team-detail' team.id %}">{{ team.name }}</a></h5>
                   <ul class="team-player">
-                    {% for player in team.player_set.all %}
+                    {% for player in team.player.all %}
                       <li class="team-player">{{player.name}} {{player.surname}}</li>
                     {% endfor %}
                   </ul>

@@ -23,7 +23,7 @@ class TeamDetailView(DetailView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['players'] = Player.objects.filter(team=context['object'].id)
+        context['players'] = Player.objects.filter(teams=context['object'].id)
         context['matches'] = Match.objects.filter(team_a=context['object'].id)
         context['matches'] = context['matches'] | Match.objects.filter(team_b=context['object'].id)
         context['matches'].order_by('match_date_time')
