@@ -1,11 +1,13 @@
-from django import forms
+import pytz
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-from django.core import serializers
+from django.utils import timezone
 from django.views.generic import TemplateView
 from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
 
 from datetime import datetime
+
+from pytz import tzinfo
 
 from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
 from calcio_splash.helpers import MatchHelper
@@ -84,11 +86,11 @@ class MatchEndedListFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'ended':
-            return queryset.filter(end_time__lte=datetime.now())
+            return queryset.filter(end_time__lte=timezone.now())
         if self.value() == 'playing':
-            return queryset.filter(start_time__lte=datetime.now(), end_time=None)
+            return queryset.filter(start_time__lte=timezone.now(), end_time__isnull=True)
         if self.value() == 'unstarted':
-            return queryset.filter(start_time=None)
+            return queryset.filter(start_time__isnull=True)
 
 
 class MatchTournamentListFilter(admin.SimpleListFilter):
