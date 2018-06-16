@@ -42,7 +42,7 @@ class Tournament(models.Model):
     top_scorer = models.ForeignKey(Player, null=True, blank=True, on_delete=models.CASCADE, related_name='top_scorer')
 
     def __str__(self):
-        return self.name
+        return '{} ({})'.format(self.name, self.edition_year)
 
 
 class Group(models.Model):
@@ -52,7 +52,7 @@ class Group(models.Model):
     is_final = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return '{} ({})'.format(self.name, self.tournament.edition_year)
 
 
 class Match(models.Model):

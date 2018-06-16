@@ -100,16 +100,14 @@ class MatchTournamentListFilter(admin.SimpleListFilter):
     parameter_name = 'tournament'
 
     def lookups(self, request, model_admin):
-        return (
-            ('maschile', 'Maschile'),
-            ('femminile', 'Femminile'),
-        )
+        return [
+            (tournament.pk, '{} {}'.format(tournament.edition_year, tournament.name))
+            for tournament in Tournament.objects.all()
+        ]
 
     def queryset(self, request, queryset):
-        if self.value() == 'maschile':
-            return queryset.filter(group__tournament__name='Maschile')
-        if self.value() == 'femminile':
-            return queryset.filter(group__tournament__name='Femminile')
+        if self.value():
+            return queryset.filter(group__tournament=self.value())
 
 
 class MatchAdmin(admin.ModelAdmin):
@@ -120,7 +118,7 @@ class MatchAdmin(admin.ModelAdmin):
     search_fields = ['team_a__name', 'team_b__name']
 
     def get_tournament(self, obj):
-        return obj.group.tournament.name
+        return '{} ({})'.format(obj.group.tournament.name, obj.group.tournament.edition_year)
 
     def get_group(self, obj):
         return obj.group.name
@@ -158,7 +156,12 @@ admin_site.register(Match, MatchAdmin)
 
 
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'get_tournament']
+
+    def get_tournament(self, obj):
+        return '{} ({})'.format(obj.tournament.name, obj.tournament.edition_year)
+
+    get_tournament.short_description = 'Torneo'
 
 
 admin_site.register(Group, GroupAdmin)
