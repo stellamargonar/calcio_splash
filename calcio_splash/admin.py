@@ -61,6 +61,7 @@ admin_site.register(Team, TeamAdmin)
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name']
+    ordering = ('name', 'surname')
 
 
 admin_site.register(Player, PlayerAdmin)
