@@ -28,7 +28,7 @@ class Player(models.Model):
     teams = models.ManyToManyField(Team, related_name='player', null=True, blank=True)
 
     def __str__(self):
-        return '{} {}'.format(self.name, self.surname)
+        return '{} {} ({})'.format(self.name, self.surname, self.date_of_birth)
 
 
 class Tournament(models.Model):

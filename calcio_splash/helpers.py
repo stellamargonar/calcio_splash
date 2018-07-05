@@ -89,8 +89,9 @@ class AlboDoroHelper:
             for match in group.matches.all():
                 for goal in match.goals.all():
                     if goal.player:
-                        players[goal.player] = players.get(goal.player, 0) + 1
+                        key = goal.player.pk
+                        players[key] = {'player': goal.player, 'goals': players.get(key, {}).get('goals', 0) + 1}
 
-        player_list = [(player, goals) for player, goals in players.items()]
+        player_list = [(obj['player'], obj['goals']) for obj in players.values()]
         player_list.sort(key=lambda x: -x[1])
         return player_list

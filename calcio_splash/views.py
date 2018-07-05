@@ -125,32 +125,35 @@ class AlboMarcatori(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        player_id_set = set()
         player_classifica = []
         player_qs = context['object_list']
 
-        players_sorted = player_qs.values('name', 'surname')\
-            .annotate(score=Count('goals'))\
-            .order_by('-score')
-
         agg_field = 'match__group__tournament__edition_year'
-        for player in players_sorted:
+        for player in player_qs.values('pk', 'name', 'surname'):
+            if player['pk'] in player_id_set:
+                continue
+
+            player_id_set.add(player['pk'])
+
             agg = Goal.objects\
-                .filter(player__name=player['name'], player__surname=player['surname'])\
+                .filter(player__pk=player['pk'])\
                 .values(agg_field)\
                 .annotate(dcount=Count(agg_field))
 
             player_data = {
-                'player': '{} {}'.format(player['name'], player['surname']),
-                'total': player['score'],
-                'team': Team.objects.filter(player__surname=player['surname'], player__name=player['name']).last(),
+                'player': '{} {}'.format(player['name'], player['surname'], player['pk']),
+                'team': Team.objects.filter(player__pk=player['pk']).last(),
             }
+
             player_data.update({
                 item[agg_field]: item['dcount']
                 for item in agg
             })
+            player_data['total'] = sum(item['dcount'] for item in agg)
             player_classifica.append(player_data)
 
-        context['classifica'] = player_classifica
+        context['classifica'] = sorted(player_classifica, key=lambda x: (x['total'], x['player']), reverse=True)
         return context
 
 
