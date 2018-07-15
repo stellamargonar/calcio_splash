@@ -135,7 +135,7 @@
     width: 100%;
     position: relative;
     padding-top: 120px;
-    background-image: url(../img/slider-bg-new.jpg);
+    background-image: url(../img/slider-bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -217,15 +217,15 @@
     height: 30px;
     width: 20%;
     text-align: center;
-    border-bottom: 1px rgba(0, 139, 173, 0.3) solid;
+    border-bottom: 1px rgba(228, 151, 83, 0.3) solid;
 }
 
 .group-rank th {
-  background-color: rgb(0, 139, 173);
+  background-color: rgb(228, 151, 83);
   color: white;
 }
 .group-rank td {
-   border-bottom: 1px rgba(0, 139, 173, 0.3) solid;
+   border-bottom: 1px rgba(228, 151, 83, 0.3) solid;
 }
 
 tbody.group-rank {

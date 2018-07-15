@@ -314,7 +314,7 @@ hr {
 .intro {
 	width:100%;
 	position:relative;
-	background: url(../img/slider-bg-new.jpg) no-repeat top center;
+	background: url(../img/slider-bg-color.jpg) no-repeat top center;
     background-size: cover;
     height: auto;
 }
