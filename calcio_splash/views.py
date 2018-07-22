@@ -39,12 +39,10 @@ class MatchListView(ListView):
     context_object_name = 'match_list'
 
     def get_queryset(self):
-        group_id = self.kwargs['pk_group']
-        return Match.objects.filter(group__id=group_id).order_by('-match_date_time')
+        year = self.kwargs['year']
+        return Match.objects.filter(group__tournament__edition_year=year).order_by('match_date_time')
 
     def get_context_data(self, **kwargs):
-        print(kwargs)
-
         context = super().get_context_data(**kwargs)
 
         context['object_list'] = [

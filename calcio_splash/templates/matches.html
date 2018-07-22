@@ -9,43 +9,36 @@
 {% block content %}
 <section id="teams" class="page-head-section text-center">
 
-  {% if match_list %}
-  {% for match in match_list %}
-  <div class="container">
-    <div class="white-match">
-      <div class="col-sm-4">
-          <div class="match-left">
-              <div class="team-img">
-                  <a href="#"><img src="images/fixture-team1.png" width="80" height="77" alt=""></a>
-              </div>
-              <div class="team-name">
-                  <h5><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></h5>
-              </div>
-          </div>
-      </div>
-      <div class="col-sm-4">
-          <div class="match-date">
-              <h5><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time }}</a></h5>
-              <p>Parco Bastie</p>
-              {% if match.team_a_score is not None %}
-              <h2>{{ match.team_a_score }} - {{ match.team_b_score }}</h2>
-              {% endif %}
-          </div>
-      </div>
-      <div class="col-sm-4">
-          <div class="match-right">
-            <div class="team-img">
-                <a href="#"><img src="images/fixture-team2.png" width="64" height="84" alt=""></a>
-            </div>
-              <div class="team-name">
-                  <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
-              </div>
+    {% if match_list %}
+        <div class="row">
+            <div class="col-md-12">
+                <table class="group-rank">
+                    <tr>
+                        <th>Orario</th>
+                        <th>Girone</th>
+                        <th>Squadra 1</th>
+                        <th>Squadra 2</th>
+                        <th>Risultato</th>
+                    </tr>
 
-          </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-  {% endif %}
+                    {% for match in match_list %}
+                        <tr>
+                            <td>{{ match.match_date_time | date:" D d -  H:m" }}</td>
+                            <td>{{ match.group.name }}</td>
+                            <td><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></td>
+                            <td><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></td>
+                            <td>
+                                {% if match.team_a_score is not None %}
+                                    {{ match.team_a_score }} - {{ match.team_b_score }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+
 </section>
 {% endblock %}
