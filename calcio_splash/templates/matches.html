@@ -23,7 +23,7 @@
 
                     {% for match in match_list %}
                         <tr>
-                            <td>{{ match.match_date_time | date:" D d -  H:m" }}</td>
+                            <td>{{ match.match_date_time | date:" D d -  H:i" }}</td>
                             <td>{{ match.group.name }}</td>
                             <td><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></td>
                             <td><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></td>
