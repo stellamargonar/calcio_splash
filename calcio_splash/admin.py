@@ -14,6 +14,43 @@ from calcio_splash.helpers import MatchHelper
 from calcio_splash.forms import MatchForm, PlayerAdminInline
 
 
+class AbstractListFilterWithDefault(admin.SimpleListFilter):
+    default = None
+    default_name = None
+    parameter_name = None
+    title = None
+    _zero_value = None
+
+    def lookup_values(self, request, model_admin):
+        raise NotImplementedError
+
+    def queryset_filter(self, request, queryset, value):
+        raise NotImplementedError
+
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                'selected': self.value() == lookup,
+                'query_string': cl.get_query_string({
+                    self.parameter_name: lookup,
+                }, []),
+                'display': title,
+            }
+
+    def lookups(self, request, model_admin):
+        return [(self._zero_value, 'Tutti'), (None, self.default_name)] + self.lookup_values(request, model_admin)
+
+    def queryset(self, request, queryset):
+        value_to_filter = self.value()
+
+        if value_to_filter is None:
+            value_to_filter = self.default
+        elif value_to_filter == self._zero_value:
+            return queryset
+
+        return self.queryset_filter(request, queryset, value_to_filter)
+
+
 class CalcioSplashAdminSite(admin.AdminSite):
     def get_urls(self):
         from django.conf.urls import url
@@ -104,7 +141,7 @@ class MatchTournamentListFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         return [
             (tournament.pk, '{} {}'.format(tournament.edition_year, tournament.name))
-            for tournament in Tournament.objects.all()
+            for tournament in Tournament.objects.all().order_by('-edition_year')
         ]
 
     def queryset(self, request, queryset):
@@ -112,11 +149,49 @@ class MatchTournamentListFilter(admin.SimpleListFilter):
             return queryset.filter(group__tournament=self.value())
 
 
+class MatchDateListFilter(AbstractListFilterWithDefault):
+    title = 'giorno'
+    parameter_name = 'day'
+    default = datetime.strftime(timezone.now(), '%Y-%m-%d')
+    default_name = datetime.strftime(timezone.now(), '%d/%m')
+    _zero_value = '*'
+
+    def lookup_values(self, request, model_admin):
+        return [
+            (datetime.strftime(day, '%Y-%m-%d'), datetime.strftime(day, '%d/%m'))
+            for day in Match.objects
+                            .filter(match_date_time__year=timezone.now().year)
+                            .exclude(match_date_time__date=self.default)
+                            .dates('match_date_time', 'day').all()
+        ]
+
+    def queryset_filter(self, request, queryset, value):
+        return queryset.filter(match_date_time__date=value)
+
+
+class MatchYearListFilter(AbstractListFilterWithDefault):
+    title = 'anno'
+    parameter_name = 'year'
+    default = timezone.now().year
+    default_name = str(timezone.now().year)
+    _zero_value = '*'
+
+    def lookup_values(self, request, model_admin):
+        return [
+            (year.year, datetime.strftime(year, '%Y'))
+            for year in
+            Match.objects.exclude(match_date_time__year=timezone.now().year).dates('match_date_time', 'year').all()
+        ]
+
+    def queryset_filter(self, request, queryset, value):
+        return queryset.filter(match_date_time__year=value)
+
+
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['get_datetime', 'get_tournament', 'get_group', 'get_team_a', 'get_team_b', 'get_score']
+    list_display = ['get_datetime', 'get_team_a', 'get_team_b', 'get_score', 'get_tournament', 'get_group', ]
     form = MatchForm
     actions = ['go_to_match_page']
-    list_filter = ('group', MatchEndedListFilter, MatchTournamentListFilter)
+    list_filter = (MatchDateListFilter, MatchEndedListFilter, 'group', MatchTournamentListFilter, MatchYearListFilter)
     search_fields = ['team_a__name', 'team_b__name']
 
     def get_tournament(self, obj):
