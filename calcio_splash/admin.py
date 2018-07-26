@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.views.generic import TemplateView
 from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pytz import tzinfo
 
@@ -214,7 +214,7 @@ class MatchAdmin(admin.ModelAdmin):
         return '{} - {}'.format(match.team_a_score, match.team_b_score)
 
     def get_datetime(self, obj):
-        return obj.match_date_time.strftime('%d/%m %H:%M')
+        return (obj.match_date_time + timedelta(hours=2)).strftime('%d/%m %H:%M')
 
     def go_to_match_page(modeladmin, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
