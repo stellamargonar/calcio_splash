@@ -193,6 +193,7 @@ class MatchAdmin(admin.ModelAdmin):
     actions = ['go_to_match_page']
     list_filter = (MatchDateListFilter, MatchEndedListFilter, 'group', MatchTournamentListFilter, MatchYearListFilter)
     search_fields = ['team_a__name', 'team_b__name']
+    ordering = ['match_date_time', ]
 
     def get_tournament(self, obj):
         return '{} ({})'.format(obj.group.tournament.name, obj.group.tournament.edition_year)
