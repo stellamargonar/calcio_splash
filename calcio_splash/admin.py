@@ -152,9 +152,15 @@ class MatchTournamentListFilter(admin.SimpleListFilter):
 class MatchDateListFilter(AbstractListFilterWithDefault):
     title = 'giorno'
     parameter_name = 'day'
-    default = datetime.strftime(timezone.now(), '%Y-%m-%d')
-    default_name = datetime.strftime(timezone.now(), '%d/%m')
     _zero_value = '*'
+
+    @property
+    def default(self):
+        return datetime.strftime(timezone.now(), '%Y-%m-%d')
+
+    @property
+    def default_name(self):
+        return datetime.strftime(timezone.now(), '%d/%m')
 
     def lookup_values(self, request, model_admin):
         return [
