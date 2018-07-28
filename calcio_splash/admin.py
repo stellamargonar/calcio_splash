@@ -297,6 +297,11 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
         match = Match.objects.get(id=id)
 
         context['match'], context['player_goals'] = MatchHelper.build_match(match)
+        team_a = context['match'].team_a
+        team_b = context['match'].team_b
+
+        context['players_a'] = Player.objects.filter(teams=team_a)
+        context['players_b'] = Player.objects.filter(teams=team_b)
         return context
 
 

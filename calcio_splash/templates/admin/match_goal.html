@@ -23,7 +23,7 @@
           </div>
         </div>
         <ul>
-          {% for player in match.team_a.player_set.all %}
+          {% for player in players_a.all %}
           <li class="team-player">
             <div class="btn btn-primary btn-block"
                 data-player={{player.id}} data-team={{match.team_a.id}} data-match={{match.id}}>
@@ -85,7 +85,7 @@
           </div>
         </div>
         <ul>
-          {% for player in match.team_b.player_set.all %}
+          {% for player in players_b.all %}
           <li class="team-player">
             <div class="btn btn-primary btn-block"
                 data-player={{player.id}} data-team={{match.team_b.id}} data-match={{match.id}}>
