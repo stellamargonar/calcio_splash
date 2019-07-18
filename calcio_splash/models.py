@@ -7,9 +7,11 @@ class Team(models.Model):
 
     MALE = 'M'
     FEMALE = 'F'
+    BEACH = 'B'
     GENDER_CHOICES = (
         (MALE, 'Maschile'),
         (FEMALE, 'Femminile'),
+        (BEACH, 'Beach Volley')
     )
     gender = models.CharField(
         max_length=2,
