@@ -105,4 +105,56 @@
         </div>
     </section>
 
+
+    <div class="row">
+        <div class="col-lg-2 col-lg-offset-5">
+            <hr class="marginbot-50">
+        </div>
+    </div>
+
+    <section>
+        <div class="heading-about text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="section-heading">
+                            <h2>Torneo Beach Volley</h2>
+                            <i class="fa fa-2x fa-angle-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                {% if team_list %}
+                    {% for team in team_list %}
+                        {% if team.gender == 'B' %}
+                            <div class="col-md-4">
+                                <div class="wow bounceInUp" data-wow-delay="0.2s">
+                                    <div class="team boxed-grey">
+                                        <div class="inner">
+                                            <div class="avatar"><img src="{{ team.logo }}" alt=""
+                                                                     class="img-responsive img-circle"/></div>
+                                            <h5><a href="{% url 'team-detail' team.id %}">{{ team.name }}</a></h5>
+                                            <ul class="team-player">
+                                                {% for player in team.player.all %}
+                                                    <li class="team-player">{{ player.name }} {{ player.surname }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div>Nessuna squadra si è ancora iscritta</div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
 {% endblock %}
