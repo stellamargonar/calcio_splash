@@ -241,8 +241,26 @@ class MatchAdmin(admin.ModelAdmin):
 admin_site.register(Match, MatchAdmin)
 
 
+class GroupYearListFilter(AbstractListFilterWithDefault):
+    title = 'anno'
+    parameter_name = 'edition_year'
+    default = timezone.now().year
+    default_name = str(timezone.now().year)
+    _zero_value = '*'
+
+    def lookup_values(self, request, model_admin):
+        return [
+            (year, year)
+            for year in set(Tournament.objects.values_list('edition_year', flat=True))
+        ]
+
+    def queryset_filter(self, request, queryset, value):
+        return queryset.filter(tournament__edition_year=value)
+
+
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['name', 'get_tournament']
+    list_filter = (GroupYearListFilter, )
 
     def get_tournament(self, obj):
         return '{} ({})'.format(obj.tournament.name, obj.tournament.edition_year)

@@ -6,8 +6,15 @@ from calcio_splash.models import Group, Match, Player, Team
 
 
 class TeamSelectField(forms.ModelChoiceField):
+    def _get_symbol_for_team(self, team):
+        if team.gender == Team.BEACH:
+            return '🏖'
+        if team.gender == Team.FEMALE:
+            return '♀'
+        return '♂'
+
     def label_from_instance(self, obj):
-        return '{} ({})'.format(obj.name, obj.year)
+        return f'{self._get_symbol_for_team(obj)} {obj.name} ({obj.year})'
 
 
 class GroupSelectField(forms.ModelChoiceField):
