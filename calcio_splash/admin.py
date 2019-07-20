@@ -93,6 +93,7 @@ class TeamAdmin(admin.ModelAdmin):
     inlines = (PlayerAdminInline,)
     list_display = ['name']
     list_filter = (TeamYearFilter,)
+    search_fields = ('name', )
 
 
 admin_site.register(Team, TeamAdmin)
@@ -101,6 +102,7 @@ admin_site.register(Team, TeamAdmin)
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name']
     ordering = ('name', 'surname')
+    search_fields = ('name', 'surname')
 
 
 admin_site.register(Player, PlayerAdmin)
