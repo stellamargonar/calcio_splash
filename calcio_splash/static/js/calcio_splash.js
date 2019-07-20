@@ -5,7 +5,7 @@
   var startSecondoTempoButtonId = '#button_restart';
   var endButtonId = '#button_end';
   var resetButtonId = '#button_reset';
-  var playerButtonSelector = '.team-player>.btn';
+  var playerButtonSelector = '.team-player.btn';
   var timer;
 
   $(function() {

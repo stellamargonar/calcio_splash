@@ -3,108 +3,74 @@
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-lg-2 col-lg-offset-5">
-      <hr class="marginbot-100">
-    </div>
-  </div>
+<section>
+    <form class="container">
+        <div class="row">
+            <div class="col-xs-5 text-center match-col">
+                <div class="team-player btn btn-primary btn-block"
+                    data-team={{match.team_a.id}} data-match={{match.id}}>
+                    <h4>{{ match.team_a.name }}</h4>
+                </div>
+                {% for player in players_a.all %}
+                    <div class="team-player btn btn-primary btn-block"
+                         data-player={{ player.id }} data-team={{ match.team_a.id }} data-match={{ match.id }}>
+                        {{ player.surname }} {{ player.name }}
 
-
-<section class="match-goal">
-  <form class="container">
-    <div class="row">
-
-      <!-- TEAM A -->
-      <div class="col-xs-5">
-        <div class="team-player">
-          <div class="btn btn-primary btn-block"
-            data-team={{match.team_a.id}} data-match={{match.id}}>
-              <h3 class="team">{{match.team_a.name}}</h3>
-          </div>
-        </div>
-        <ul>
-          {% for player in players_a.all %}
-          <li class="team-player">
-            <div class="btn btn-primary btn-block"
-                data-player={{player.id}} data-team={{match.team_a.id}} data-match={{match.id}}>
-              {{player.surname}} {{player.name}}
-
-              <span id="player_{{player.id}}">
-                {% if player_goals|get_value_from_dict:player.id %}
-                  ({{ player_goals|get_value_from_dict:player.id }})
-                {% endif %}
-              </span>
+                        <span id="player_{{ player.id }}">
+                      {% if player_goals|get_value_from_dict:player.id %}
+                          ({{ player_goals|get_value_from_dict:player.id }})
+                      {% endif %}
+                    </span>
+                    </div>
+                {% endfor %}
             </div>
-            <br />
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
 
 
-      <!-- TIMER & info -->
-      <div class="col-xs-2 text-center">
+            <div class="col-xs-2 text-center match-col">
+                <h4 class="team-score">
+                    {{match.team_a_score}} - {{match.team_b_score}}
+                </h4>
 
-        <h1 class="team-score">{{match.team_a_score}} - {{match.team_b_score}}</h1>
+                <div id="button_start" class="btn btn-warning btn-block">Start</div>
+                <div id="button_pause" class="btn btn-danger btn-block">End 1º</div>
+                <div id="button_restart" class="btn btn-warning btn-block">Start 2º</div>
+                <div id="button_end" class="btn btn-danger btn-block">End</div>
+                <div id="button_reset" class="btn btn-danger btn-block">Reset</div>
+                <div
+                  id="match_timer"
+                  class="match-timer"
+                  data-match-start={% with timestamp=match.start_time|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
+                  data-match-end={% with timestamp=match.end_time|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
+                  data-match-end-primo={% with timestamp=match.end_primo_tempo|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
+                  data-match-start-secondo={% with timestamp=match.start_secondo_tempo|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
+                  data-match-id={{match.id}}
+                >
+                  <h1></h1>
+                </div>
 
-        <div id="button_start" class="btn btn-warning btn-block">
-          Fischio d'inizio
-        </div>
-        <div id="button_pause" class="btn btn-danger btn-block">
-          Fine primo tempo
-        </div>
-        <div id="button_restart" class="btn btn-warning btn-block">
-          Inizio secondo tempo
-        </div>
-        <div id="button_end" class="btn btn-danger btn-block">
-          Game Over
-        </div>
-        <div id="button_reset" class="btn btn-danger btn-block">
-          Reset Partita
-        </div>
-        <div
-          id="match_timer"
-          class="match-timer"
-          data-match-start={% with timestamp=match.start_time|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
-          data-match-end={% with timestamp=match.end_time|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
-          data-match-end-primo={% with timestamp=match.end_primo_tempo|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
-          data-match-start-secondo={% with timestamp=match.start_secondo_tempo|milliseconds %}{{timestamp|default:"null"}}{% endwith %}
-          data-match-id={{match.id}}
-        >
-          <h1></h1>
-        </div>
-      </div>
-
-
-      <!-- TEAM B -->
-      <div class="col-xs-5">
-        <div class="team-player">
-          <div class="btn btn-primary btn-block"
-            data-team={{match.team_b.id}} data-match={{match.id}}>
-              <h3 class="team">{{match.team_b.name}}</h3>
-          </div>
-        </div>
-        <ul>
-          {% for player in players_b.all %}
-          <li class="team-player">
-            <div class="btn btn-primary btn-block"
-                data-player={{player.id}} data-team={{match.team_b.id}} data-match={{match.id}}>
-              {{player.surname}} {{player.name}}
-
-              <span id="player_{{player.id}}">
-                {% if player_goals|get_value_from_dict:player.id %}
-                  ({{ player_goals|get_value_from_dict:player.id }})
-                {% endif %}
-              </span>
             </div>
-            <br />
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
 
-    </div>
-    {% csrf_token %}
-  </form>
+
+            <div class="col-xs-5 text-center match-col">
+                <div class="team-player btn btn-primary btn-block"
+                    data-team={{match.team_b.id}} data-match={{match.id}}>
+                    <h4>{{match.team_b.name}}</h4>
+                </div>
+
+                {% for player in players_b.all %}
+                    <div class="team-player btn btn-primary btn-block"
+                         data-player={{ player.id }} data-team={{ match.team_b.id }} data-match={{ match.id }}>
+                        {{ player.surname }} {{ player.name }}
+
+                        <span id="player_{{ player.id }}">
+                      {% if player_goals|get_value_from_dict:player.id %}
+                          ({{ player_goals|get_value_from_dict:player.id }})
+                      {% endif %}
+                    </span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </form>
 </section>
 {% endblock %}

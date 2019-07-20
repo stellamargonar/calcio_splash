@@ -191,10 +191,6 @@
   text-align: center;
 }
 
-.match-goal .team-player {
-  list-style: none;
-}
-
 .match-goal .team {
   margin: 50px;
   text-align: center;
@@ -242,6 +238,12 @@ table.group-rank {
 }
 
 .team-player {
-  list-style: none;
-  padding-left: 0px;
+    font-size: 12px;
 }
+
+.match-col {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+}
+
