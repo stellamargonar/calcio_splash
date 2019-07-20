@@ -14,7 +14,7 @@ class TeamSelectField(forms.ModelChoiceField):
         return '♂'
 
     def label_from_instance(self, obj):
-        return f'{self._get_symbol_for_team(obj)} {obj.name} ({obj.year})'
+        return '{} {} ({})'.format(self._get_symbol_for_team(obj), obj.name, obj.year)
 
 
 class GroupSelectField(forms.ModelChoiceField):
