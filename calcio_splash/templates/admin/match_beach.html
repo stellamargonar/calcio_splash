@@ -1,0 +1,48 @@
+{% extends "admin/admin-base.html" %}
+{% load filters %}
+
+{% block content %}
+
+    <section>
+        <form class="container">
+            <div class="row">
+                <div class="col-xs-5 text-center match-col">
+                    <div class="team-player btn btn-primary btn-block"
+                         data-team={{ match.team_a.id }} data-match={{ match.id }}>
+                        <h4>{{ match.team_a.name }}</h4>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-2 text-center match-col">
+                    # TODO mostrare i punti di ogni set
+                    <h4 class="team-score">
+                        {{ match.team_a_score }} - {{ match.team_b_score }}
+                    </h4>
+
+                    <div id="beach_button_start1" class="btn btn-warning btn-block">Start</div>
+                    <div id="beach_button_end1" class="btn btn-danger btn-block">End 1º</div>
+                    <div id="beach_button_start2" class="btn btn-warning btn-block">Start 2º</div>
+                    <div id="beach_button_end2" class="btn btn-danger btn-block">End 2º</div>
+                    <div id="beach_button_reset" class="btn btn-danger btn-block">Reset</div>
+                    <div
+                            id="beach_match_timer"
+                            class="match-timer"
+                            data-match-id={{ match.id }}
+                    >
+                        <h1></h1>
+                    </div>
+
+                </div>
+
+
+                <div class="col-xs-5 text-center match-col">
+                    <div class="team-player btn btn-primary btn-block"
+                         data-team={{ match.team_b.id }} data-match={{ match.id }}>
+                        <h4>{{ match.team_b.name }}</h4>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+{% endblock %}

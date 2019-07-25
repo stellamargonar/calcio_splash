@@ -1,9 +1,11 @@
 import pytz
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
+from django.urls import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView
-from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
+from django.views.generic import TemplateView, RedirectView
+from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect, HttpResponseNotFound
+from django.shortcuts import get_object_or_404
 
 from datetime import datetime, timedelta
 
@@ -58,6 +60,8 @@ class CalcioSplashAdminSite(admin.AdminSite):
         # Note that custom urls get pushed to the list (not appended)
         # This doesn't work with urls += ...
         urls = urls + [
+            url(r'match_live/(?P<id>\d+)$', MatchLiveAdmin.as_view(), name='match-live'),
+
             url(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
             url(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
             url(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
@@ -66,6 +70,9 @@ class CalcioSplashAdminSite(admin.AdminSite):
             url(r'match_goals/(?P<id>\d+)/endprimotempo$', end_primo_tempo),
             url(r'match_goals/(?P<id>\d+)/startsecondotempo$', start_secondo_tempo),
             url(r'match_goals/(?P<id>\d+)/reset$', reset_match),
+
+            url(r'match_beach/(?P<id>\d+)$', MatchBeachAdmin.as_view(), name='match-beach'),
+
         ]
         return urls
 
@@ -226,7 +233,7 @@ class MatchAdmin(admin.ModelAdmin):
 
     def go_to_match_page(modeladmin, request, queryset):
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-        return HttpResponseRedirect("admin/calcio_splash/match_goals/" + selected[0])
+        return HttpResponseRedirect("admin/calcio_splash/match_live/" + selected[0])
 
     get_group.short_description = 'Group'
     get_team_a.short_description = 'Team A'
@@ -315,6 +322,19 @@ class GoalAdmin(admin.ModelAdmin):
 admin_site.register(Goal, GoalAdmin)
 
 
+class MatchLiveAdmin(RedirectView):
+    permanent = False
+    query_string = True
+    pattern_name = 'match-live'
+
+    def get_redirect_url(self, *args, **kwargs):
+        match = get_object_or_404(Match, id=kwargs['id'])
+        if match.team_a.gender == Team.BEACH:
+            return '/admin/calcio_splash/match_beach/' + kwargs['id']
+        else:
+            return '/admin/calcio_splash/match_goals/' + kwargs['id']
+
+
 class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
     template_name = 'admin/match_goal.html'
 
@@ -328,6 +348,20 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
 
         context['players_a'] = Player.objects.filter(teams=team_a)
         context['players_b'] = Player.objects.filter(teams=team_b)
+        return context
+
+
+class MatchBeachAdmin(TemplateView, admin.ModelAdmin):
+    template_name = 'admin/match_beach.html'
+
+    def get_context_data(self, id, **kwargs):
+        context = super().get_context_data(**kwargs)
+        match = Match.objects.get(id=id)
+
+        context['match'] = match
+        team_a = context['match'].team_a
+        team_b = context['match'].team_b
+
         return context
 
 
