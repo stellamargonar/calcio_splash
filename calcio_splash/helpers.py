@@ -39,6 +39,7 @@ class GroupHelper:
 
         group.teams = OrderedDict([(team['name'], team) for team in sorted_teams])
         return group
+
     @staticmethod
     def _score_from_match(match):
         if match.end_time is None:
@@ -74,6 +75,30 @@ class MatchHelper:
         match.team_b_score = team_b_score
 
         return match, players_map
+
+
+class BeachMatchHelper:
+    @staticmethod
+    def build_match(match):
+        current_set = None
+
+        if match.team_a_set_1 is not None or match.team_b_set_1 is not None:
+            match.team_a_set_1 = match.team_a_set_1 or 0
+            match.team_b_set_1 = match.team_b_set_1 or 0
+            current_set = 1
+
+        if match.team_a_set_2 is not None or match.team_b_set_2 is not None:
+            match.team_a_set_2 = match.team_a_set_2 or 0
+            match.team_b_set_2 = match.team_b_set_2 or 0
+            current_set = 2
+
+        if match.team_a_set_3 is not None or match.team_b_set_3 is not None:
+            match.team_a_set_3 = match.team_a_set_3 or 0
+            match.team_b_set_3 = match.team_b_set_3 or 0
+            current_set = 3
+
+        match.save()
+        return match, current_set
 
 
 class AlboDoroHelper:

@@ -1,4 +1,3 @@
-import pytz
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.utils import timezone
@@ -7,11 +6,10 @@ from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedir
 
 from datetime import datetime, timedelta
 
-from pytz import tzinfo
 
-from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament
-from calcio_splash.helpers import MatchHelper
-from calcio_splash.forms import MatchForm, PlayerAdminInline
+from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament, BeachMatch
+from calcio_splash.helpers import MatchHelper, BeachMatchHelper
+from calcio_splash.forms import MatchForm, PlayerAdminInline, BeachMatchForm
 
 
 class AbstractListFilterWithDefault(admin.SimpleListFilter):
@@ -58,6 +56,8 @@ class CalcioSplashAdminSite(admin.AdminSite):
         # Note that custom urls get pushed to the list (not appended)
         # This doesn't work with urls += ...
         urls = urls + [
+            # url(r'match_live/(?P<id>\d+)$', MatchLiveAdmin.as_view(), name='match-live'),
+
             url(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
             url(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
             url(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
@@ -66,6 +66,12 @@ class CalcioSplashAdminSite(admin.AdminSite):
             url(r'match_goals/(?P<id>\d+)/endprimotempo$', end_primo_tempo),
             url(r'match_goals/(?P<id>\d+)/startsecondotempo$', start_secondo_tempo),
             url(r'match_goals/(?P<id>\d+)/reset$', reset_match),
+
+            url(r'match_beach/(?P<id>\d+)$', MatchBeachAdmin.as_view(), name='match-beach'),
+            url(r'match_beach/(?P<id>\d+)/startset/(?P<set>\d+)$', beach_start_set),
+            url(r'match_beach/(?P<id>\d+)/score_beach$', create_punto_beach),
+            url(r'match_beach/(?P<id>\d+)/undo$', delete_last_point),
+            url(r'match_beach/(?P<id>\d+)/reset$', reset_beach_match),
         ]
         return urls
 
@@ -241,6 +247,30 @@ class MatchAdmin(admin.ModelAdmin):
 admin_site.register(Match, MatchAdmin)
 
 
+class BeachMatchAdmin(MatchAdmin):
+    form = BeachMatchForm
+
+    def get_score(self, obj):
+        match, current_set = BeachMatchHelper.build_match(obj)
+        if current_set is None:
+            return '-'
+
+        field_template = 'team_{}_set_{}'
+        scores = []
+        for set_nr in range(1, current_set+1):
+            scores.append(
+                '{} - {}'.format(getattr(match, field_template.format('a', set_nr)), getattr(match, field_template.format('b', set_nr)))
+            )
+        return ' | '.join(scores)
+
+    def go_to_match_page(modeladmin, request, queryset):
+        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        return HttpResponseRedirect("admin/calcio_splash/match_beach/" + selected[0])
+
+
+admin_site.register(BeachMatch, BeachMatchAdmin)
+
+
 class GroupYearListFilter(AbstractListFilterWithDefault):
     title = 'anno'
     parameter_name = 'edition_year'
@@ -329,6 +359,114 @@ class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
         context['players_a'] = Player.objects.filter(teams=team_a)
         context['players_b'] = Player.objects.filter(teams=team_b)
         return context
+
+
+class MatchBeachAdmin(TemplateView, admin.ModelAdmin):
+    template_name = 'admin/match_beach.html'
+
+    def get_context_data(self, id, **kwargs):
+        context = super().get_context_data(**kwargs)
+        match = BeachMatch.objects.get(id=id)
+
+        context['match'], context['current_set'] = BeachMatchHelper.build_match(match)
+        return context
+
+
+def beach_start_set(request, id, set):
+    try:
+        match = BeachMatch.objects.get(pk=id)
+    except BeachMatch.DoesNotExist:
+        return HttpResponseServerError("Cannot find match id: {}".format(id))
+
+    field_name = 'team_{}_set_{}'
+
+    for team in ['a', 'b']:
+        setattr(
+            match,
+            field_name.format(team, set),
+            getattr(match, field_name.format(team, set)) or 0
+        )
+
+    match.save()
+    match.refresh_from_db()
+    BeachMatchHelper.build_match(match)
+
+    return JsonResponse({'match': match.to_dict()})
+
+
+def create_punto_beach(request, id):
+    error_response = _validate_post_request(request, ['team', 'set'])
+    if error_response:
+        return error_response
+
+    post = request.POST.copy()
+    team = post['team']
+    current_set = post['set']
+
+    try:
+        match = BeachMatch.objects.get(pk=id)
+    except BeachMatch.DoesNotExist:
+        return HttpResponseServerError('Cannot find match id: {}'.format(id))
+
+    try:
+        team = Team.objects.get(pk=team)
+    except Team.DoesNotExist:
+        return HttpResponseServerError('Cannot find team: {}'.format(team))
+
+    field_name = 'team_{}_set_{}'.format(
+        'a' if team.pk == match.team_a.id else 'b',
+        current_set,
+    )
+
+    current_score = getattr(match, field_name) or 0
+    setattr(match, field_name, current_score + 1)
+
+    match.save()
+    match.refresh_from_db()
+    BeachMatchHelper.build_match(match)
+
+    return JsonResponse({'match': match.to_dict()})
+
+
+def delete_last_point(request, id):
+    error_response = _validate_post_request(request, ['team', 'set'])
+    if error_response:
+        return error_response
+
+    post = request.POST.copy()
+    team = post['team']
+    current_set = post['set']
+
+    try:
+        match = BeachMatch.objects.get(pk=id)
+    except BeachMatch.DoesNotExist:
+        return HttpResponseServerError('Cannot find match id: {}'.format(id))
+
+    try:
+        team = Team.objects.get(pk=team)
+    except Team.DoesNotExist:
+        return HttpResponseServerError('Cannot find team: {}'.format(team))
+
+    field_name = 'team_{}_set_{}'.format(
+        'a' if team.pk == match.team_a.id else 'b',
+        current_set,
+    )
+
+    current_score = getattr(match, field_name) or 0
+    setattr(match, field_name, max(current_score - 1, 0))
+
+    match.save()
+    match.refresh_from_db()
+    BeachMatchHelper.build_match(match)
+
+    return JsonResponse({'match': match.to_dict()})
+
+
+def reset_beach_match(request, id):
+    post = request.POST.copy()
+    BeachMatch.objects.filter(pk=id).update(team_a_set_1=None, team_a_set_2=None, team_a_set_3=None,
+                                            team_b_set_1=None, team_b_set_2=None, team_b_set_3=None)
+    return JsonResponse({"status": "ok"})
 
 
 def create_goal(request, id):

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.utils import timezone
 
-from calcio_splash.models import Group, Match, Player, Team
+from calcio_splash.models import Group, Match, Player, Team, BeachMatch
 
 
 class TeamSelectField(forms.ModelChoiceField):
@@ -29,6 +29,12 @@ class MatchForm(forms.ModelForm):
 
     class Meta:
         model = Match
+        exclude = ['next_match']
+
+
+class BeachMatchForm(MatchForm):
+    class Meta:
+        model = BeachMatch
         exclude = ['next_match']
 
 

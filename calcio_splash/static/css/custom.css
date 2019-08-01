@@ -139,6 +139,7 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 @@media(min-width:767px) {
   .page-title-section {
     padding: 120px 0 0 60px;
@@ -203,6 +204,7 @@
 .match-goal .team-score {
   margin-top: 50px;
   text-align: center;
+  font-size: 12px;
 }
 
 .match-timer {
