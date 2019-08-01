@@ -1,5 +1,10 @@
 {% extends "admin/admin-base.html" %}
 {% load filters %}
+{% load static %}
+
+{% block custom_scripts %}
+<script src="{% static "js/calcio_splash.js" %}"></script>
+{% endblock %}
 
 {% block content %}
 

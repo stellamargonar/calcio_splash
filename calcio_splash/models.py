@@ -82,26 +82,31 @@ class Goal(models.Model):
 
 
 class BeachMatch(models.Model):
-    team_a = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_a')
-    team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_b')
+    team_a = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_a')
+    team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_b')
     match_date_time = models.DateTimeField()
 
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='matches')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='beach_matches')
 
-    team_a_set_1 = models.IntegerField(default=0)
-    team_b_set_1 = models.IntegerField(default=0)
+    team_a_set_1 = models.IntegerField(null=True, blank=True)
+    team_b_set_1 = models.IntegerField(null=True, blank=True)
 
-    team_a_set_2 = models.IntegerField(default=0)
-    team_b_set_2 = models.IntegerField(default=0)
+    team_a_set_2 = models.IntegerField(null=True, blank=True)
+    team_b_set_2 = models.IntegerField(null=True, blank=True)
 
-    team_a_set_3 = models.IntegerField(default=0)
-    team_b_set_3 = models.IntegerField(default=0)
-
-    # next_match = models.ForeignKey('self', null=True, related_name='prev_matches')
-    # start_time = models.DateTimeField(null=True, blank=True)
-    # end_time = models.DateTimeField(null=True, blank=True)
-    # end_primo_tempo = models.DateTimeField(null=True, blank=True)
-    # start_secondo_tempo = models.DateTimeField(null=True, blank=True)
+    team_a_set_3 = models.IntegerField(null=True, blank=True)
+    team_b_set_3 = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'team_a_set_1': self.team_a_set_1,
+            'team_b_set_1': self.team_b_set_1,
+            'team_a_set_2': self.team_a_set_2,
+            'team_b_set_2': self.team_b_set_2,
+            'team_a_set_3': self.team_a_set_3,
+            'team_b_set_3': self.team_b_set_3,
+        }
