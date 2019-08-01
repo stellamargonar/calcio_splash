@@ -12,6 +12,8 @@
     {% if match_list %}
         <div class="row">
             <div class="col-md-12">
+
+                <h1>Partite Calcio Splash</h1>
                 <table class="group-rank">
                     <tr>
                         <th>Orario</th>
@@ -30,6 +32,48 @@
                             <td>
                                 {% if match.team_a_score is not None %}
                                     {{ match.team_a_score }} - {{ match.team_b_score }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+    {% if beach_match_list %}
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Partite Beach Volley</h1>
+
+                <table class="group-rank">
+                    <tr>
+                        <th>Orario</th>
+                        <th>Girone</th>
+                        <th>Squadra 1</th>
+                        <th>Squadra 2</th>
+                        <th>Risultato</th>
+                    </tr>
+
+                    {% for match in beach_match_list %}
+                        <tr>
+                            <td>{{ match.match_date_time | date:" D d -  H:i" }}</td>
+                            <td>{{ match.group.name }}</td>
+                            <td><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></td>
+                            <td><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></td>
+                            <td>
+                                {% if match.team_a_set_1 is not None %}
+                                    {{ match.team_a_set_1 }} - {{ match.team_b_set_1 }}
+                                {% endif %}
+
+                                {% if match.team_a_set_2 is not None %}
+                                    {{ match.team_a_set_2 }} - {{ match.team_b_set_2 }}
+                                {% endif %}
+
+                                {% if match.team_a_set_3 is not None %}
+                                    {{ match.team_a_set_3 }} - {{ match.team_b_set_3 }}
                                 {% endif %}
                             </td>
                         </tr>

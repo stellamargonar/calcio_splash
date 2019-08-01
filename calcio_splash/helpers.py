@@ -5,6 +5,9 @@ from collections import OrderedDict
 class GroupHelper:
     @staticmethod
     def build_group(group):
+        if 'beach' in group.tournament.name.lower():
+            return GroupHelper.build_beach_group(group)
+
         teams = dict()
         matches = list()
         for match in group.matches.all().order_by('match_date_time'):
@@ -17,7 +20,7 @@ class GroupHelper:
 
             team_b = teams.get(match.team_b.name, {})
             team_b['goals_done'] = team_b.get('goals_done', 0) + match.team_b_score
-            team_b['goals_taken']= team_b.get('goals_taken', 0) + match.team_a_score
+            team_b['goals_taken'] = team_b.get('goals_taken', 0) + match.team_a_score
 
             points_a, points_b = GroupHelper._score_from_match(match)
             team_a['points'] = team_a.get('points', 0) + points_a
@@ -38,6 +41,58 @@ class GroupHelper:
         sorted_teams = sorted(team_list, key=lambda x: -x['points'])
 
         group.teams = OrderedDict([(team['name'], team) for team in sorted_teams])
+        group.is_beach = False
+        return group
+
+    @staticmethod
+    def build_beach_group(group):
+        teams = dict()
+        matches = list()
+        for match in group.beach_matches.all().order_by('match_date_time'):
+            matches += [match]
+
+            team_a = teams.get(match.team_a.name, {})
+            team_b = teams.get(match.team_b.name, {})
+
+            set_a_won = 0
+            set_b_won = 0
+            if match.team_a_set_3 is not None:
+                set_a_won += 1 if match.team_a_set_3 > match.team_b_set_3 else 0
+                set_b_won += 1 if match.team_b_set_3 > match.team_a_set_3 else 0
+            if match.team_a_set_2 is not None:
+                set_a_won += 1 if match.team_a_set_2 > match.team_b_set_2 else 0
+                set_b_won += 1 if match.team_b_set_2 > match.team_a_set_2 else 0
+            if match.team_a_set_1 is not None:
+                set_a_won += 1 if match.team_a_set_1 > match.team_b_set_1 else 0
+                set_b_won += 1 if match.team_b_set_1 > match.team_a_set_1 else 0
+
+            points_a = 0
+            points_b = 0
+            if set_a_won > 0 or set_b_won > 0:
+                if set_a_won > set_b_won:
+                    points_a = 3
+                elif set_a_won == set_b_won:
+                    points_a = 1
+                    points_b = 1
+                else:
+                    points_b = 3
+
+            team_a['points'] = team_a.get('points', 0) + points_a
+            team_b['points'] = team_b.get('points', 0) + points_b
+
+            teams[match.team_a.name] = team_a
+            teams[match.team_b.name] = team_b
+
+        group.group_matches = matches
+
+        # post process teams
+        team_list = [{
+            'name': team_name,
+            'points': team.get('points', 0),
+        } for team_name, team in teams.items()]
+        sorted_teams = sorted(team_list, key=lambda x: -x['points'])
+        group.teams = OrderedDict([(team['name'], team) for team in sorted_teams])
+        group.is_beach = True
         return group
 
     @staticmethod

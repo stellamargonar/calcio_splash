@@ -2,8 +2,8 @@ from django.db.models import Count
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
-from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal
-from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper
+from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch
+from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BeachMatchHelper
 
 
 class TeamListView(ListView):
@@ -43,10 +43,15 @@ class MatchListView(ListView):
         return Match.objects.filter(group__tournament__edition_year=year).order_by('match_date_time')
 
     def get_context_data(self, **kwargs):
+        year = self.kwargs['year']
         context = super().get_context_data(**kwargs)
 
-        context['object_list'] = [
+        context['match_list'] = [
             MatchHelper.build_match(match)[0] for match in context['object_list']
+        ]
+        context['beach_match_list'] = [
+            match
+            for match in BeachMatch.objects.filter(group__tournament__edition_year=year).order_by('match_date_time')
         ]
         return context
 
@@ -89,7 +94,7 @@ class TournamentDetailView(DetailView):
         tournament.groups_clean = sorted([
             GroupHelper.build_group(group)
             for group in tournament.groups.all()
-        ], key=lambda x: (-len(x.group_matches), x.id))
+        ], key=lambda x: x.id)
 
         context['tournament'] = tournament
 
