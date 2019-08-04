@@ -66,6 +66,15 @@ class MatchDetailView(DetailView):
         return context
 
 
+class BeachMatchDetailView(DetailView):
+    model = BeachMatch
+    template_name = 'match.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
 class GroupDetailView(DetailView):
     model = Group
     template_name = 'group.html'
