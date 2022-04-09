@@ -125,7 +125,7 @@ class MatchHelper:
             if goal.player:
                 players_map[goal.player.id] = players_map.get(goal.player.id, 0) + 1
 
-        match.goals = goals
+        match.goals.set(goals)
         match.team_a_score = team_a_score
         match.team_b_score = team_b_score
 
