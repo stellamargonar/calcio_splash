@@ -6,6 +6,18 @@ from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, B
 from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BeachMatchHelper
 
 
+def handler404(request, exception=None):
+    response = render(request, 'errors/404.html')
+    response.status_code = 404
+    return response
+
+
+def handler500(request, exception=None):
+    response = render(request, 'errors/500.html')
+    response.status_code = 404
+    return response
+
+
 class TeamListView(ListView):
     model = Team
     template_name = 'teams.html'

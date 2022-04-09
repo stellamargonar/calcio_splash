@@ -1,6 +1,6 @@
 """calcio_splash URL Configuration
 """
-from django.conf.urls import include, url, handler404, handler500
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
@@ -32,5 +32,5 @@ urlpatterns = [
     url(r'^classifiche/(?P<gender>\w+)/$', views.AlboMarcatori.as_view(), name='albomarcatori'),
 ]
 
-handler404 = TemplateView.as_view(template_name='errors/404.html')
-handler500 = TemplateView.as_view(template_name='errors/500.html')
+handler404 = 'calcio_splash.views.handler404'
+handler500 = 'calcio_splash.views.handler500'

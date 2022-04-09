@@ -5,8 +5,7 @@ Better using virtualenv:
 
 ```
 $ mkvirtualenv calcio_spash
-$ pip install -r requirements.txt
-$ pip install -r requirements-dev.txt
+$ poetry install
 ```
 
 ## How to Run

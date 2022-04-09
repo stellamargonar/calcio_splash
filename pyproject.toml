@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "calcio_splash"
+version = "0.1.0"
+description = ""
+authors = ["Stella Margonar <margonar@spaziodati.eu>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "3.2"
+django-storages = "^1.12.3"
+django-dbbackup = "^3.3.0"
+boto3 = "^1.21.37"
+raven = "^6.10.0"
+
+[tool.poetry.dev-dependencies]
+Fabric3 = "^1.14.post1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
