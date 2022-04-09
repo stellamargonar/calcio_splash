@@ -1,0 +1,51 @@
+exclude: ^(protos/|.*/migrations/|.venv/|.git/|node_modules/|.*__pycache__/)
+repos:
+- repo: https://github.com/PyCQA/isort
+  rev: 5.9.3
+  hooks:
+  - id: isort
+    language_version: python3.9
+
+- repo: https://github.com/ambv/black
+  rev: 22.3.0
+  hooks:
+  - id: black
+    language_version: python3.9
+
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.9.2
+  hooks:
+  - id: flake8
+    types: [python]
+    exclude: ^atoka/settings/
+    language_version: python3.9
+    additional_dependencies: [tryceratops==1.0.1]
+
+- repo: https://github.com/asottile/pyupgrade
+  rev: v2.10.1
+  hooks:
+  - id: pyupgrade
+    args: [--py39-plus, --keep-percent-format]
+
+- repo: https://github.com/awebdeveloper/pre-commit-prettier
+  rev: 'e68027625238555c292b85e124497842d16ebb2d'
+  hooks:
+  - id: prettier
+    files: '\.tsx?$'
+    additional_dependencies: ['prettier@2.6.0']
+
+- repo: https://github.com/pre-commit/mirrors-eslint
+  rev: 'v7.18.0'
+  hooks:
+  - id: eslint
+    exclude: '(.py$)|(.less$)|(.md$)|(.html)|(.json)|(.yaml)'
+    files: '^ts/src/.*'
+    types: [file]
+    args: ['--config','ts/.eslintrc.json', '--fix']
+    additional_dependencies:
+      - eslint@7.16.0
+      - eslint-config-prettier@7.1.0
+      - eslint-plugin-import@2.22.1
+      - eslint-plugin-jsdoc@30.7.9
+      - eslint-plugin-prefer-arrow@1.2.2
+      - eslint-plugin-react@7.21.5
