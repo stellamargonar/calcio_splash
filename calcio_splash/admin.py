@@ -51,27 +51,27 @@ class AbstractListFilterWithDefault(admin.SimpleListFilter):
 
 class CalcioSplashAdminSite(admin.AdminSite):
     def get_urls(self):
-        from django.conf.urls import url
+        from django.urls import re_path
         urls = super().get_urls()
         # Note that custom urls get pushed to the list (not appended)
         # This doesn't work with urls += ...
         urls = urls + [
             # url(r'match_live/(?P<id>\d+)$', MatchLiveAdmin.as_view(), name='match-live'),
 
-            url(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
-            url(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
-            url(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
-            url(r'match_goals/(?P<id>\d+)/start$', start_match),
-            url(r'match_goals/(?P<id>\d+)/end$', end_match),
-            url(r'match_goals/(?P<id>\d+)/endprimotempo$', end_primo_tempo),
-            url(r'match_goals/(?P<id>\d+)/startsecondotempo$', start_secondo_tempo),
-            url(r'match_goals/(?P<id>\d+)/reset$', reset_match),
+            re_path(r'match_goals/(?P<id>\d+)$', MatchGoalAdmin.as_view(), name='match-goals'),
+            re_path(r'match_goals/(?P<id>\d+)/score_goal$', create_goal),
+            re_path(r'match_goals/(?P<id>\d+)/undo$', delete_last_goal),
+            re_path(r'match_goals/(?P<id>\d+)/start$', start_match),
+            re_path(r'match_goals/(?P<id>\d+)/end$', end_match),
+            re_path(r'match_goals/(?P<id>\d+)/endprimotempo$', end_primo_tempo),
+            re_path(r'match_goals/(?P<id>\d+)/startsecondotempo$', start_secondo_tempo),
+            re_path(r'match_goals/(?P<id>\d+)/reset$', reset_match),
 
-            url(r'match_beach/(?P<id>\d+)$', MatchBeachAdmin.as_view(), name='match-beach'),
-            url(r'match_beach/(?P<id>\d+)/startset/(?P<set>\d+)$', beach_start_set),
-            url(r'match_beach/(?P<id>\d+)/score_beach$', create_punto_beach),
-            url(r'match_beach/(?P<id>\d+)/undo$', delete_last_point),
-            url(r'match_beach/(?P<id>\d+)/reset$', reset_beach_match),
+            re_path(r'match_beach/(?P<id>\d+)$', MatchBeachAdmin.as_view(), name='match-beach'),
+            re_path(r'match_beach/(?P<id>\d+)/startset/(?P<set>\d+)$', beach_start_set),
+            re_path(r'match_beach/(?P<id>\d+)/score_beach$', create_punto_beach),
+            re_path(r'match_beach/(?P<id>\d+)/undo$', delete_last_point),
+            re_path(r'match_beach/(?P<id>\d+)/reset$', reset_beach_match),
         ]
         return urls
 

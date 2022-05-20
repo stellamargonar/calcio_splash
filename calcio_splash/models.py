@@ -27,7 +27,7 @@ class Player(models.Model):
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     date_of_birth = models.DateField()
-    teams = models.ManyToManyField(Team, related_name='player', null=True, blank=True)
+    teams = models.ManyToManyField(Team, related_name='player', blank=True)
 
     def __str__(self):
         return '{} {} ({})'.format(self.name, self.surname, self.date_of_birth)
@@ -62,7 +62,7 @@ class Match(models.Model):
     team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_b')
     match_date_time = models.DateTimeField()
 
-    next_match = models.ForeignKey('self', null=True, related_name='prev_matches')
+    next_match = models.ForeignKey('self', null=True, related_name='prev_matches', on_delete=models.SET_NULL)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='matches')
 
     start_time = models.DateTimeField(null=True, blank=True)
