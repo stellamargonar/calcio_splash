@@ -27,7 +27,7 @@ def code_update_git():
 def dependencies_update():
     """ update python dependencies"""
     with cd(env.remote_path), venv():
-        run("pip install -r requirements.txt")
+        run("poetry install")
 
 
 @with_settings(**s)

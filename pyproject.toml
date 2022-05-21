@@ -6,10 +6,10 @@ authors = ["Stella Margonar <margonar@spaziodati.eu>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Django = "3.2"
+Django = "4.0.4"
 django-storages = "^1.12.3"
 django-dbbackup = "^3.3.0"
-boto3 = "^1.21.37"
+boto3 = "^1.23.4"
 raven = "^6.10.0"
 
 [tool.poetry.dev-dependencies]

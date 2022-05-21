@@ -1,4 +1,3 @@
-from calcio_splash.models import Group, Match, Team
 from collections import OrderedDict
 
 
