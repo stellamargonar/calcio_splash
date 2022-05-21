@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./calcio_splash/static/livematch",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "dom",
+      "es5",
+      "es2015"
+    ]
+  },
+  "include": ["livematch/src"]
+}

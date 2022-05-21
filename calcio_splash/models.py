@@ -73,6 +73,12 @@ class Match(models.Model):
     def __str__(self):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
 
+    @property
+    def score(self) -> str:
+        score_a = self.goals.filter(team=self.team_a).count()
+        score_b = self.goals.filter(team=self.team_b).count()
+        return f'{score_a} - {score_b}'
+
 
 class Goal(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='goals')
