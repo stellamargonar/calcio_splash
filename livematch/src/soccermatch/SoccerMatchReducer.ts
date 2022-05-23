@@ -5,6 +5,10 @@ export interface SoccerMatchState {
     match: SoccerMatch;
 }
 
+export function clone<T>(ob: T): T {
+    return JSON.parse(JSON.stringify(ob));
+}
+
 export class SoccerMatchReducer {
     static getInitialState(): SoccerMatchState {
         return {
@@ -20,17 +24,35 @@ export class SoccerMatchReducer {
 
         switch (action.type) {
             case 'SOCCER_MATCH_SET_MATCHES':
-                console.log('REDUCER', action);
                 return {
                     ...prevState,
                     matches: action.matches,
                 };
             case 'SOCCER_MATCH_SET_MATCH':
-                console.log('REDUCER', action);
                 return {
                     ...prevState,
                     match: action.match,
                 };
+
+            case 'SOCCER_MATCH_SCORE':
+                console.log("SCORE", action);
+                let currentMatch = clone(prevState.match),
+                    isA = action.teamId === currentMatch.team_a.pk,
+                    team = isA ? currentMatch.team_a : currentMatch.team_b;
+
+                currentMatch.score_a = currentMatch.score_a + (isA?  1 : 0);
+                currentMatch.score_b = currentMatch.score_b + (isA?  0 : 1);
+
+                let player = null;
+                if (action.playerId != null) {
+                    player = team.players.find((p) => p.pk === action.playerId);
+                    player.score += 1;
+                }
+
+                return {
+                    ...prevState,
+                    match: currentMatch,
+                }
 
             default:
                 return prevState;

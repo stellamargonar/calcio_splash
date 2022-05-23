@@ -1,42 +1,26 @@
 import * as React from "react";
-import {Player, SoccerMatch, Team} from "./SoccerMatchActionsHelper";
-import {Container} from "react-bootstrap";
+import {getSoccerMatchActionsHelper, Player, SoccerMatch, Team} from "./SoccerMatchActionsHelper";
+import {TeamUI} from "./TeamUI";
 import {boundMethod} from "autobind-decorator";
+import {Button} from "react-bootstrap";
 
 export interface SoccerMatchUIProps {
     match: SoccerMatch;
 }
 
 export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, {}> {
-
     @boundMethod
-    private renderPlayer(player: Player): React.ReactNode{
+    private handleScore(team: Team, player: Player): void {
+        getSoccerMatchActionsHelper().score(this.props.match.pk, team.pk, player?.pk)
+    }
+
+
+    private renderTools(): React.ReactNode {
         return (
-          <div>
-              {player.name} (3)
-          </div>
+            <Button variant='tertiary'>
+                <i className='fa fa-gear'/>
+            </Button>
         );
-    }
-
-    private renderTeam(team: Team): React.ReactNode {
-        return (
-            <div className='flex-grow-1'>
-                {team.name }
-                {team.players.map(this.renderPlayer)}
-            </div>
-        );
-    }
-
-    private renderTeamA(): React.ReactNode {
-        return this.renderTeam(this.props.match.team_a)
-    }
-
-    private renderTeamB(): React.ReactNode {
-        return this.renderTeam(this.props.match.team_b)
-    }
-
-    private renderScore(): React.ReactNode {
-        return <>{this.props.match.score}</>;
     }
 
     public render(): React.ReactNode {
@@ -45,15 +29,13 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, {}> {
         }
 
         return (
-            <Container className='d-flex flex-row justify-content-around' >
-                <div>
-                    {this.renderTeamA()}
-                </div>
-                <div>{this.renderScore()}</div>
-                <div>
-                    {this.renderTeamB()}
-                </div>
-            </Container>
+            <div className='d-flex flex-row justify-content-evenly'>
+                {this.renderTools()}
+                <TeamUI key='team-a' team={this.props.match.team_a} score={this.props.match.score_a}
+                        onScore={this.handleScore}/>
+                <TeamUI key='team-b' team={this.props.match.team_b}  score={this.props.match.score_b}
+                        onScore={this.handleScore}/>
+            </div>
         );
     }
 }

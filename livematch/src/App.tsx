@@ -28,14 +28,14 @@ export class LiveMatchApp extends React.Component<{}, RootState> {
         return (
             <Provider store={store}>
                 <ThemeProvider>
-                    <Container className='m-4'>
+                    <div className='m-2'>
                     <BrowserRouter>
                         <Routes>
                             <Route path='/livematch/play/:matchId' element={this.renderSingleMatch()}/>
                             <Route path='/livematch/' element={this.renderMatchList()}/>
                         </Routes>
                     </BrowserRouter>
-                    </Container>
+                    </div>
                 </ThemeProvider>
             </Provider>
         );

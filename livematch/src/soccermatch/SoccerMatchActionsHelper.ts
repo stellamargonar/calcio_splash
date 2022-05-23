@@ -6,6 +6,7 @@ import {createSingleton} from "../utils/SingletonProvider";
 export interface Player {
     pk: string;
     name: string;
+    score: number;
 }
 
 export interface Team {
@@ -18,12 +19,14 @@ export interface SoccerMatch {
   pk: string;
   team_a: Team;
   team_b: Team;
-  score: string;
+  score_a: number;
+  score_b: number;
 }
 
 export type SoccerMatchAction =
     | {type: 'SOCCER_MATCH_SET_MATCHES', matches: SoccerMatch[]}
-    | {type: 'SOCCER_MATCH_SET_MATCH', match: SoccerMatch};
+    | {type: 'SOCCER_MATCH_SET_MATCH', match: SoccerMatch}
+    | {type: 'SOCCER_MATCH_SCORE', matchId: string, teamId: string, playerId?: string};
 
 
 
@@ -46,14 +49,19 @@ export class SoccerMatchActionsHelper {
             .then((response ) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response}));
     }
 
+    @boundMethod
+    public score(matchId: string, teamId: string, playerId?: string): void {
+        this.dispatch({type: 'SOCCER_MATCH_SCORE', matchId, teamId, playerId});
+        jQuery.ajax('/api/livematch/' + matchId + '/score/', {
+            method: 'POST',
+            data: JSON.stringify({teamId, playerId}),
+            contentType: 'application/json'
+        }).then((response) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response}));
+    }
+
     protected dispatch(action: SoccerMatchAction): void {
         this.store.dispatch(action);
     }
-    //
-    // @boundMethod
-    // public todo(id: string): void {
-    //     this.dispatch({type: 'TODO2', id});
-    // }
 }
 
 let helperProvider = createSingleton(SoccerMatchActionsHelper);

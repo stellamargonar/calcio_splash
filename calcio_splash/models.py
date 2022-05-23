@@ -74,10 +74,12 @@ class Match(models.Model):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
 
     @property
-    def score(self) -> str:
-        score_a = self.goals.filter(team=self.team_a).count()
-        score_b = self.goals.filter(team=self.team_b).count()
-        return f'{score_a} - {score_b}'
+    def score_a(self) -> str:
+        return self.goals.filter(team=self.team_a).count()
+
+    @property
+    def score_b(self) -> str:
+        return self.goals.filter(team=self.team_b).count()
 
 
 class Goal(models.Model):

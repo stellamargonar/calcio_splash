@@ -1,0 +1,10 @@
+.team-card {
+    text-align: center;
+    flex-grow: 1;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.team-card .card-body {
+    padding: 0;
+}
