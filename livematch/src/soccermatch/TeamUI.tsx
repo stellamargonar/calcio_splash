@@ -8,18 +8,22 @@ import {Button, Card, ListGroup} from "react-bootstrap";
 export interface TeamUIProps {
     team: Team;
     score: number;
-    onScore: (team: Team, player?: Player) => void;
+    onScore: (team: Team, player?: Player, remove?: boolean) => void;
 }
 
 export class TeamUI extends React.PureComponent<TeamUIProps> {
     @boundMethod
-    private handleGoalTeam(): void {
+    private handleGoalTeamUp(): void {
         this.props.onScore(this.props.team);
+    }
+    @boundMethod
+    private handleGoalTeamDown(): void {
+        this.props.onScore(this.props.team, null, true);
     }
 
     @boundMethod
-    private handleGoalPlayer(player: Player): void {
-        this.props.onScore(this.props.team, player);
+    private handleGoalPlayer(player: Player, remove?: boolean): void {
+        this.props.onScore(this.props.team, player, remove);
     }
 
     @boundMethod
@@ -36,10 +40,9 @@ export class TeamUI extends React.PureComponent<TeamUIProps> {
             <Card className='team-card'>
                 <Card.Body>
                     <Card.Title className='d-grid gap-2'>
-                        <Button size='lg' variant='light' onClick={this.handleGoalTeam}>
+                        <Button size='lg' variant='light' onClick={this.handleGoalTeamUp}>
                             <h1>{this.props.team.name}</h1>
                             <span className='pull-right'>{this.props.score}</span>
-
                         </Button>
                     </Card.Title>
                     <ListGroup variant="flush">

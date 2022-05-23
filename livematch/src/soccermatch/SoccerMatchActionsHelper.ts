@@ -26,7 +26,7 @@ export interface SoccerMatch {
 export type SoccerMatchAction =
     | {type: 'SOCCER_MATCH_SET_MATCHES', matches: SoccerMatch[]}
     | {type: 'SOCCER_MATCH_SET_MATCH', match: SoccerMatch}
-    | {type: 'SOCCER_MATCH_SCORE', matchId: string, teamId: string, playerId?: string};
+    | {type: 'SOCCER_MATCH_SCORE', matchId: string, teamId: string, playerId?: string, remove?: boolean};
 
 
 
@@ -50,11 +50,11 @@ export class SoccerMatchActionsHelper {
     }
 
     @boundMethod
-    public score(matchId: string, teamId: string, playerId?: string): void {
-        this.dispatch({type: 'SOCCER_MATCH_SCORE', matchId, teamId, playerId});
+    public score(matchId: string, teamId: string, playerId?: string, remove?: boolean): void {
+        this.dispatch({type: 'SOCCER_MATCH_SCORE', matchId, teamId, playerId, remove});
         jQuery.ajax('/api/livematch/' + matchId + '/score/', {
             method: 'POST',
-            data: JSON.stringify({teamId, playerId}),
+            data: JSON.stringify({teamId, playerId, remove}),
             contentType: 'application/json'
         }).then((response) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response}));
     }

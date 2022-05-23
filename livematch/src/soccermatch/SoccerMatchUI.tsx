@@ -10,17 +10,8 @@ export interface SoccerMatchUIProps {
 
 export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, {}> {
     @boundMethod
-    private handleScore(team: Team, player: Player): void {
-        getSoccerMatchActionsHelper().score(this.props.match.pk, team.pk, player?.pk)
-    }
-
-
-    private renderTools(): React.ReactNode {
-        return (
-            <Button variant='tertiary'>
-                <i className='fa fa-gear'/>
-            </Button>
-        );
+    private handleScore(team: Team, player: Player, remove?: boolean): void {
+        getSoccerMatchActionsHelper().score(this.props.match.pk, team.pk, player?.pk, remove);
     }
 
     public render(): React.ReactNode {
@@ -30,7 +21,6 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, {}> {
 
         return (
             <div className='d-flex flex-row justify-content-evenly'>
-                {this.renderTools()}
                 <TeamUI key='team-a' team={this.props.match.team_a} score={this.props.match.score_a}
                         onScore={this.handleScore}/>
                 <TeamUI key='team-b' team={this.props.match.team_b}  score={this.props.match.score_b}

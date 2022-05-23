@@ -31,7 +31,14 @@ class MatchViewSet(ModelViewSet):
                 player = Player.objects.get(pk=request.data['playerId'], teams=team)
             except Player.DoesNotExist:
                 raise ValidationError()
-        Goal.objects.create(team=team, player=player, match=match, minute=0)
+
+        remove = request.data.get('remove', False)
+        if remove:
+            latest_goal = Goal.objects.filter(team=team, player=player, match=match).last()
+            if latest_goal is not None:
+                latest_goal.delete()
+        else:
+            Goal.objects.create(team=team, player=player, match=match, minute=0)
         return self.retrieve(request, pk)
 
     @action(detail=True, methods=['POST'])
