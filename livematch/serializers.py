@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -13,6 +14,8 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     def get_score(self, instance: Player) -> int:
         match = self.parent.parent.parent.instance
+        if isinstance(match, QuerySet):
+            match = match.first()
         return Goal.objects.filter(match=match, player=instance).count()
 
 
