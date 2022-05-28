@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from calcio_splash.models import Match, Team, Player, Goal
@@ -15,6 +16,7 @@ def index(request):
 class MatchViewSet(ModelViewSet):
     serializer_class = MatchSerializer
     http_method_names = ['get' , 'post']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return Match.objects.filter(group__tournament__edition_year=2019).all().order_by('match_date_time')
