@@ -70,6 +70,31 @@ export class SoccerMatchReducer {
                     match: currentMatch,
                 }
             }
+            case 'SOCCER_MATCH_LOCK': {
+                let currentMatches =  clone(prevState.matches).map((match) => {
+                    if (match.pk == action.matchId) {
+                        match.ended = true;
+                    }
+                    return match;
+                });
+                return {
+                    ...prevState,
+                    matches: currentMatches,
+                }
+            }
+            case 'SOCCER_MATCH_UNLOCK': {
+                let currentMatches =  clone(prevState.matches).map((match) => {
+                    if (match.pk == action.matchId) {
+                        match.ended = false;
+                    }
+                    return match;
+                });
+
+                return {
+                    ...prevState,
+                    matches: currentMatches,
+                }
+            }
             default:
                 return prevState;
         }

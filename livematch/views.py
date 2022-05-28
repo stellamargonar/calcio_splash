@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ModelViewSet
@@ -16,7 +17,7 @@ class MatchViewSet(ModelViewSet):
     http_method_names = ['get' , 'post']
 
     def get_queryset(self):
-        return Match.objects.all()
+        return Match.objects.filter(group__tournament__edition_year=2019).all().order_by('match_date_time')
 
     @action(detail=True, methods=['POST'])
     def score(self, request, pk):
@@ -44,4 +45,18 @@ class MatchViewSet(ModelViewSet):
     @action(detail=True, methods=['POST'])
     def reset(self, request, pk):
         Goal.objects.filter(match=self.get_object()).delete()
+        return self.retrieve(request, pk)
+
+    @action(detail=True, methods=['POST'])
+    def lock(self, request, pk):
+        match = self.get_object()
+        match.end_time = timezone.now()
+        match.save()
+        return self.retrieve(request, pk)
+
+    @action(detail=True, methods=['POST'])
+    def unlock(self, request, pk):
+        match = self.get_object()
+        match.end_time = None
+        match.save()
         return self.retrieve(request, pk)
