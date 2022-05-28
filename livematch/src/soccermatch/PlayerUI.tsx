@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Player} from "./SoccerMatchActionsHelper";
 import {boundMethod} from "autobind-decorator";
-import {Badge, Button} from "react-bootstrap";
+import {Badge, Button, ListGroupItem} from "react-bootstrap";
 
 
 export interface PlayerUIProps {
@@ -21,11 +21,11 @@ export class PlayerUI extends React.PureComponent<PlayerUIProps> {
     }
 
     private renderButtonScoreUp(): React.ReactNode {
-        return <Button onClick={this.handleScoreUp}>+</Button>;
+        return <Button className='btn-success' onClick={this.handleScoreUp}>+</Button>;
     }
 
     private renderButtonScoreDown(): React.ReactNode {
-        return <Button onClick={this.handleScoreDown}>-</Button>;
+        return <Button className='btn-danger' onClick={this.handleScoreDown}>-</Button>;
     }
 
     private renderScore(): React.ReactNode {
@@ -37,21 +37,16 @@ export class PlayerUI extends React.PureComponent<PlayerUIProps> {
     }
 
     private renderLabel(): React.ReactNode {
-        return <>{this.props.player.name} {this.renderScore()}</>
+        return <div className='flex-grow-1'>{this.props.player.name} {this.renderScore()}</div>
     }
 
-
-            // <div onClick={this.handleScore} className="d-flex justify-content-between align-items-start">
-            //     <h4>{this.props.player.name}</h4>
-            //         {this.renderScore()}
-            // </div>
     public render(): React.ReactNode {
         return (
-            <>
+            <ListGroupItem className='d-flex flex-row player-container'>
                 {this.renderButtonScoreDown()}
                 {this.renderLabel()}
                 {this.renderButtonScoreUp()}
-            </>
+            </ListGroupItem>
 
         );
     }

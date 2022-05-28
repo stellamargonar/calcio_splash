@@ -29,21 +29,22 @@ export class TeamUI extends React.PureComponent<TeamUIProps> {
     @boundMethod
     private renderPlayer(player: Player): React.ReactNode {
         return (
-            <ListGroup.Item key={`player-${player.pk}`} >
-                <PlayerUI player={player} onScore={this.handleGoalPlayer}/>
-            </ListGroup.Item>
+                <PlayerUI key={`player-${player.pk}`} player={player} onScore={this.handleGoalPlayer}/>
         );
+    }
+
+    private renderLabel(): React.ReactNode {
+        return <div className='flex-grow-1'><h1>{this.props.team.name} {this.props.score}</h1></div>;
     }
 
     public render(): React.ReactNode {
         return (
             <Card className='team-card'>
                 <Card.Body>
-                    <Card.Title className='d-grid gap-2'>
-                        <Button size='lg' variant='light' onClick={this.handleGoalTeamUp}>
-                            <h1>{this.props.team.name}</h1>
-                            <span className='pull-right'>{this.props.score}</span>
-                        </Button>
+                    <Card.Title className='d-grid gap-2 d-flex flex-row team-container'>
+                        <Button size='lg' variant='danger' onClick={this.handleGoalTeamDown}>-</Button>
+                        {this.renderLabel()}
+                        <Button size='lg' variant='success' onClick={this.handleGoalTeamUp}>+</Button>
                     </Card.Title>
                     <ListGroup variant="flush">
                         {this.props.team.players.map(this.renderPlayer)}

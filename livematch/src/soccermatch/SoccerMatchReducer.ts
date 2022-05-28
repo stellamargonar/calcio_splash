@@ -34,14 +34,13 @@ export class SoccerMatchReducer {
                     match: action.match,
                 };
 
-            case 'SOCCER_MATCH_SCORE':
-                console.log("SCORE", action);
+            case 'SOCCER_MATCH_SCORE': {
                 let currentMatch = clone(prevState.match),
                     isA = action.teamId === currentMatch.team_a.pk,
                     team = isA ? currentMatch.team_a : currentMatch.team_b;
 
-                currentMatch.score_a = currentMatch.score_a + (isA?  1 : 0);
-                currentMatch.score_b = currentMatch.score_b + (isA?  0 : 1);
+                currentMatch.score_a = currentMatch.score_a + (isA ? 1 : 0);
+                currentMatch.score_b = currentMatch.score_b + (isA ? 0 : 1);
 
                 let player = null;
                 if (action.playerId != null) {
@@ -53,7 +52,24 @@ export class SoccerMatchReducer {
                     ...prevState,
                     match: currentMatch,
                 }
+            }
+            case 'SOCCER_MATCH_RESET': {
+                let currentMatch = clone(prevState.match);
+                currentMatch.score_a = 0;
+                currentMatch.score_b = 0;
 
+                for (let player of currentMatch.team_a.players) {
+                    player.score = 0;
+                }
+                for (let player of currentMatch.team_b.players) {
+                    player.score = 0;
+                }
+
+                return {
+                    ...prevState,
+                    match: currentMatch,
+                }
+            }
             default:
                 return prevState;
         }

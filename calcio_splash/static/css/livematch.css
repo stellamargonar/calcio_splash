@@ -8,3 +8,23 @@
 .team-card .card-body {
     padding: 0;
 }
+
+.team-container {
+    margin-bottom: 10px;
+    line-height: 3;
+}
+
+.team-container .btn {
+    border-radius: 0;
+    width: 18%;
+}
+
+.player-container {
+    padding: 0 !important;
+    line-height: 3;
+}
+
+.player-container .btn {
+    border-radius: 0;
+    width: 18%;
+}
