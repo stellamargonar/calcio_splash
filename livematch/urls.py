@@ -9,5 +9,5 @@ router.register(r'livematch', views.MatchViewSet, basename='livematch')
 
 urlpatterns = [
     re_path(r"^api/", include(router.urls)),
-    re_path(r"^livematch/", login_required(views.index, login_url='/admin/login/')),
+    re_path(r"^livematch/", login_required(views.index, login_url='/admin/login/'), name='livematch'),
 ]
