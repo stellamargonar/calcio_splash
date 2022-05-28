@@ -249,3 +249,9 @@ table.group-rank {
     font-size: 12px;
 }
 
+.team li {
+    list-style-type: none;
+}
+.team ul {
+    padding-inline-start: 0;
+}
