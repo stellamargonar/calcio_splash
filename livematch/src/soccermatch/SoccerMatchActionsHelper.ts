@@ -2,6 +2,7 @@ import jQuery from 'jquery';
 import {Store} from "@reduxjs/toolkit";
 import {boundMethod} from 'autobind-decorator';
 import {createSingleton} from "../utils/SingletonProvider";
+import {initJQueryCSRF} from "../utils/Utils";
 
 export interface Player {
     pk: string;
@@ -34,12 +35,13 @@ export interface SoccerMatch {
 }
 
 export type SoccerMatchAction =
-    | {type: 'SOCCER_MATCH_SET_MATCHES', matches: SoccerMatch[]}
+    | {type: 'SOCCER_MATCH_SET_MATCHES', matches: SoccerMatch[], showEnded: boolean}
     | {type: 'SOCCER_MATCH_SET_MATCH', match: SoccerMatch}
     | {type: 'SOCCER_MATCH_SCORE', matchId: string, teamId: string, playerId?: string, remove?: boolean}
     | {type: 'SOCCER_MATCH_RESET', matchId: string}
     | {type: 'SOCCER_MATCH_LOCK', matchId: string}
-    | {type: 'SOCCER_MATCH_UNLOCK', matchId: string};
+    | {type: 'SOCCER_MATCH_UNLOCK', matchId: string}
+    | {type: 'SOCCER_MATCH_HIDE_ENDED', showEnded: boolean};
 
 
 export class SoccerMatchActionsHelper {
@@ -50,9 +52,9 @@ export class SoccerMatchActionsHelper {
     }
 
     @boundMethod
-    public fetchMatches(): void {
+    public fetchMatches(showEnded: boolean=true): void {
         jQuery.ajax('/api/livematch/')
-            .then((response ) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response}));
+            .then((response ) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded}));
     }
 
     @boundMethod
@@ -64,6 +66,7 @@ export class SoccerMatchActionsHelper {
     @boundMethod
     public score(matchId: string, teamId: string, playerId?: string, remove?: boolean): void {
         this.dispatch({type: 'SOCCER_MATCH_SCORE', matchId, teamId, playerId, remove});
+        initJQueryCSRF();
         jQuery.ajax('/api/livematch/' + matchId + '/score/', {
             method: 'POST',
             data: JSON.stringify({teamId, playerId, remove}),
@@ -74,6 +77,7 @@ export class SoccerMatchActionsHelper {
     @boundMethod
     public reset(matchId: string): void {
         this.dispatch({type: 'SOCCER_MATCH_RESET', matchId});
+        initJQueryCSRF();
         jQuery.ajax('/api/livematch/' + matchId + '/reset/', {
             method: 'POST',
             contentType: 'application/json'
@@ -84,6 +88,7 @@ export class SoccerMatchActionsHelper {
     public lock(matchId: string): void {
         console.log('lock');
         this.dispatch({type: 'SOCCER_MATCH_LOCK', matchId});
+        initJQueryCSRF();
         jQuery.ajax('/api/livematch/' + matchId + '/lock/', {
             method: 'POST',
             contentType: 'application/json'
@@ -93,10 +98,20 @@ export class SoccerMatchActionsHelper {
     @boundMethod
     public unlock(matchId: string): void {
         this.dispatch({type: 'SOCCER_MATCH_UNLOCK', matchId});
+        initJQueryCSRF();
         jQuery.ajax('/api/livematch/' + matchId + '/unlock/', {
             method: 'POST',
             contentType: 'application/json'
         }).then((response) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response}));
+    }
+
+    @boundMethod
+    public generateMatches(showEnded: boolean=true): void {
+        initJQueryCSRF();
+        jQuery.ajax('/api/livematch/generate/', {
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((response) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded}));
     }
 
     protected dispatch(action: SoccerMatchAction): void {

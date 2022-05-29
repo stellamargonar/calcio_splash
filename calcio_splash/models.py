@@ -62,6 +62,7 @@ class Match(models.Model):
     team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_b')
     match_date_time = models.DateTimeField()
 
+    # mai usato...
     next_match = models.ForeignKey('self', null=True, related_name='prev_matches', on_delete=models.SET_NULL)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='matches')
 
@@ -80,6 +81,14 @@ class Match(models.Model):
     @property
     def score_b(self) -> str:
         return self.goals.filter(team=self.team_b).count()
+
+    @property
+    def winner(self):
+        return self.team_a if self.score_a > self.score_b else self.team_b
+
+    @property
+    def loser(self):
+        return self.team_b if self.score_a > self.score_b else self.team_a
 
 
 class Goal(models.Model):
@@ -118,3 +127,27 @@ class BeachMatch(models.Model):
             'team_a_set_3': self.team_a_set_3,
             'team_b_set_3': self.team_b_set_3,
         }
+
+    @property
+    def winner(self):
+        set_a_won, set_b_won = self._compute_set_won()
+        return self.team_a if set_a_won > set_b_won else self.team_b
+
+    @property
+    def loser(self):
+        set_a_won, set_b_won = self._compute_set_won()
+        return self.team_a if set_a_won < set_b_won else self.team_b
+
+    def _compute_set_won(self) -> (int, int):
+        set_a_won = 0
+        set_b_won = 0
+        if self.team_a_set_3 is not None:
+            set_a_won += 1 if self.team_a_set_3 > self.team_b_set_3 else 0
+            set_b_won += 1 if self.team_b_set_3 > self.team_a_set_3 else 0
+        if self.team_a_set_2 is not None:
+            set_a_won += 1 if self.team_a_set_2 > self.team_b_set_2 else 0
+            set_b_won += 1 if self.team_b_set_2 > self.team_a_set_2 else 0
+        if self.team_a_set_1 is not None:
+            set_a_won += 1 if self.team_a_set_1 > self.team_b_set_1 else 0
+            set_b_won += 1 if self.team_b_set_1 > self.team_a_set_1 else 0
+        return set_a_won, set_b_won

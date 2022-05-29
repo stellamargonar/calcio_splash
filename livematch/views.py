@@ -5,7 +5,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
-from calcio_splash.models import Match, Team, Player, Goal
+from calcio_splash.helpers import GroupHelper
+from calcio_splash.models import Match, Team, Player, Goal, Tournament
 from livematch.serializers import MatchSerializer
 
 
@@ -13,13 +14,16 @@ def index(request):
     return render(request, "livematch/index.html")
 
 
+YEAR = 2019
+
+
 class MatchViewSet(ModelViewSet):
     serializer_class = MatchSerializer
-    http_method_names = ['get' , 'post']
+    http_method_names = ['get', 'post']
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return Match.objects.filter(group__tournament__edition_year=2019).all().order_by('match_date_time')
+        return Match.objects.filter(group__tournament__edition_year=YEAR).all().order_by('match_date_time')
 
     @action(detail=True, methods=['POST'])
     def score(self, request, pk):
@@ -62,3 +66,20 @@ class MatchViewSet(ModelViewSet):
         match.end_time = None
         match.save()
         return self.retrieve(request, pk)
+
+    @action(detail=False, methods=['POST'])
+    def generate(self, request):
+        # for tournament in Tournament.objects.filter(edition_year=YEAR):
+        #     if 'beach' in tournament.name.lower():
+        #         continue
+        #     try:
+        #         GroupHelper.generate_new_groups_for_calcio(tournament)
+        #     except:
+        #         pass
+
+        beach = Tournament.objects.filter(edition_year=YEAR, name__icontains='beach').first()
+        if beach:
+            GroupHelper.generate_new_groups_for_beach(beach)
+
+        return self.list(request)
+

@@ -24,9 +24,14 @@ export class SoccerMatchReducer {
 
         switch (action.type) {
             case 'SOCCER_MATCH_SET_MATCHES':
+                let currentMatches = action.matches;
+                if (!action.showEnded) {
+                    currentMatches = currentMatches.filter((match) => !match.ended);
+                }
+
                 return {
                     ...prevState,
-                    matches: action.matches,
+                    matches: currentMatches,
                 };
             case 'SOCCER_MATCH_SET_MATCH':
                 return {
