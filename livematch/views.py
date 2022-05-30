@@ -6,8 +6,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from calcio_splash.helpers import GroupHelper
-from calcio_splash.models import Match, Team, Player, Goal, Tournament
-from livematch.serializers import MatchSerializer
+from calcio_splash.models import Match, Team, Player, Goal, Tournament, BeachMatch
+from livematch.serializers import MatchSerializer, BeachMatchSerializer
 
 
 def index(request):
@@ -69,17 +69,65 @@ class MatchViewSet(ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def generate(self, request):
-        # for tournament in Tournament.objects.filter(edition_year=YEAR):
-        #     if 'beach' in tournament.name.lower():
-        #         continue
-        #     try:
-        #         GroupHelper.generate_new_groups_for_calcio(tournament)
-        #     except:
-        #         pass
+        for tournament in Tournament.objects.filter(edition_year=YEAR):
+            if 'beach' in tournament.name.lower():
+                continue
+            try:
+                GroupHelper.generate_new_groups_for_calcio(tournament)
+            except:
+                pass
 
+class BeachMatchViewSet(ModelViewSet):
+    serializer_class = BeachMatchSerializer
+    http_method_names = ['get', 'post']
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return BeachMatch.objects.filter(group__tournament__edition_year=YEAR).all().order_by('match_date_time')
+
+    @action(detail=True, methods=['POST'])
+    def score(self, request, pk):
+        match = self.get_object()
+        try:
+            team = Team.objects.get(pk=request.data['teamId'])
+        except Team.DoesNotExist:
+            raise ValidationError()
+
+        set_nr = request.data['set']
+        remove = request.data.get('remove', False)
+        to_add = 1 if not remove else -1
+        is_a = team == match.team_a
+
+        if set_nr == 1:
+            match.team_a_set_1 += to_add if is_a else 0
+            match.team_b_set_1 += to_add if not is_a else 0
+        elif set_nr == 2:
+            match.team_a_set_2 += to_add if is_a else 0
+            match.team_b_set_2 += to_add if not is_a else 0
+        else:
+            match.team_a_set_3 += to_add if is_a else 0
+            match.team_b_set_3 += to_add if not is_a else 0
+        match.save()
+
+        return self.retrieve(request, pk)
+
+    @action(detail=True, methods=['POST'])
+    def reset(self, request, pk):
+        match = self.get_object()
+        match.team_a_set_1 = 0
+        match.team_b_set_1 = 0
+        match.team_a_set_2 = 0
+        match.team_b_set_2 = 0
+        match.team_a_set_3 = 0
+        match.team_b_set_3 = 0
+        match.save()
+
+        return self.retrieve(request, pk)
+
+    @action(detail=False, methods=['POST'])
+    def generate(self, request):
         beach = Tournament.objects.filter(edition_year=YEAR, name__icontains='beach').first()
         if beach:
             GroupHelper.generate_new_groups_for_beach(beach)
-
         return self.list(request)
 

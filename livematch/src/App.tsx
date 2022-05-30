@@ -6,6 +6,9 @@ import {Container, ThemeProvider} from "react-bootstrap";
 import {BrowserRouter, Route, Routes, useParams} from "react-router-dom";
 import {SoccerMatchContainer} from "./soccermatch/SoccerMatchContainer";
 import {Provider} from "react-redux";
+import {BeachMatchListContainer} from "./beachmatch/BeachMatchListContainer";
+import {BeachMatchContainer} from "./beachmatch/BeachMatchContainer";
+import {getBeachMatchActionsHelper} from "./beachmatch/BeachMatchActionsHelper";
 
 
 export class LiveMatchApp extends React.Component<{}, RootState> {
@@ -13,6 +16,7 @@ export class LiveMatchApp extends React.Component<{}, RootState> {
         super(props);
         store.subscribe(() => this.setState(store.getState()));
         getSoccerMatchActionsHelper().setStore(store);
+        getBeachMatchActionsHelper().setStore(store);
         this.state = store.getState();
     }
 
@@ -24,6 +28,14 @@ export class LiveMatchApp extends React.Component<{}, RootState> {
         return <SoccerMatchListContainer />;
     }
 
+    private renderSingleBeachMatch(): React.ReactNode {
+        return <BeachMatchContainer />;
+    }
+
+    private renderBeachMatchList(): React.ReactNode {
+        return <BeachMatchListContainer />;
+    }
+
     public render(): React.ReactNode {
         return (
             <Provider store={store}>
@@ -33,6 +45,8 @@ export class LiveMatchApp extends React.Component<{}, RootState> {
                         <Routes>
                             <Route path='/livematch/play/:matchId' element={this.renderSingleMatch()}/>
                             <Route path='/livematch/' element={this.renderMatchList()}/>
+                            <Route path='/beachmatch/play/:matchId' element={this.renderSingleBeachMatch()}/>
+                            <Route path='/beachmatch/' element={this.renderBeachMatchList()}/>
                         </Routes>
                     </BrowserRouter>
                     </div>
