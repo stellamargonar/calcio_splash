@@ -14,7 +14,8 @@
                 <div class="row">
                     <table class="group-rank" width="75%">
                         <tr>
-                            <th>Reti Totali</th>
+                            <th style="width: 10%;"># Classifica</th>
+                            <th style="width: 10%;">Reti Totali</th>
                             <th>Giocatore</th>
                             <th style="width: 10%;">2017</th>
                             <th style="width: 10%;">2018</th>
@@ -23,7 +24,8 @@
                         {% for player in classifica %}
                             {% if player.total > 0 %}
                                 <tr>
-                                    <td><b>{{ player.total }}</b></td>
+                                    <td style="width: 10%;">{{ forloop.counter }}</td>
+                                    <td style="width: 10%;"><b>{{ player.total }}</b></td>
                                     <td><b>{{ player.player }}</b></td>
 
                                     <td style="width: 10%;">{{ player.2017 }}</td>
