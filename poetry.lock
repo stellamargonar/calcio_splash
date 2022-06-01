@@ -121,16 +121,15 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-dbbackup"
-version = "3.3.0"
+version = "4.0.0b0"
 description = "Management commands to help backup and restore a project database and media"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [package.dependencies]
-Django = ">=1.5"
+Django = ">=2.2"
 pytz = "*"
-six = "*"
 
 [[package]]
 name = "django-storages"
@@ -412,7 +411,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "40897e984ff4ddba4e8f759908251af56159780dfee54bbae72b114e89821625"
+content-hash = "1f262d633fee52796b8da6082fc34138680862cc528a3744fe2a9a4e99d1da66"
 
 [metadata.files]
 asgiref = [
@@ -529,7 +528,8 @@ django = [
     {file = "Django-4.0.4.tar.gz", hash = "sha256:4e8177858524417563cc0430f29ea249946d831eacb0068a1455686587df40b5"},
 ]
 django-dbbackup = [
-    {file = "django-dbbackup-3.3.0.tar.gz", hash = "sha256:bb109735cae98b64ad084e5b461b7aca2d7b39992f10c9ed9435e3ebb6fb76c8"},
+    {file = "django-dbbackup-4.0.0b0.tar.gz", hash = "sha256:aca81265dab91b3a73c3a730cf168d946621c28002f1321d4c33910ba7c63634"},
+    {file = "django_dbbackup-4.0.0b0-py3-none-any.whl", hash = "sha256:66a74679bfea3385a52110a7c7f14de63adf25a01be8e2de401d145988bd0abf"},
 ]
 django-storages = [
     {file = "django-storages-1.12.3.tar.gz", hash = "sha256:a475edb2f0f04c4f7e548919a751ecd50117270833956ed5bd585c0575d2a5e7"},
