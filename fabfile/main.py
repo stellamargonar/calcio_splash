@@ -4,7 +4,7 @@ from fabric.contrib.project import rsync_project
 from fabric.decorators import with_settings
 from fabric.state import env
 
-from fabfile.utils import settings_from_json, venv
+from fabfile.utils import settings_from_json
 
 s = settings_from_json()
 
@@ -26,22 +26,22 @@ def code_update_git():
 @with_settings(**s)
 def dependencies_update():
     """ update python dependencies"""
-    with cd(env.remote_path), venv():
-        run("poetry install")
+    with cd(env.remote_path):
+        run("poetry install --no-dev")
 
 
 @with_settings(**s)
 def db_migrate():
     """ apply DB migrations"""
-    with cd(env.remote_path), venv(), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
-        run("python manage.py migrate")
+    with cd(env.remote_path), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
+        run("poetry run python manage.py migrate")
 
 
 @with_settings(**s)
 def statics_update():
     """ publish updated static files to the configured storage"""
-    with cd(env.remote_path), venv(), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
-        run("python manage.py collectstatic --no-input")
+    with cd(env.remote_path), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
+        run("poetry run python manage.py collectstatic --no-input")
 
 
 @with_settings(**s)
@@ -73,7 +73,8 @@ def deploy_local():
 
 
 @with_settings(**s)
+# [sp] usage: fab manage:command=showmigrations
 def manage(command):
     """ execute a generic python manage.py <command>"""
-    with cd(env.remote_path), venv(), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
-        run("python manage.py " + command)
+    with cd(env.remote_path), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
+        run("poetry run python manage.py " + command)

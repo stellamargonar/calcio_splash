@@ -22,9 +22,3 @@ def settings_from_json():
     s.update(_settings_from_json_file('fabfile/settings-local.json', fail_silently=True))
 
     return s
-
-
-@contextmanager
-def venv():
-    with prefix('source {}'.format(os.path.join(env.virtualenv_path, 'bin/activate'))):
-        yield
