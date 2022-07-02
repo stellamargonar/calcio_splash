@@ -40,7 +40,7 @@ export class LiveMatchApp extends React.Component<{}, RootState> {
         return (
             <Provider store={store}>
                 <ThemeProvider>
-                    <div className='m-2'>
+                    <div className='m-2 app-container'>
                     <BrowserRouter>
                         <Routes>
                             <Route path='/livematch/play/:matchId' element={this.renderSingleMatch()}/>

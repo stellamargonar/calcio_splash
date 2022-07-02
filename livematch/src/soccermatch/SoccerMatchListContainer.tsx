@@ -1,15 +1,15 @@
 import * as React from "react";
 import {getSoccerMatchActionsHelper, SoccerMatch} from "./SoccerMatchActionsHelper";
-import {Badge, Button, ButtonGroup, Card, Stack} from "react-bootstrap";
+import {Button, ButtonGroup} from "react-bootstrap";
 import {boundMethod} from "autobind-decorator";
-import {Link, Navigate, useNavigate} from "react-router-dom";
 import {connect} from "react-redux";
 import {RootState} from "../AppStore";
-import {SoccerMatchContainerComponent, SoccerMatchContainerProps} from "./SoccerMatchContainer";
 import {SoccerMatchListUI} from "./SoccerMatchListUI";
+import {Loader} from "../Loader";
 
 export interface SoccerMatchListContainerProps {
     matches: SoccerMatch[];
+    isLoading: boolean;
 }
 
 export interface SoccerMatchListContainerState {
@@ -66,6 +66,13 @@ export class SoccerMatchListContainerComponent extends React.Component<SoccerMat
         );
     }
 
+    private renderLoader(): React.ReactNode {
+        if (!this.props.isLoading) {
+            return null;
+        }
+        return <Loader />;
+    }
+
     public render(): React.ReactNode {
         if (this.props.matches == null) {
             return <div>No soccer match available :(</div>;
@@ -73,6 +80,7 @@ export class SoccerMatchListContainerComponent extends React.Component<SoccerMat
         return (
             <div>
                 {this.renderHeader()}
+                {this.renderLoader()}
                 {this.props.matches.map(this.renderMatch)}
             </div>
         );
@@ -82,6 +90,7 @@ export class SoccerMatchListContainerComponent extends React.Component<SoccerMat
 export const SoccerMatchListContainer = connect(
     (store: RootState): SoccerMatchListContainerProps => ({
         matches: store?.soccerMatch?.matches,
+        isLoading: store?.soccerMatch?.isLoading,
     }),
 )(SoccerMatchListContainerComponent);
 

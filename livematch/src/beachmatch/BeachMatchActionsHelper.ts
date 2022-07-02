@@ -42,6 +42,7 @@ export type BeachMatchAction =
     | {type: 'BEACH_MATCH_SET_MATCH', match: BeachMatch}
     | {type: 'BEACH_MATCH_SCORE', matchId: string, teamId: string, set: number, remove?: boolean}
     | {type: 'BEACH_MATCH_RESET', matchId: string}
+    | {type: 'BEACH_MATCH_ADD_SET', matchId: string}
     | {type: 'BEACH_MATCH_LOCK', matchId: string}
     | {type: 'BEACH_MATCH_UNLOCK', matchId: string}
     | {type: 'BEACH_MATCH_HIDE_ENDED', showEnded: boolean};
@@ -82,6 +83,16 @@ export class BeachMatchActionsHelper {
         this.dispatch({type: 'BEACH_MATCH_RESET', matchId});
         initJQueryCSRF();
         jQuery.ajax('/api/beachmatch/' + matchId + '/reset/', {
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCH', match: response}));
+    }
+
+    @boundMethod
+    public addSet(matchId: string): void {
+        this.dispatch({type: 'BEACH_MATCH_ADD_SET', matchId});
+        initJQueryCSRF();
+        jQuery.ajax('/api/beachmatch/' + matchId + '/add-set/', {
             method: 'POST',
             contentType: 'application/json'
         }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCH', match: response}));

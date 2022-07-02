@@ -41,8 +41,8 @@ export type SoccerMatchAction =
     | {type: 'SOCCER_MATCH_RESET', matchId: string}
     | {type: 'SOCCER_MATCH_LOCK', matchId: string}
     | {type: 'SOCCER_MATCH_UNLOCK', matchId: string}
-    | {type: 'SOCCER_MATCH_HIDE_ENDED', showEnded: boolean};
-
+    | {type: 'SOCCER_MATCH_HIDE_ENDED', showEnded: boolean}
+    | {type: 'SOCCER_MATCH_SET_LOADING', isLoading: boolean};
 
 export class SoccerMatchActionsHelper {
     private store: Store;
@@ -52,15 +52,31 @@ export class SoccerMatchActionsHelper {
     }
 
     @boundMethod
+    private startLoading(): void {
+        this.dispatch({type: 'SOCCER_MATCH_SET_LOADING', isLoading: true});
+    }
+
+    @boundMethod
+    private stopLoading(): void {
+        this.dispatch({type: 'SOCCER_MATCH_SET_LOADING', isLoading: false});
+    }
+
+    @boundMethod
     public fetchMatches(showEnded: boolean=true): void {
+        this.startLoading();
         jQuery.ajax('/api/livematch/')
-            .then((response ) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded}));
+            .then((response ) => {
+                this.stopLoading();
+                this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded})
+            });
     }
 
     @boundMethod
     public fetchMatch(matchId: string): void {
         jQuery.ajax('/api/livematch/' + matchId)
-            .then((response ) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response}));
+            .then((response ) => {
+                this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response})
+            });
     }
 
     @boundMethod
@@ -86,7 +102,6 @@ export class SoccerMatchActionsHelper {
 
     @boundMethod
     public lock(matchId: string): void {
-        console.log('lock');
         this.dispatch({type: 'SOCCER_MATCH_LOCK', matchId});
         initJQueryCSRF();
         jQuery.ajax('/api/livematch/' + matchId + '/lock/', {
@@ -107,11 +122,15 @@ export class SoccerMatchActionsHelper {
 
     @boundMethod
     public generateMatches(showEnded: boolean=true): void {
+        this.startLoading();
         initJQueryCSRF();
         jQuery.ajax('/api/livematch/generate/', {
             method: 'POST',
             contentType: 'application/json'
-        }).then((response) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded}));
+        }).then((response) => {
+            this.stopLoading();
+            this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded})
+        });
     }
 
     protected dispatch(action: SoccerMatchAction): void {

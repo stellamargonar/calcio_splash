@@ -3,6 +3,7 @@ import {SoccerMatch, SoccerMatchAction} from "./SoccerMatchActionsHelper";
 export interface SoccerMatchState {
     matches: SoccerMatch[];
     match: SoccerMatch;
+    isLoading: boolean;
 }
 
 export function clone<T>(ob: T): T {
@@ -14,6 +15,7 @@ export class SoccerMatchReducer {
         return {
             match: null,
             matches: [],
+            isLoading: false,
         };
     }
 
@@ -98,6 +100,12 @@ export class SoccerMatchReducer {
                 return {
                     ...prevState,
                     matches: currentMatches,
+                }
+            }
+            case 'SOCCER_MATCH_SET_LOADING': {
+                return {
+                    ...prevState,
+                    isLoading: action.isLoading,
                 }
             }
             default:

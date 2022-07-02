@@ -14,7 +14,7 @@ def index(request):
     return render(request, "livematch/index.html")
 
 
-YEAR = 2019
+YEAR = 2022
 
 
 class MatchViewSet(ModelViewSet):
@@ -116,10 +116,26 @@ class BeachMatchViewSet(ModelViewSet):
         match = self.get_object()
         match.team_a_set_1 = 0
         match.team_b_set_1 = 0
-        match.team_a_set_2 = 0
-        match.team_b_set_2 = 0
-        match.team_a_set_3 = 0
-        match.team_b_set_3 = 0
+        match.team_a_set_2 = None
+        match.team_b_set_2 = None
+        match.team_a_set_3 = None
+        match.team_b_set_3 = None
+        match.save()
+
+        return self.retrieve(request, pk)
+
+    @action(detail=True, methods=['POST'], url_path='add-set')
+    def add_set(self, request, pk):
+        match = self.get_object()
+        if match.team_a_set_1 is None:
+            match.team_a_set_1 = 0
+            match.team_b_set_1 = 0
+        elif match.team_a_set_2 is None:
+            match.team_a_set_2 = 0
+            match.team_b_set_2 = 0
+        elif match.team_a_set_3 is None:
+            match.team_a_set_3 = 0
+            match.team_b_set_3 = 0
         match.save()
 
         return self.retrieve(request, pk)

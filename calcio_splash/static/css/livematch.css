@@ -24,7 +24,26 @@
     line-height: 3;
 }
 
-.player-container .btn {
+.player-container .btn, .beach-team-set .btn {
     border-radius: 0;
     width: 18%;
+}
+
+.loader {
+    position: relative;
+    left: 50%;
+}
+
+.beach-team-set {
+    justify-content: space-between;
+    line-height: 3;
+    padding: 0 !important;
+    margin-top: 20px;
+}
+
+.app-container {
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

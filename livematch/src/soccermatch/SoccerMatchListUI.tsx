@@ -1,6 +1,5 @@
 import * as React from "react";
-import {getSoccerMatchActionsHelper, Player, SoccerMatch, Team} from "./SoccerMatchActionsHelper";
-import {TeamUI} from "./TeamUI";
+import {getSoccerMatchActionsHelper, SoccerMatch} from "./SoccerMatchActionsHelper";
 import {boundMethod} from "autobind-decorator";
 import {Badge, Button, ButtonGroup, Card} from "react-bootstrap";
 import {Link} from "react-router-dom";

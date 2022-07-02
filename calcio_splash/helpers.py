@@ -2,7 +2,6 @@ from collections import OrderedDict
 from datetime import timedelta
 
 from django.db.models import Max, Sum
-from django.utils import timezone
 
 from calcio_splash.models import Tournament, Group, Match, Team, BeachMatch
 
@@ -165,7 +164,7 @@ class GroupHelper:
         def _create_match(group, team_a, team_b, finale=False):
             max_time = BeachMatch.objects.filter(group__tournament__edition_year=tournament.edition_year).aggregate(Max('match_date_time'))
             next_match_time = max_time['match_date_time__max'] + timedelta(minutes=20 if finale is False else 30)
-            BeachMatch.objects.create(group=group, team_a=team_a, team_b=team_b, match_date_time=next_match_time)
+            BeachMatch.objects.create(group=group, team_a=team_a, team_b=team_b, match_date_time=next_match_time, team_a_set_1=0, team_b_set_1=0)
 
         def _get_team(team: dict):
             return Team.objects.get(pk=team['pk'])
