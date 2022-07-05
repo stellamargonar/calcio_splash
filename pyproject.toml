@@ -6,7 +6,7 @@ authors = ["Stella Margonar <margonar@spaziodati.eu>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Django = "4.0.4"
+Django = "4.0.6"
 django-storages = "^1.12.3"
 django-dbbackup = "^4.0.0b0"
 boto3 = "^1.23.4"
