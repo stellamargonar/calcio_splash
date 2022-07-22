@@ -19,8 +19,15 @@ class Team(models.Model):
         default=MALE
     )
 
+    def _get_symbol_for_team(self):
+        if self.gender == Team.BEACH:
+            return '🏖'
+        if self.gender == Team.FEMALE:
+            return '♀'
+        return '♂'
+
     def __str__(self):
-        return self.name
+        return '{} {} ({})'.format(self._get_symbol_for_team(), self.name, self.year)
 
 
 class Player(models.Model):
@@ -71,6 +78,9 @@ class Match(models.Model):
     end_primo_tempo = models.DateTimeField(null=True, blank=True)
     start_secondo_tempo = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = 'Matches'
+
     def __str__(self):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
 
@@ -113,6 +123,9 @@ class BeachMatch(models.Model):
 
     team_a_set_3 = models.IntegerField(null=True, blank=True)
     team_b_set_3 = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Beach Matches'
 
     def __str__(self):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)

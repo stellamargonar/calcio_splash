@@ -11,5 +11,5 @@ router.register(r'beachmatch', views.BeachMatchViewSet, basename='beachmatch')
 urlpatterns = [
     re_path(r"^api/", include(router.urls)),
     re_path(r"^livematch/", login_required(views.index, login_url='/admin/login/'), name='livematch'),
-    re_path(r"^beachmatch/", login_required(views.index, login_url='/admin/login/'), name='livematch'),
+    re_path(r"^beachmatch/", login_required(views.index, login_url='/admin/login/'), name='beachmatch'),
 ]

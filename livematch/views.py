@@ -14,6 +14,7 @@ def index(request):
     return render(request, "livematch/index.html")
 
 
+# TODO rimuovere e mettere timezone now
 YEAR = 2022
 
 
@@ -76,6 +77,7 @@ class MatchViewSet(ModelViewSet):
                 GroupHelper.generate_new_groups_for_calcio(tournament)
             except:
                 pass
+
 
 class BeachMatchViewSet(ModelViewSet):
     serializer_class = BeachMatchSerializer

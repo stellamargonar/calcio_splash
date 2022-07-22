@@ -79,9 +79,12 @@ class CalcioSplashAdminSite(admin.AdminSite):
 admin_site = CalcioSplashAdminSite()
 
 
-class TeamYearFilter(SimpleListFilter):
+class TeamYearFilter(AbstractListFilterWithDefault):
     title = 'Filtra per anno'
+    default = timezone.now().year
+    default_name = str(timezone.now().year)
     parameter_name = 'year'
+    _zero_value = '*'
 
     def lookups(self, request, model_admin):
         years = Team.objects.values('year').distinct()
@@ -89,27 +92,30 @@ class TeamYearFilter(SimpleListFilter):
             (year['year'], year['year']) for year in years
         ]
 
-    def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(year=self.value())
-        return queryset
+    def queryset_filter(self, request, queryset, value):
+        return queryset.filter(year=value)
 
 
 class TeamAdmin(admin.ModelAdmin):
     inlines = (PlayerAdminInline,)
-    list_display = ['name']
-    list_filter = (TeamYearFilter,)
+    list_display = ['name', 'year', 'gender', 'nr_players']
+    list_filter = (TeamYearFilter, 'gender')
     search_fields = ('name', )
+
+    def nr_players(self, instance) -> int:
+        return instance.player.count()
+
+    nr_players.short_description = '# Players'
 
 
 admin_site.register(Team, TeamAdmin)
 
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'name']
-    ordering = ('name', 'surname')
+    list_display = ['surname', 'name', 'date_of_birth']
+    ordering = ('name', 'surname', 'date_of_birth')
     search_fields = ('name', 'surname')
-
+    filter_horizontal = ('teams', )
 
 admin_site.register(Player, PlayerAdmin)
 
@@ -205,9 +211,10 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ['get_datetime', 'get_team_a', 'get_team_b', 'get_score', 'get_tournament', 'get_group', ]
     form = MatchForm
     actions = ['go_to_match_page']
-    list_filter = (MatchDateListFilter, MatchEndedListFilter, 'group', MatchTournamentListFilter, MatchYearListFilter)
+    list_filter = (MatchDateListFilter, MatchEndedListFilter, MatchTournamentListFilter, MatchYearListFilter, 'group', )
     search_fields = ['team_a__name', 'team_b__name']
     ordering = ['match_date_time', ]
+    raw_id_fields = ['team_a', 'team_b', ]
 
     def get_tournament(self, obj):
         return '{} ({})'.format(obj.group.tournament.name, obj.group.tournament.edition_year)
@@ -302,7 +309,8 @@ admin_site.register(Group, GroupAdmin)
 
 
 class TournamentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'edition_year']
+    list_display = ['pk', 'edition_year', 'name', ]
+    list_filter = ('edition_year', )
 
 
 admin_site.register(Tournament, TournamentAdmin)
@@ -328,7 +336,7 @@ class GoalGroupListFilter(admin.SimpleListFilter):
 
 class GoalAdmin(admin.ModelAdmin):
     list_display = ['get_match', 'get_team', 'get_player']
-    list_filter = ('match', 'player')
+    search_fields = ('team__name', 'player__name', 'player__surname')
 
     def get_match(self, obj):
         return obj.match.team_a.name + obj.match.team_b.name
@@ -343,6 +351,9 @@ class GoalAdmin(admin.ModelAdmin):
 
 
 admin_site.register(Goal, GoalAdmin)
+
+
+# TODO da qui in poi probabilmente bisogna cancellare tutto
 
 
 class MatchGoalAdmin(TemplateView, admin.ModelAdmin):
