@@ -1,21 +1,30 @@
 import * as React from "react";
 import {getBeachMatchActionsHelper, BeachMatch, Team} from "./BeachMatchActionsHelper";
 import {boundMethod} from "autobind-decorator";
-import {Button, ButtonGroup} from "react-bootstrap";
+import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {BeachTeamUI} from "./BeachTeamUI";
+import {Link} from "react-router-dom";
 
 export interface BeachMatchUIProps {
     match: BeachMatch;
 }
 
-export class BeachMatchUI extends React.Component<BeachMatchUIProps, {}> {
+export interface BeachMatchUIState {
+    showModal: boolean;
+}
+
+export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchUIState> {
+    public state: BeachMatchUIState = {showModal: false};
+
     @boundMethod
     private handleScore(team: Team, set: number, remove?: boolean): void {
         getBeachMatchActionsHelper().score(this.props.match.pk, team.pk, set, remove);
     }
+
     @boundMethod
     private handleReset(): void {
         getBeachMatchActionsHelper().reset(this.props.match.pk);
+        this.hideModal();
     }
 
     @boundMethod
@@ -23,14 +32,63 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, {}> {
         getBeachMatchActionsHelper().addSet(this.props.match.pk)
     }
 
-    private renderResetButton(): React.ReactNode {
-        return <Button variant='secondary' onClick={this.handleReset}><i className='fa fa-exclamation-triangle' /> Reset</Button>
+    @boundMethod
+    private hideModal(): void {
+        this.setState({showModal: false});
     }
+
+    @boundMethod
+    private showModal(): void {
+        this.setState({showModal: true});
+    }
+
+    private renderResetButton(): React.ReactNode {
+        return (
+            <Button variant='secondary' size='lg' onClick={this.showModal}>
+                <i className='fa fa-exclamation-triangle'/>{' '}Reset
+            </Button>
+        );
+    }
+
     private renderAddSetButton(): React.ReactNode {
         if (!this.props.match.group.is_final) {
             return null;
         }
-        return <Button variant='primary' onClick={this.handleAddSet}><i className='fa fa-plus' /> Add set</Button>
+        return (
+            <Button size='lg' variant='success' onClick={this.handleAddSet}>
+                <i className='fa fa-plus'/>{' '}
+                Add set
+            </Button>
+        );
+    }
+
+    private renderGoBackButton(): React.ReactNode {
+        return (
+            <Link to={'/beachmatch/'} className='btn btn-primary btn-lg'>
+                <i className='fa fa-chevron-left'/>{' '}
+                Lista Partite
+            </Link>
+        );
+    }
+
+    private renderResetModal(): React.ReactNode {
+        return (
+            <Modal show={this.state.showModal} onHide={this.hideModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Vuoi resettare questa partita?</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <p>Attenzione, cancellerai tutti i punti di tutti i set della partita. Non si può tornare
+                        indietro.</p>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={this.hideModal}>Chiudi</Button>
+                    <Button variant="danger" onClick={this.handleReset}>Cancella tutto</Button>
+                </Modal.Footer>
+            </Modal>
+        );
     }
 
     public render(): React.ReactNode {
@@ -60,10 +118,12 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, {}> {
                 </div>
                 <div className='mt-4 d-flex justify-content-center'>
                     <ButtonGroup>
-                        {this.renderResetButton()}
+                        {this.renderGoBackButton()}
                         {this.renderAddSetButton()}
+                        {this.renderResetButton()}
                     </ButtonGroup>
                 </div>
+                {this.renderResetModal()}
             </>
         );
     }

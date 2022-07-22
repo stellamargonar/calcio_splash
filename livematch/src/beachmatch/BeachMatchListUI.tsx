@@ -49,7 +49,7 @@ export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}>
                         {this.renderScore()}
                     </Card.Text>
                     <ButtonGroup style={{float: 'right'}}>
-                            {this.renderPlayButton()}
+                        {this.renderPlayButton()}
                     </ButtonGroup>
                 </Card.Body>
             </Card>

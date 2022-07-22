@@ -2,6 +2,7 @@ import * as React from "react";
 import {boundMethod} from "autobind-decorator";
 import {Button, Card, ListGroup, ListGroupItem} from "react-bootstrap";
 import {Team} from "./BeachMatchActionsHelper";
+import {EllipsableContent} from "../EllipsableContent";
 
 
 export interface BeachTeamUIProps {
@@ -25,7 +26,7 @@ export class BeachTeamUI extends React.PureComponent<BeachTeamUIProps> {
     }
 
     private renderLabel(): React.ReactNode {
-        return <div className='flex-grow-1'><h1>{this.props.team.name}</h1></div>;
+        return <div className='flex-grow-1'><h1><EllipsableContent value={this.props.team.name} /></h1></div>;
     }
 
     private renderSet(set: number): React.ReactNode {
