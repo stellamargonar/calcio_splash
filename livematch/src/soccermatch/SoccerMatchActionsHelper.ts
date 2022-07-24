@@ -120,19 +120,6 @@ export class SoccerMatchActionsHelper {
         }).then((response) => this.dispatch({type: 'SOCCER_MATCH_SET_MATCH', match: response}));
     }
 
-    @boundMethod
-    public generateMatches(showEnded: boolean=true): void {
-        this.startLoading();
-        initJQueryCSRF();
-        jQuery.ajax('/api/livematch/generate/', {
-            method: 'POST',
-            contentType: 'application/json'
-        }).then((response) => {
-            this.stopLoading();
-            this.dispatch({type: 'SOCCER_MATCH_SET_MATCHES', matches: response, showEnded})
-        });
-    }
-
     protected dispatch(action: SoccerMatchAction): void {
         this.store.dispatch(action);
     }

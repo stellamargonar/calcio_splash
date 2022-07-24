@@ -98,16 +98,6 @@ export class BeachMatchActionsHelper {
         }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCH', match: response}));
     }
 
-
-    @boundMethod
-    public generateMatches(showEnded: boolean=true): void {
-        initJQueryCSRF();
-        jQuery.ajax('/api/beachmatch/generate/', {
-            method: 'POST',
-            contentType: 'application/json'
-        }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCHES', matches: response, showEnded}));
-    }
-
     protected dispatch(action: BeachMatchAction): void {
         this.store.dispatch(action);
     }

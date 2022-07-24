@@ -5,8 +5,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
-from calcio_splash.helpers import GroupHelper
-from calcio_splash.models import Match, Team, Player, Goal, Tournament, BeachMatch
+from calcio_splash.models import Match, Team, Player, Goal, BeachMatch
 from livematch.serializers import MatchSerializer, BeachMatchSerializer
 
 
@@ -67,16 +66,6 @@ class MatchViewSet(ModelViewSet):
         match.end_time = None
         match.save()
         return self.retrieve(request, pk)
-
-    @action(detail=False, methods=['POST'])
-    def generate(self, request):
-        for tournament in Tournament.objects.filter(edition_year=YEAR):
-            if 'beach' in tournament.name.lower():
-                continue
-            try:
-                GroupHelper.generate_new_groups_for_calcio(tournament)
-            except:
-                pass
 
 
 class BeachMatchViewSet(ModelViewSet):
@@ -141,11 +130,3 @@ class BeachMatchViewSet(ModelViewSet):
         match.save()
 
         return self.retrieve(request, pk)
-
-    @action(detail=False, methods=['POST'])
-    def generate(self, request):
-        beach = Tournament.objects.filter(edition_year=YEAR, name__icontains='beach').first()
-        if beach:
-            GroupHelper.generate_new_groups_for_beach(beach)
-        return self.list(request)
-

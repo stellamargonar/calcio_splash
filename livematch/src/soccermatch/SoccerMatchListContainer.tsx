@@ -30,11 +30,6 @@ export class SoccerMatchListContainerComponent extends React.Component<SoccerMat
     }
 
     @boundMethod
-    private handleGenerateNewMatches(): void {
-        getSoccerMatchActionsHelper().generateMatches(this.state.showEnded);
-    }
-
-    @boundMethod
     private renderMatch(match: SoccerMatch): React.ReactNode {
         return <SoccerMatchListUI key={match.pk} match={match}/>
     }
@@ -60,7 +55,6 @@ export class SoccerMatchListContainerComponent extends React.Component<SoccerMat
                 <h1 style={{color: 'white'}}>Partite torneo 2022</h1>
                 <ButtonGroup>
                     {this.renderHideEndedButton()}
-                    <Button variant='outline-light' onClick={this.handleGenerateNewMatches}>Genera prossime partite  <i className='fa fa-gear' /></Button>
                 </ButtonGroup>
             </div>
         );

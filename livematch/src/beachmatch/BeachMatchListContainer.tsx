@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Badge, Button, ButtonGroup, Card, Stack} from "react-bootstrap";
+import {Button, ButtonGroup} from "react-bootstrap";
 import {boundMethod} from "autobind-decorator";
 import {connect} from "react-redux";
 import {RootState} from "../AppStore";
@@ -28,11 +28,6 @@ export class BeachMatchListContainerComponent extends React.Component<BeachMatch
     }
 
     @boundMethod
-    private handleGenerateNewMatches(): void {
-        getBeachMatchActionsHelper().generateMatches(this.state.showEnded);
-    }
-
-    @boundMethod
     private renderMatch(match: BeachMatch): React.ReactNode {
         return <BeachMatchListUI key={match.pk} match={match}/>
     }
@@ -58,8 +53,6 @@ export class BeachMatchListContainerComponent extends React.Component<BeachMatch
                 <h1 style={{color: 'white'}}>Partite torneo 2022</h1>
                 <ButtonGroup>
                     {this.renderHideEndedButton()}
-                    <Button variant='outline-light' onClick={this.handleGenerateNewMatches}>Genera prossime partite <i
-                        className='fa fa-gear'/></Button>
                 </ButtonGroup>
             </div>
         );
