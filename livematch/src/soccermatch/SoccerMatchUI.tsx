@@ -4,6 +4,7 @@ import {TeamUI} from "./TeamUI";
 import {boundMethod} from "autobind-decorator";
 import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import classnames from 'classnames';
 
 export interface SoccerMatchUIProps {
     match: SoccerMatch;
@@ -11,10 +12,11 @@ export interface SoccerMatchUIProps {
 
 export interface SoccerMatchUIState {
     showModal: boolean;
+    invertedOrder: boolean;
 }
 
 export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, SoccerMatchUIState> {
-    public state:SoccerMatchUIState = {showModal: false};
+    public state:SoccerMatchUIState = {showModal: false, invertedOrder: false};
     @boundMethod
     private handleScore(team: Team, player: Player, remove?: boolean): void {
         getSoccerMatchActionsHelper().score(this.props.match.pk, team.pk, player?.pk, remove);
@@ -33,6 +35,15 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, SoccerMat
     @boundMethod
     private showModal(): void {
         this.setState({showModal: true});
+    }
+
+    @boundMethod
+    private handleSwitch(): void {
+        this.setState({invertedOrder: !this.state.invertedOrder})
+    }
+
+    private renderSwitchButton(): React.ReactNode {
+        return <Button variant='primary' size='lg' onClick={this.handleSwitch}><i className='fa fa-arrow-right-arrow-left' /> Switch</Button>
     }
 
     private renderResetButton(): React.ReactNode {
@@ -72,9 +83,15 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, SoccerMat
             return null;
         }
 
+        let classNames = classnames({
+            'd-flex justify-content-evenly': true,
+            'flex-row': !this.state.invertedOrder,
+            'flex-row-reverse': this.state.invertedOrder,
+        });
+
         return (
             <>
-                <div className='d-flex flex-row justify-content-evenly'>
+                <div className={classNames}>
                     <TeamUI key='team-a' team={this.props.match.team_a} score={this.props.match.score_a}
                             onScore={this.handleScore}/>
                     <TeamUI key='team-b' team={this.props.match.team_b} score={this.props.match.score_b}
@@ -84,6 +101,7 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, SoccerMat
                 <div className='mt-4 d-flex justify-content-center'>
                     <ButtonGroup>
                         {this.renderGoBackButton()}
+                        {this.renderSwitchButton()}
                         {this.renderResetButton()}
                     </ButtonGroup>
                 </div>

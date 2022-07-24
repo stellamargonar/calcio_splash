@@ -39,6 +39,10 @@ class Player(models.Model):
     def __str__(self):
         return '{} {}'.format(self.name, self.surname)
 
+    @property
+    def full_name(self):
+        return ' '.join([self.name, self.surname])
+
 
 class Tournament(models.Model):
     name = models.CharField(max_length=250)

@@ -2,6 +2,7 @@ import * as React from "react";
 import {Player} from "./SoccerMatchActionsHelper";
 import {boundMethod} from "autobind-decorator";
 import {Badge, Button, ListGroupItem} from "react-bootstrap";
+import {EllipsableContent} from "../EllipsableContent";
 
 
 export interface PlayerUIProps {
@@ -37,7 +38,7 @@ export class PlayerUI extends React.PureComponent<PlayerUIProps> {
     }
 
     private renderLabel(): React.ReactNode {
-        return <div className='flex-grow-1'>{this.props.player.name} {this.renderScore()}</div>
+        return <div className='flex-grow-1'><EllipsableContent value={this.props.player.full_name} /> {this.renderScore()}</div>
     }
 
     public render(): React.ReactNode {

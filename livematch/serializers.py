@@ -10,7 +10,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ['pk', 'name', 'score']
+        fields = ['pk', 'full_name', 'score']
 
     def get_score(self, instance: Player) -> int:
         match = self.parent.parent.parent.instance
@@ -19,6 +19,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         if isinstance(match, Match):
             return Goal.objects.filter(match=match, player=instance).count()
         return 0
+
 
 class TeamSerializer(serializers.ModelSerializer):
     players = PlayerSerializer(many=True, source='player')
