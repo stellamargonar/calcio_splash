@@ -14,7 +14,7 @@ def index(request):
 
 
 # TODO rimuovere e mettere timezone now
-YEAR = 2022
+YEAR = 2019
 
 
 class MatchViewSet(ModelViewSet):

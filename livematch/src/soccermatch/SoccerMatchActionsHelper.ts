@@ -62,7 +62,7 @@ export class SoccerMatchActionsHelper {
     }
 
     @boundMethod
-    public fetchMatches(showEnded: boolean=true): void {
+    public fetchMatches(showEnded: boolean=false): void {
         this.startLoading();
         jQuery.ajax('/api/livematch/')
             .then((response ) => {

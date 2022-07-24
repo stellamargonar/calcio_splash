@@ -17,10 +17,10 @@ export interface SoccerMatchListContainerState {
 }
 
 export class SoccerMatchListContainerComponent extends React.Component<SoccerMatchListContainerProps, SoccerMatchListContainerState> {
-    public state: SoccerMatchListContainerState = {showEnded: true};
+    public state: SoccerMatchListContainerState = {showEnded: false};
 
     componentDidMount() {
-        getSoccerMatchActionsHelper().fetchMatches();
+        getSoccerMatchActionsHelper().fetchMatches(this.state.showEnded);
     }
 
     @boundMethod

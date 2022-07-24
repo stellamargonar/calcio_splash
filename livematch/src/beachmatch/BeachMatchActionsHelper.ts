@@ -56,7 +56,7 @@ export class BeachMatchActionsHelper {
     }
 
     @boundMethod
-    public fetchMatches(showEnded: boolean=true): void {
+    public fetchMatches(showEnded: boolean=false): void {
         jQuery.ajax('/api/beachmatch/')
             .then((response ) => this.dispatch({type: 'BEACH_MATCH_SET_MATCHES', matches: response, showEnded}));
     }

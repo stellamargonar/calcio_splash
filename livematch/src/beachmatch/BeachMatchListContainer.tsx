@@ -15,10 +15,10 @@ export interface BeachMatchListContainerState {
 }
 
 export class BeachMatchListContainerComponent extends React.Component<BeachMatchListContainerProps, BeachMatchListContainerState> {
-    public state: BeachMatchListContainerState = {showEnded: true};
+    public state: BeachMatchListContainerState = {showEnded: false};
 
     componentDidMount() {
-        getBeachMatchActionsHelper().fetchMatches();
+        getBeachMatchActionsHelper().fetchMatches(this.state.showEnded);
     }
 
     @boundMethod

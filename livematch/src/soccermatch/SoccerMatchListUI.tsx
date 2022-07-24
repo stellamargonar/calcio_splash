@@ -63,7 +63,7 @@ export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {
                     {this.renderGroup()}
                 </Card.Header>
                 <Card.Body>
-                    <Card.Title>{this.props.match.team_a.name} vs {this.props.match.team_b.name}</Card.Title>
+                    <Card.Title>{this.props.match.team_a?.name} vs {this.props.match.team_b?.name}</Card.Title>
                     <Card.Text>
                         {this.renderScore()}
                     </Card.Text>
