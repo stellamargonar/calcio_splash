@@ -20,9 +20,6 @@
             <div class="inner">
               <h5>{{ player.name }} {{ player.surname }}</h5>
               <p class="subtitle">{{ player.role }}</p>
-{#              {% if player.goals.all|length > 0 %}#}
-{#              <p>Goal segnati {{ player.goals.all|length }}</p>#}
-{#              {% endif %}#}
             </div>
           </div>
         </div>
@@ -58,15 +55,53 @@
                 <div class="team-name">
                     <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
                 </div>
-
             </div>
         </div>
       </div>
 
       {% endfor %}
-      {% endif %}
     </div>
-    <!-- END TEAM MATCHES -->
+    {% endif %}
+
+      <!-- END TEAM MATCHES -->
+      {% if beach_matches %}
+
+          <div class="row">
+              {% for match in beach_matches %}
+                  <div class="white-match">
+                      <div class="col-sm-4 col-xs-5">
+                          <div class="match-left">
+                              <div class="team-name">
+                                  <h5><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></h5>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-4 col-xs-2">
+                          <div class="match-date">
+                              <h2>{{ match.team_a_set_1|default_if_none:"" }}
+                                  - {{ match.team_b_set_1|default_if_none:"" }}</h2>
+                              {% if match.group.is_final %}
+                                  <h2>{{ match.team_a_set_2|default_if_none:"" }}
+                                      - {{ match.team_b_set_2|default_if_none:"" }}</h2>
+                                  <h2>{{ match.team_a_set_3|default_if_none:"" }}
+                                      - {{ match.team_b_set_3|default_if_none:"" }}</h2>
+                              {% endif %}
+                              <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
+                          </div>
+                      </div>
+                      <div class="col-sm-4 col-xs-5">
+                          <div class="match-right">
+                              <div class="team-name">
+                                  <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+              {% endfor %}
+          </div>
+      {% endif %}
+
 
   </div>
 </section>

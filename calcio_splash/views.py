@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView
 
 from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch
@@ -24,14 +24,17 @@ class TeamDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
+        team_id = context['object'].id
         # Add in a QuerySet of all the books
-        context['players'] = Player.objects.filter(teams=context['object'].id)
-        context['matches'] = Match.objects.filter(team_a=context['object'].id)
-        context['matches'] = context['matches'] | Match.objects.filter(team_b=context['object'].id)
+        context['players'] = Player.objects.filter(teams=team_id)
+        context['matches'] = Match.objects.filter(Q(team_a=team_id) | Q(team_b=team_id))
         context['matches'].order_by('match_date_time')
         context['matches'] = [
             MatchHelper.build_match(match)[0] for match in context['matches']
         ]
+        context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id))
+        context['beach_matches'].order_by('match_date_time')
+
         return context
 
 
