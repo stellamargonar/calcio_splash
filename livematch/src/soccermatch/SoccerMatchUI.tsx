@@ -42,12 +42,34 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, SoccerMat
         this.setState({invertedOrder: !this.state.invertedOrder})
     }
 
+    @boundMethod
+    private handleLock(): void {
+        getSoccerMatchActionsHelper().lock(this.props.match.pk);
+    }
+
+    @boundMethod
+    private handleUnLock(): void {
+        getSoccerMatchActionsHelper().unlock(this.props.match.pk);
+    }
+
     private renderSwitchButton(): React.ReactNode {
         return <Button variant='primary' size='lg' onClick={this.handleSwitch}><i className='fa fa-arrow-right-arrow-left' /> Switch</Button>
     }
 
+    private renderLockButton(): React.ReactNode {
+        if (this.props.match.ended) {
+            return <Button variant='outline-secondary' onClick={this.handleUnLock}><i className='fa fa-lock'/> Sblocca</Button>
+        }
+
+        return <Button variant='outline-secondary' onClick={this.handleLock}><i className='fa fa-lock'/> Fine</Button>;
+    }
+
     private renderResetButton(): React.ReactNode {
-        return <Button variant='secondary' size="lg" onClick={this.showModal}><i className='fa fa-exclamation-triangle' /> Reset</Button>
+        return (
+            <Button variant='danger' size="lg" onClick={this.showModal} disabled={this.props.match.ended}>
+                <i className='fa fa-exclamation-triangle'/> Reset
+            </Button>
+        );
     }
 
     private renderGoBackButton(): React.ReactNode {
@@ -93,15 +115,16 @@ export class SoccerMatchUI extends React.Component<SoccerMatchUIProps, SoccerMat
             <>
                 <div className={classNames}>
                     <TeamUI key='team-a' team={this.props.match.team_a} score={this.props.match.score_a}
-                            onScore={this.handleScore}/>
+                            onScore={this.handleScore} disabled={this.props.match.ended} />
                     <TeamUI key='team-b' team={this.props.match.team_b} score={this.props.match.score_b}
-                            onScore={this.handleScore}/>
+                            onScore={this.handleScore}  disabled={this.props.match.ended} />
 
                 </div>
                 <div className='mt-4 d-flex justify-content-center'>
                     <ButtonGroup>
                         {this.renderGoBackButton()}
                         {this.renderSwitchButton()}
+                        {this.renderLockButton()}
                         {this.renderResetButton()}
                     </ButtonGroup>
                 </div>

@@ -12,6 +12,7 @@ export interface BeachTeamUIProps {
     score_set_3?: number;
     isFinal: boolean;
     onScore: (team: Team, currentSet: number, remove?: boolean) => void;
+    disabled: boolean;
 }
 
 
@@ -39,9 +40,9 @@ export class BeachTeamUI extends React.PureComponent<BeachTeamUIProps> {
         }
         return (
             <ListGroupItem className='d-flex flex-row beach-team-set'>
-                <Button size='lg' variant='danger' onClick={() => this.handleScoreDown(set)}>-</Button>
+                <Button size='lg' variant='danger' onClick={() => this.handleScoreDown(set)} disabled={this.props.disabled}>-</Button>
                 <h2>{score}</h2>
-                <Button size='lg' variant='success' onClick={() => this.handleScoreUp(set)}>+</Button>
+                <Button size='lg' variant='success' onClick={() => this.handleScoreUp(set)} disabled={this.props.disabled}>+</Button>
             </ListGroupItem>
         );
     }

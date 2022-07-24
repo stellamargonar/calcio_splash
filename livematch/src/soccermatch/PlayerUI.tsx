@@ -8,6 +8,7 @@ import {EllipsableContent} from "../EllipsableContent";
 export interface PlayerUIProps {
     player: Player;
     onScore: (player: Player, remove?: boolean) => void;
+    disabled: boolean;
 }
 
 export class PlayerUI extends React.PureComponent<PlayerUIProps> {
@@ -22,11 +23,11 @@ export class PlayerUI extends React.PureComponent<PlayerUIProps> {
     }
 
     private renderButtonScoreUp(): React.ReactNode {
-        return <Button className='btn-success' onClick={this.handleScoreUp}>+</Button>;
+        return <Button className='btn-success' onClick={this.handleScoreUp} disabled={this.props.disabled}>+</Button>;
     }
 
     private renderButtonScoreDown(): React.ReactNode {
-        return <Button className='btn-danger' onClick={this.handleScoreDown}>-</Button>;
+        return <Button className='btn-danger' onClick={this.handleScoreDown} disabled={this.props.disabled}>-</Button>;
     }
 
     private renderScore(): React.ReactNode {

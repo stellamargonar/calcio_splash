@@ -42,12 +42,29 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
         this.setState({showModal: true});
     }
 
+    @boundMethod
+    private handleLock(): void {
+        getBeachMatchActionsHelper().lock(this.props.match.pk);
+    }
+
+    @boundMethod
+    private handleUnLock(): void {
+        getBeachMatchActionsHelper().unlock(this.props.match.pk);
+    }
+
     private renderResetButton(): React.ReactNode {
         return (
-            <Button variant='secondary' size='lg' onClick={this.showModal}>
+            <Button variant='danger' size='lg' onClick={this.showModal}  disabled={this.props.match.ended}>
                 <i className='fa fa-exclamation-triangle'/>{' '}Reset
             </Button>
         );
+    }
+    private renderLockButton(): React.ReactNode {
+        if (this.props.match.ended) {
+            return <Button variant='outline-secondary' onClick={this.handleUnLock}><i className='fa fa-lock'/> Sblocca</Button>
+        }
+
+        return <Button variant='outline-secondary' onClick={this.handleLock}><i className='fa fa-lock'/> Fine</Button>;
     }
 
     private renderAddSetButton(): React.ReactNode {
@@ -55,7 +72,7 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
             return null;
         }
         return (
-            <Button size='lg' variant='success' onClick={this.handleAddSet}>
+            <Button size='lg' variant='success' onClick={this.handleAddSet} disabled={this.props.match.ended}>
                 <i className='fa fa-plus'/>{' '}
                 Add set
             </Button>
@@ -106,6 +123,7 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
                         score_set_3={this.props.match.team_a_set_3}
                         isFinal={this.props.match.group.is_final}
                         onScore={this.handleScore}
+                        disabled={this.props.match.ended}
                     />
                     <BeachTeamUI
                         team={this.props.match.team_b}
@@ -114,12 +132,14 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
                         score_set_3={this.props.match.team_b_set_3}
                         isFinal={this.props.match.group.is_final}
                         onScore={this.handleScore}
+                        disabled={this.props.match.ended}
                     />
                 </div>
                 <div className='mt-4 d-flex justify-content-center'>
                     <ButtonGroup>
                         {this.renderGoBackButton()}
                         {this.renderAddSetButton()}
+                        {this.renderLockButton()}
                         {this.renderResetButton()}
                     </ButtonGroup>
                 </div>

@@ -30,10 +30,14 @@ export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {
         if (this.props.match.score_a == 0 && this.props.match.score_b == 0) {
             return "-"
         }
-        return <span>{this.props.match.score_a} - {this.props.match.score_b}</span>
+        return <h4>{this.props.match.score_a} - {this.props.match.score_b}</h4>
     }
 
     private renderLockButton(): React.ReactNode {
+        if (this.props.match.team_a == null || this.props.match.team_b == null) {
+            return null;
+        }
+
         if (this.props.match.ended) {
             return <Button variant='outline-secondary' onClick={this.handleUnLock}>Sblocca <i className='fa fa-lock'/></Button>
         }
@@ -42,6 +46,10 @@ export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {
     }
 
     private renderPlayButton(): React.ReactNode {
+        if (this.props.match.team_a == null || this.props.match.team_b == null) {
+            return null;
+        }
+
         let disabledClass = this.props.match.ended ? 'disabled' : '';
         return (
             <Link
@@ -63,9 +71,8 @@ export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{this.props.match.team_a?.name} vs {this.props.match.team_b?.name}</Card.Title>
-                    <Card.Text>
-                        {this.renderScore()}
-                    </Card.Text>
+                    <br />
+                    {this.renderScore()}
                     <ButtonGroup style={{float: 'right'}}>
                             {this.renderLockButton()}
                             {this.renderPlayButton()}

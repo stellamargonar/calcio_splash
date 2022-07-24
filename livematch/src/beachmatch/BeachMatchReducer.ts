@@ -82,9 +82,14 @@ export class BeachMatchReducer {
                     }
                     return match;
                 });
+                let currentMatch = clone(prevState.match);
+                if (currentMatch != null && currentMatch.pk == action.matchId) {
+                    currentMatch.ended = true;
+                }
                 return {
                     ...prevState,
                     matches: currentMatches,
+                    match: currentMatch
                 }
             }
             case 'BEACH_MATCH_UNLOCK': {
@@ -94,10 +99,15 @@ export class BeachMatchReducer {
                     }
                     return match;
                 });
+                let currentMatch = clone(prevState.match);
+                if (currentMatch != null && currentMatch.pk == action.matchId) {
+                    currentMatch.ended = false;
+                }
 
                 return {
                     ...prevState,
                     matches: currentMatches,
+                    match: currentMatch,
                 }
             }
             case 'BEACH_MATCH_SET_LOADING': {

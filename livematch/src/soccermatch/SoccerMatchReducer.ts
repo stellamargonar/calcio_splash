@@ -84,8 +84,14 @@ export class SoccerMatchReducer {
                     }
                     return match;
                 });
+                let currentMatch = clone(prevState.match);
+                if (currentMatch != null && currentMatch.pk == action.matchId) {
+                    currentMatch.ended = true;
+                }
+
                 return {
                     ...prevState,
+                    match: currentMatch,
                     matches: currentMatches,
                 }
             }
@@ -96,9 +102,14 @@ export class SoccerMatchReducer {
                     }
                     return match;
                 });
+                let currentMatch = clone(prevState.match);
+                if (currentMatch != null && currentMatch.pk == action.matchId) {
+                    currentMatch.ended = false;
+                }
 
                 return {
                     ...prevState,
+                    match: currentMatch,
                     matches: currentMatches,
                 }
             }

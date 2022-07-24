@@ -30,11 +30,24 @@ export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}>
         if (this.props.match.team_a_set_1 == 0 && this.props.match.team_b_set_1 == 0) {
             return "-"
         }
-        return <span>{this.props.match.team_a_set_1} - {this.props.match.team_b_set_1}</span>
+        if (!this.props.match.group.is_final) {
+            return <h4>{this.props.match.team_a_set_1} - {this.props.match.team_b_set_1}</h4>
+        }
+        return (
+            <h4>
+                {this.props.match.team_a_set_1} - {this.props.match.team_b_set_1}<br/>
+                {this.props.match.team_a_set_2} - {this.props.match.team_b_set_2}<br/>
+                {this.props.match.team_a_set_3} - {this.props.match.team_b_set_3}
+            </h4>
+        );
     }
 
 
     private renderLockButton(): React.ReactNode {
+        if (this.props.match.team_a == null || this.props.match.team_b == null) {
+            return null;
+        }
+
         if (this.props.match.ended) {
             return <Button variant='outline-secondary' onClick={this.handleUnLock}>Sblocca <i className='fa fa-lock'/></Button>
         }
@@ -43,6 +56,10 @@ export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}>
     }
 
     private renderPlayButton(): React.ReactNode {
+        if (this.props.match.team_a == null || this.props.match.team_b == null) {
+            return null;
+        }
+
         let disabledClass = this.props.match.ended ? 'disabled' : '';
         return (
             <Link
@@ -64,9 +81,8 @@ export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}>
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{this.props.match.team_a?.name} vs {this.props.match.team_b?.name}</Card.Title>
-                    <Card.Text>
-                        {this.renderScore()}
-                    </Card.Text>
+                    <br />
+                    {this.renderScore()}
                     <ButtonGroup style={{float: 'right'}}>
                         {this.renderLockButton()}
                         {this.renderPlayButton()}
