@@ -53,6 +53,14 @@ class Tournament(models.Model):
     def __str__(self):
         return '{} ({})'.format(self.name, self.edition_year)
 
+    @property
+    def gender(self):
+        if self.team_1 is not None:
+            return self.team_1.gender
+        if "beach" in self.name.lower():
+            return Team.BEACH
+        return Team.MALE if "maschile" in self.name.lower() else Team.FEMALE
+
 
 class Group(models.Model):
     name = models.CharField(max_length=50)

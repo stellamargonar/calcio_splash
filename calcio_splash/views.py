@@ -132,8 +132,13 @@ class AlboView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object_list'] = [
+        context['calcio'] = [
             AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
+            if tournament.gender != Team.BEACH
+        ]
+        context['beach'] = [
+            AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
+            if tournament.gender == Team.BEACH
         ]
         return context
 

@@ -61,7 +61,6 @@
                         <li><a href="{% url 'tournament-detail' 9 %}">Femminile</a></li>
                         <li><a href="{% url 'tournament-detail' 10 %}">Beach Volley</a></li>
                         <li><a href="{% url 'matches' 2022 %}">Le Partite</a></li>
-                        <li><a href="{% url 'livematch' %}">Area Riservata</a></li>
                     </ul>
                 </li>
                 <li class="dropdown {% block header_menu_class_albo %}{% endblock %}">
@@ -84,6 +83,15 @@
                         <li><a href="{% url 'fuoriposto' %}">Chi Siamo</a></li>
                     </ul>
                 </li>
+                {% if user.is_authenticated %}
+                    <li class="dropdown {% block header_menu_class_private %}{% endblock %}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Area Riservata <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'livematch' %}">Calcio Splash</a></li>
+                            <li><a href="{% url 'beachmatch' %}">Beach Volley</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
 
             </ul>
         </div>
