@@ -223,10 +223,10 @@ class MatchAdmin(admin.ModelAdmin):
         return obj.group.name
 
     def get_team_a(self, obj):
-        return obj.team_a.name
+        return obj.team_a.name if obj.team_a else '-'
 
     def get_team_b(self, obj):
-        return obj.team_b.name
+        return obj.team_b.name if obj.team_b else '-'
 
     def get_score(self, obj):
         match, _ = MatchHelper.build_match(obj)

@@ -13,6 +13,9 @@ class GroupHelper:
             match, _ = MatchHelper.build_match(match)
             matches += [match]
 
+            if match.team_a is None or match.team_b is None:
+                continue
+
             team_a = teams.get(match.team_a.name, {})
             team_a['pk'] = match.team_a.pk
             team_a['goals_done'] = team_a.get('goals_done', 0) + match.team_a_score

@@ -15,19 +15,19 @@ class MatchForm(forms.ModelForm):
 
     class Meta:
         model = Match
-        exclude = ['next_match', '']
+        exclude = []
 
 
 class BeachMatchForm(MatchForm):
     class Meta:
         model = BeachMatch
-        exclude = ['next_match']
+        exclude = []
 
 
 class TeamForm(forms.ModelForm):
     class Meta:
         model = Match
-        exclude = ['next_match']
+        exclude = []
 
 
 class PlayerAdminInline(admin.TabularInline):

@@ -46,11 +46,14 @@
       <div class="white-match">
         <div class="col-sm-4 col-xs-5">
             <div class="match-left">
-                <!-- <div class="team-img hidden-xs">
-                    <a href="#"><img src="images/fixture-team1.png" width="80" height="77" alt=""></a>
-                </div> -->
                 <div class="team-name">
-                    <h5><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></h5>
+                    <h5>
+                        {% if match.team_a %}
+                            <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </h5>
                 </div>
             </div>
         </div>
@@ -68,11 +71,14 @@
         </div>
         <div class="col-sm-4 col-xs-5">
             <div class="match-right">
-              <!-- <div class="team-img hidden-xs">
-                  <a href="#"><img src="images/fixture-team2.png" width="64" height="84" alt=""></a>
-              </div> -->
                 <div class="team-name">
-                    <h5><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></h5>
+                    <h5>
+                        {% if match.team_b %}
+                            <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </h5>
                 </div>
 
             </div>

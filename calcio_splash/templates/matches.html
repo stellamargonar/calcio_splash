@@ -27,8 +27,20 @@
                         <tr>
                             <td>{{ match.match_date_time | date:" D d -  H:i" }}</td>
                             <td>{{ match.group.name }}</td>
-                            <td><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></td>
-                            <td><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></td>
+                            <td>
+                                {% if match.team_a %}
+                                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if match.team_b %}
+                                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if match.team_a_score is not None %}
                                     {{ match.team_a_score }} - {{ match.team_b_score }}
@@ -61,8 +73,20 @@
                         <tr>
                             <td>{{ match.match_date_time | date:" D d -  H:i" }}</td>
                             <td>{{ match.group.name }}</td>
-                            <td><a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a></td>
-                            <td><a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a></td>
+                            <td>
+                                {% if match.team_a %}
+                                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if match.team_b %}
+                                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if match.team_a_set_1 is not None %}
                                     {{ match.team_a_set_1 }} - {{ match.team_b_set_1 }}
