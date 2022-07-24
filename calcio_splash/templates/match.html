@@ -19,6 +19,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    {% if not is_beach %}
                                     <div class="col-xs-5">
                                         <h1>{{ match.team_a_score }}</h1>
                                     </div>
@@ -26,6 +27,7 @@
                                     <div class="col-xs-5">
                                         <h1>{{ match.team_b_score }}</h1>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -47,28 +49,56 @@
 
         <div class="container">
             <div class="row">
-                {% if match.goals %}
-                    <div class="col-xs-6">
-                        <ul class="team">
-                            <li><h5>Marcatori</h5></li>
-                            {% for goal in match.goals.all %}
-                                {% if goal.team.id == match.team_a.id %}
-                                    <li>{{ goal.player.name }} {{ goal.player.surname }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
+                {% if is_beach %}
+                    <div class="col-xs-5">
+                        <h1>{{ match.team_a_set_1|default_if_none:"" }}</h1>
                     </div>
+                    <div class="col-xs-2"><h1>-</h1></div>
+                    <div class="col-xs-5">
+                        <h1>{{ match.team_b_set_1|default_if_none:"" }}</h1>
+                    </div>
+                    {% if match.group.is_final %}
+                        <div class="col-xs-5">
+                            <h1>{{ match.team_a_set_2|default_if_none:"" }}</h1>
+                        </div>
+                        <div class="col-xs-2"><h1>-</h1></div>
+                        <div class="col-xs-5">
+                            <h1>{{ match.team_b_set_2|default_if_none:"" }}</h1>
+                        </div>
+                        <div class="col-xs-5">
+                            <h1>{{ match.team_a_set_3|default_if_none:"" }}</h1>
+                        </div>
+                        <div class="col-xs-2"><h1>-</h1></div>
+                        <div class="col-xs-5">
+                            <h1>{{ match.team_b_set_3|default_if_none:"" }}</h1>
+                        </div>
+                    {% endif %}
 
-                    <div class="col-xs-6 text-center">
-                        <ul class="team">
-                            <li><h5>Marcatori</h5></li>
-                            {% for goal in match.goals.all %}
-                                {% if goal.team.id == match.team_b.id %}
-                                    <li>{{ goal.player.name }} {{ goal.player.surname }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
+                {% else %}
+                    {% if match.goals %}
+                        <div class="col-xs-6">
+                            <ul class="team">
+                                <li><h5>Marcatori</h5></li>
+                                {% for goal in match.goals.all %}
+                                    {% if goal.team.id == match.team_a.id %}
+                                        <li>{{ goal.player.name }} {{ goal.player.surname }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="col-xs-6 text-center">
+                            <ul class="team">
+                                <li><h5>Marcatori</h5></li>
+                                {% for goal in match.goals.all %}
+                                    {% if goal.team.id == match.team_b.id %}
+                                        <li>{{ goal.player.name }} {{ goal.player.surname }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
                 {% endif %}
             </div>
         </div>

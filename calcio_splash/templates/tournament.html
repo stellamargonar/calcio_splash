@@ -65,13 +65,21 @@
             <th colspan="2">Risultato</th>
           </tr>
           {% for match in group.group_matches %}
-          <tr>
-            <td>{{match.team_a.name}}</td>
-            <td>{{match.team_b.name}}</td>
+              <tr>
+                  <td>{{ match.team_a.name }}</td>
+                  <td>{{ match.team_b.name }}</td>
 
-            <td>{{match.team_a_score}}</td>
-            <td>{{match.team_b_score}}</td>
-          </tr>
+                  {% if group.is_beach %}
+                      <td colspan="2">
+                          {{ match.team_a_set_1 }} - {{ match.team_b_set_1 }} /
+                          {{  match.team_a_set_2 }} - {{  match.team_b_set_2 }} /
+                          {{ match.team_a_set_3 }} - {{ match.team_b_set_3 }}
+                      </td>
+                  {% else %}
+                      <td>{{ match.team_a_score }}</td>
+                      <td>{{ match.team_b_score }}</td>
+                  {% endif %}
+              </tr>
           {% endfor %}
         </table>
       </div>

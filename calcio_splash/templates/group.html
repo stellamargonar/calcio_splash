@@ -59,13 +59,16 @@
         </div>
         <div class="col-sm-4 col-xs-2">
             <div class="match-date">
-                {% if match.start_time %}
-                <h2>{{ match.team_a_score }} - {{ match.team_b_score }}</h2>
-                {% endif %}
                 {% if group.is_beach %}
-                <b><a href="{% url 'beach-match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
+                    <h2>{{ match.team_a_set_1|default_if_none:"" }} - {{ match.team_b_set_1|default_if_none:""  }}</h2>
+                    {% if group.is_final %}
+                    <h2>{{ match.team_a_set_2|default_if_none:"" }} - {{ match.team_b_set_2|default_if_none:""  }}</h2>
+                    <h2>{{ match.team_a_set_3|default_if_none:"" }} - {{ match.team_b_set_3|default_if_none:""  }}</h2>
+                    {% endif %}
+                    <b><a href="{% url 'beach-match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
                 {% else %}
-                <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
+                    <h2>{{ match.team_a_score|default_if_none:""  }} - {{ match.team_b_score|default_if_none:""  }}</h2>
+                    <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
                 {% endif %}
             </div>
         </div>
