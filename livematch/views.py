@@ -13,8 +13,7 @@ def index(request):
     return render(request, "livematch/index.html")
 
 
-# TODO rimuovere e mettere timezone now
-YEAR = 2019
+YEAR = timezone.now().year
 
 
 class MatchViewSet(ModelViewSet):
