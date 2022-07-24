@@ -18,7 +18,6 @@ urlpatterns = [
     re_path(r'^raise_exception/$', views.exception),
 
     re_path(r'^admin/', admin_site.urls),
-    re_path(r'^teams/$', views.TeamListView.as_view(), name='teams'),
     re_path(r'^team/(?P<pk>\d+)$', views.TeamDetailView.as_view(), name='team-detail'),
     re_path(r'^match/(?P<pk>\d+)$', views.MatchDetailView.as_view(), name='match-detail'),
     re_path(r'^beachmatch/(?P<pk>\d+)$', views.BeachMatchDetailView.as_view(), name='beach-match-detail'),

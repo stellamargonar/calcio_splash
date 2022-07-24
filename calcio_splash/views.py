@@ -1,9 +1,8 @@
 from django.db.models import Count
-from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
 from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch
-from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BeachMatchHelper
+from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper
 
 
 def handler404(request, exception=None):
@@ -16,15 +15,6 @@ def handler500(request, exception=None):
     response = render(request, 'errors/500.html')
     response.status_code = 404
     return response
-
-
-class TeamListView(ListView):
-    model = Team
-    template_name = 'teams.html'
-    context_object_name = 'team_list'
-
-    def get_queryset(self):
-        return Team.objects.filter(year=timezone.now().year).all()
 
 
 class TeamDetailView(DetailView):
