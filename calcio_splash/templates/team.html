@@ -86,7 +86,7 @@
                                   <h2>{{ match.team_a_set_3|default_if_none:"" }}
                                       - {{ match.team_b_set_3|default_if_none:"" }}</h2>
                               {% endif %}
-                              <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
+                              <b><a href="{% url 'beach-match-detail' match.id %}">{{ match.match_date_time|date:"d/m  H:i" }}</a></b>
                           </div>
                       </div>
                       <div class="col-sm-4 col-xs-5">
