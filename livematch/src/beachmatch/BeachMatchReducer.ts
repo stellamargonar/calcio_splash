@@ -3,6 +3,7 @@ import {BeachMatch, BeachMatchAction} from "./BeachMatchActionsHelper";
 export interface BeachMatchState {
     matches: BeachMatch[];
     match: BeachMatch;
+    isLoading: boolean;
 }
 
 export function clone<T>(ob: T): T {
@@ -14,6 +15,7 @@ export class BeachMatchReducer {
         return {
             match: null,
             matches: [],
+            isLoading: false,
         };
     }
 
@@ -24,9 +26,14 @@ export class BeachMatchReducer {
 
         switch (action.type) {
             case 'BEACH_MATCH_SET_MATCHES':
+                let currentMatches = action.matches;
+                if (!action.showEnded) {
+                    currentMatches = currentMatches.filter((match) => !match.ended);
+                }
+
                 return {
                     ...prevState,
-                    matches: action.matches,
+                    matches: currentMatches,
                 };
             case 'BEACH_MATCH_SET_MATCH':
                 return {
@@ -68,7 +75,37 @@ export class BeachMatchReducer {
                     match: currentMatch,
                 }
             }
+            case 'BEACH_MATCH_LOCK': {
+                let currentMatches = clone(prevState.matches).map((match) => {
+                    if (match.pk == action.matchId) {
+                        match.ended = true;
+                    }
+                    return match;
+                });
+                return {
+                    ...prevState,
+                    matches: currentMatches,
+                }
+            }
+            case 'BEACH_MATCH_UNLOCK': {
+                let currentMatches = clone(prevState.matches).map((match) => {
+                    if (match.pk == action.matchId) {
+                        match.ended = false;
+                    }
+                    return match;
+                });
 
+                return {
+                    ...prevState,
+                    matches: currentMatches,
+                }
+            }
+            case 'BEACH_MATCH_SET_LOADING': {
+                return {
+                    ...prevState,
+                    isLoading: action.isLoading,
+                }
+            }
             default:
                 return prevState;
         }

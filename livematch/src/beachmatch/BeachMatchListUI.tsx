@@ -1,14 +1,24 @@
 import * as React from "react";
 import {boundMethod} from "autobind-decorator";
-import {Badge, ButtonGroup, Card} from "react-bootstrap";
+import {Badge, Button, ButtonGroup, Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {BeachMatch} from "./BeachMatchActionsHelper";
+import {BeachMatch, getBeachMatchActionsHelper} from "./BeachMatchActionsHelper";
 
 export interface BeachMatchListUIProps {
     match: BeachMatch;
 }
 
 export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}> {
+    @boundMethod
+    private handleLock(): void {
+        getBeachMatchActionsHelper().lock(this.props.match.pk);
+    }
+
+    @boundMethod
+    private handleUnLock(): void {
+        getBeachMatchActionsHelper().unlock(this.props.match.pk);
+    }
+
     @boundMethod
     private renderGroup(): React.ReactNode {
         let variants = ['secondary', 'success', 'danger', 'warning', 'info', 'dark'],
@@ -24,11 +34,20 @@ export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}>
     }
 
 
+    private renderLockButton(): React.ReactNode {
+        if (this.props.match.ended) {
+            return <Button variant='outline-secondary' onClick={this.handleUnLock}>Sblocca <i className='fa fa-lock'/></Button>
+        }
+
+        return <Button variant='outline-secondary' onClick={this.handleLock}>Fine <i className='fa fa-lock'/></Button>;
+    }
+
     private renderPlayButton(): React.ReactNode {
+        let disabledClass = this.props.match.ended ? 'disabled' : '';
         return (
             <Link
                 to={`/beachmatch/play/${this.props.match.pk}`}
-                className='btn btn-primary btn-lg'
+                className={`btn btn-primary btn-lg ${disabledClass}`}
             >
                 Gioca{' '}
                 <i className='fa fa-chevron-right'/>
@@ -49,6 +68,7 @@ export class BeachMatchListUI extends React.Component<BeachMatchListUIProps, {}>
                         {this.renderScore()}
                     </Card.Text>
                     <ButtonGroup style={{float: 'right'}}>
+                        {this.renderLockButton()}
                         {this.renderPlayButton()}
                     </ButtonGroup>
                 </Card.Body>

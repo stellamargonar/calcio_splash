@@ -134,6 +134,8 @@ class BeachMatch(models.Model):
     team_a_set_3 = models.IntegerField(null=True, blank=True)
     team_b_set_3 = models.IntegerField(null=True, blank=True)
 
+    ended = models.BooleanField(default=False)
+
     class Meta:
         verbose_name_plural = 'Beach Matches'
 

@@ -11,7 +11,6 @@ export interface SoccerMatchListUIProps {
 export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {}> {
     @boundMethod
     private handleLock(): void {
-        console.log('lock');
         getSoccerMatchActionsHelper().lock(this.props.match.pk);
     }
 

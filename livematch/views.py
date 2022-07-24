@@ -130,3 +130,17 @@ class BeachMatchViewSet(ModelViewSet):
         match.save()
 
         return self.retrieve(request, pk)
+
+    @action(detail=True, methods=['POST'])
+    def lock(self, request, pk):
+        match = self.get_object()
+        match.ended = True
+        match.save()
+        return self.retrieve(request, pk)
+
+    @action(detail=True, methods=['POST'])
+    def unlock(self, request, pk):
+        match = self.get_object()
+        match.ended = False
+        match.save()
+        return self.retrieve(request, pk)

@@ -62,7 +62,20 @@ class BeachMatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BeachMatch
-        fields = ['pk', 'team_a', 'team_b', 'date_time', 'group', 'team_a_set_1', 'team_b_set_1', 'team_a_set_2', 'team_b_set_2', 'team_a_set_3', 'team_b_set_3']
+        fields = [
+            'pk',
+            'team_a',
+            'team_b',
+            'date_time',
+            'group',
+            'team_a_set_1',
+            'team_b_set_1',
+            'team_a_set_2',
+            'team_b_set_2',
+            'team_a_set_3',
+            'team_b_set_3',
+            'ended',
+        ]
 
     def get_date_time(self, instance: Match) -> str:
         return instance.match_date_time.strftime('%a %-d - %H:%M')

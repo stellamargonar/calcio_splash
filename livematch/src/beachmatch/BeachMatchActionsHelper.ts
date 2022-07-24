@@ -23,18 +23,18 @@ export interface Group {
 }
 
 export interface BeachMatch {
-  pk: string;
-  team_a: Team;
-  team_b: Team;
-  date_time: string;
-  group: Group;
-  team_a_set_1: number;
-  team_b_set_1: number;
-  team_a_set_2: number;
-  team_b_set_2: number;
-  team_a_set_3: number;
-  team_b_set_3: number;
-
+    pk: string;
+    team_a: Team;
+    team_b: Team;
+    date_time: string;
+    group: Group;
+    team_a_set_1: number;
+    team_b_set_1: number;
+    team_a_set_2: number;
+    team_b_set_2: number;
+    team_a_set_3: number;
+    team_b_set_3: number;
+    ended: boolean;
 }
 
 export type BeachMatchAction =
@@ -45,7 +45,9 @@ export type BeachMatchAction =
     | {type: 'BEACH_MATCH_ADD_SET', matchId: string}
     | {type: 'BEACH_MATCH_LOCK', matchId: string}
     | {type: 'BEACH_MATCH_UNLOCK', matchId: string}
-    | {type: 'BEACH_MATCH_HIDE_ENDED', showEnded: boolean};
+    | {type: 'BEACH_MATCH_HIDE_ENDED', showEnded: boolean}
+    | {type: 'BEACH_MATCH_SET_LOADING', isLoading: boolean};
+
 
 
 export class BeachMatchActionsHelper {
@@ -56,9 +58,23 @@ export class BeachMatchActionsHelper {
     }
 
     @boundMethod
+    private startLoading(): void {
+        this.dispatch({type: 'BEACH_MATCH_SET_LOADING', isLoading: true});
+    }
+
+    @boundMethod
+    private stopLoading(): void {
+        this.dispatch({type: 'BEACH_MATCH_SET_LOADING', isLoading: false});
+    }
+
+    @boundMethod
     public fetchMatches(showEnded: boolean=false): void {
+        this.startLoading()
         jQuery.ajax('/api/beachmatch/')
-            .then((response ) => this.dispatch({type: 'BEACH_MATCH_SET_MATCHES', matches: response, showEnded}));
+           .then((response ) => {
+                this.stopLoading();
+                this.dispatch({type: 'BEACH_MATCH_SET_MATCHES', matches: response, showEnded})
+            });
     }
 
     @boundMethod
@@ -93,6 +109,27 @@ export class BeachMatchActionsHelper {
         this.dispatch({type: 'BEACH_MATCH_ADD_SET', matchId});
         initJQueryCSRF();
         jQuery.ajax('/api/beachmatch/' + matchId + '/add-set/', {
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCH', match: response}));
+    }
+
+
+    @boundMethod
+    public lock(matchId: string): void {
+        this.dispatch({type: 'BEACH_MATCH_LOCK', matchId});
+        initJQueryCSRF();
+        jQuery.ajax('/api/beachmatch/' + matchId + '/lock/', {
+            method: 'POST',
+            contentType: 'application/json'
+        }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCH', match: response}));
+    }
+
+    @boundMethod
+    public unlock(matchId: string): void {
+        this.dispatch({type: 'BEACH_MATCH_UNLOCK', matchId});
+        initJQueryCSRF();
+        jQuery.ajax('/api/beachmatch/' + matchId + '/unlock/', {
             method: 'POST',
             contentType: 'application/json'
         }).then((response) => this.dispatch({type: 'BEACH_MATCH_SET_MATCH', match: response}));

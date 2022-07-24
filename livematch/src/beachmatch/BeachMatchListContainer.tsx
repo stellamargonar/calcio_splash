@@ -5,9 +5,11 @@ import {connect} from "react-redux";
 import {RootState} from "../AppStore";
 import {BeachMatch, getBeachMatchActionsHelper} from "./BeachMatchActionsHelper";
 import {BeachMatchListUI} from "./BeachMatchListUI";
+import {Loader} from "../Loader";
 
 export interface BeachMatchListContainerProps {
     matches: BeachMatch[];
+    isLoading: boolean;
 }
 
 export interface BeachMatchListContainerState {
@@ -58,6 +60,14 @@ export class BeachMatchListContainerComponent extends React.Component<BeachMatch
         );
     }
 
+    private renderLoader(): React.ReactNode {
+        if (!this.props.isLoading) {
+            return null;
+        }
+        return <Loader />;
+    }
+
+
     public render(): React.ReactNode {
         if (this.props.matches == null) {
             return <div>No beach match available :(</div>;
@@ -65,6 +75,7 @@ export class BeachMatchListContainerComponent extends React.Component<BeachMatch
         return (
             <div>
                 {this.renderHeader()}
+                {this.renderLoader()}
                 {this.props.matches.map(this.renderMatch)}
             </div>
         );
@@ -74,6 +85,7 @@ export class BeachMatchListContainerComponent extends React.Component<BeachMatch
 export const BeachMatchListContainer = connect(
     (store: RootState): BeachMatchListContainerProps => ({
         matches: store?.beachMatch?.matches,
+        isLoading: store?.beachMatch?.isLoading,
     }),
 )(BeachMatchListContainerComponent);
 
