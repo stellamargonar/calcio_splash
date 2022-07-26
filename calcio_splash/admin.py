@@ -311,6 +311,7 @@ admin_site.register(Group, GroupAdmin)
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ['pk', 'edition_year', 'name', ]
     list_filter = ('edition_year', )
+    raw_id_fields = ('team_1', 'team_2', 'team_3', 'goalkeeper', 'top_scorer')
 
 
 admin_site.register(Tournament, TournamentAdmin)
