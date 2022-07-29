@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import sys
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -35,7 +38,6 @@ INSTALLED_APPS = [
     "calcio_splash.apps.CalcioSplashConfig",
     "storages",
     "dbbackup",
-    "raven.contrib.django.raven_compat",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -134,6 +136,11 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "/var/backups"}
 
 STATIC_URL = "/static/"
 
+
+# *************************************************************
+#  LOAD EXTRA SETTINGS (if needed)
+# *************************************************************
+
 local_settings = os.environ.get("DJANGO_EXTRA_SETTINGS")
 if local_settings:
     import importlib
@@ -142,3 +149,27 @@ if local_settings:
     local_settings_filename = os.path.basename(local_settings).replace(".py", "")
     sys.path.insert(0, local_settings_folder)
     globals().update(importlib.import_module(local_settings_filename).__dict__)
+
+
+# *************************************************************
+#  PUT HERE EVERYTHING THAT MIGHT CHANGE BASED ON EXTRA SETTINGS
+# *************************************************************
+
+SENTRY_DSN = os.environ.get("SENTRY_DSN")
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+        ],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=0.1,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+
