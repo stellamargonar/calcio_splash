@@ -4,6 +4,7 @@ import {boundMethod} from "autobind-decorator";
 import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {BeachTeamUI} from "./BeachTeamUI";
 import {Link} from "react-router-dom";
+import classnames from "classnames";
 
 export interface BeachMatchUIProps {
     match: BeachMatch;
@@ -11,10 +12,11 @@ export interface BeachMatchUIProps {
 
 export interface BeachMatchUIState {
     showModal: boolean;
+    invertedOrder: boolean;
 }
 
 export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchUIState> {
-    public state: BeachMatchUIState = {showModal: false};
+    public state: BeachMatchUIState = {showModal: false, invertedOrder: false};
 
     @boundMethod
     private handleScore(team: Team, set: number, remove?: boolean): void {
@@ -50,6 +52,15 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
     @boundMethod
     private handleUnLock(): void {
         getBeachMatchActionsHelper().unlock(this.props.match.pk);
+    }
+
+    @boundMethod
+    private handleSwitch(): void {
+        this.setState({invertedOrder: !this.state.invertedOrder})
+    }
+
+    private renderSwitchButton(): React.ReactNode {
+        return <Button variant='primary' size='lg' onClick={this.handleSwitch}><i className='fa fa-arrow-right-arrow-left' /> Switch</Button>
     }
 
     private renderResetButton(): React.ReactNode {
@@ -112,10 +123,15 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
         if (this.props.match == null) {
             return null;
         }
+        let classNames = classnames({
+            'd-flex justify-content-evenly': true,
+            'flex-row': !this.state.invertedOrder,
+            'flex-row-reverse': this.state.invertedOrder,
+        });
 
         return (
             <>
-                <div className='d-flex flex-row justify-content-evenly'>
+                <div className={classNames}>
                     <BeachTeamUI
                         team={this.props.match.team_a}
                         score_set_1={this.props.match.team_a_set_1}
@@ -139,6 +155,7 @@ export class BeachMatchUI extends React.Component<BeachMatchUIProps, BeachMatchU
                     <ButtonGroup>
                         {this.renderGoBackButton()}
                         {this.renderAddSetButton()}
+                        {this.renderSwitchButton()}
                         {this.renderLockButton()}
                         {this.renderResetButton()}
                     </ButtonGroup>

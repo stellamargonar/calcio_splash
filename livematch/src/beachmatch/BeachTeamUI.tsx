@@ -34,7 +34,7 @@ export class BeachTeamUI extends React.PureComponent<BeachTeamUIProps> {
         if (set > 1 && !this.props.isFinal) {
             return null;
         }
-        let score = (set === 1) ? this.props.score_set_1 ?? 0 : (set === 2) ? this.props.score_set_2 : this.props.score_set_3;
+        let score = (set === 1) ? this.props.score_set_1 || 0 : (set === 2) ? this.props.score_set_2 : this.props.score_set_3;
         if (score == null) {
             return null;
         }
