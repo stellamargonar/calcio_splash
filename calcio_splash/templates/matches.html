@@ -25,8 +25,14 @@
 
                     {% for match in match_list %}
                         <tr>
-                            <td>{{ match.match_date_time | date:" D d -  H:i" }}</td>
-                            <td>{{ match.group.name }}</td>
+                            <td>
+                                <a href="{% url 'match-detail' match.id %}">
+                                    {{ match.match_date_time | date:"D d - H:i" }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'group-detail' match.group.id %}">{{ match.group.name }}</a>
+                            </td>
                             <td>
                                 {% if match.team_a %}
                                     <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
@@ -71,8 +77,14 @@
 
                     {% for match in beach_match_list %}
                         <tr>
-                            <td>{{ match.match_date_time | date:" D d -  H:i" }}</td>
-                            <td>{{ match.group.name }}</td>
+                            <td>
+                                <a href="{% url 'beach-match-detail' match.id %}">
+                                    {{ match.match_date_time | date:"D d - H:i" }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'group-detail' match.group.id %}">{{ match.group.name }}</a>
+                            </td>
                             <td>
                                 {% if match.team_a %}
                                     <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
