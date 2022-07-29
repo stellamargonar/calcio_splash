@@ -167,6 +167,15 @@ class BeachMatch(models.Model):
         set_a_won, set_b_won = self._compute_set_won()
         return self.team_a if set_a_won < set_b_won else self.team_b
 
+    @property
+    def is_tie(self):
+        if not self.ended:
+            return None
+        set_a_won, set_b_won = self._compute_set_won()
+        # [sp] in a "final" match, ties can't happen; in a "girone" match, we only have one set, and a tie
+        # is represented by both teams winning no sets
+        return set_a_won == set_b_won == 0
+
     def _compute_set_won(self) -> (int, int):
         set_a_won = 0
         set_b_won = 0

@@ -62,8 +62,12 @@ class GroupHelper:
             team_a = teams.get(match.team_a.name, {})
             team_b = teams.get(match.team_b.name, {})
 
-            points_a = 3 if match.winner == match.team_a else 0
-            points_b = 3 if match.winner == match.team_b else 0
+            if match.is_tie:
+                points_a = 1
+                points_b = 1
+            else:
+                points_a = 3 if match.winner == match.team_a else 0
+                points_b = 3 if match.winner == match.team_b else 0
 
             team_a['points'] = team_a.get('points', 0) + points_a
             team_a['pk'] = match.team_a.pk
