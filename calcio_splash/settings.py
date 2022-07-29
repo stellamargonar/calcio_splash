@@ -136,6 +136,8 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "/var/backups"}
 
 STATIC_URL = "/static/"
 
+SENTRY_DSN = None  # set in DJANGO_EXTRA_SETTINGS file
+
 
 # *************************************************************
 #  LOAD EXTRA SETTINGS (if needed)
@@ -155,7 +157,6 @@ if local_settings:
 #  PUT HERE EVERYTHING THAT MIGHT CHANGE BASED ON EXTRA SETTINGS
 # *************************************************************
 
-SENTRY_DSN = os.environ.get("SENTRY_DSN")
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
