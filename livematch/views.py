@@ -89,14 +89,14 @@ class BeachMatchViewSet(ModelViewSet):
         is_a = team == match.team_a
 
         if set_nr == 1:
-            match.team_a_set_1 += to_add if is_a else 0
-            match.team_b_set_1 += to_add if not is_a else 0
+            match.team_a_set_1 = (match.team_a_set_1 or 0) + (to_add if is_a else 0)
+            match.team_b_set_1 = (match.team_b_set_1 or 0) + (to_add if not is_a else 0)
         elif set_nr == 2:
-            match.team_a_set_2 += to_add if is_a else 0
-            match.team_b_set_2 += to_add if not is_a else 0
+            match.team_a_set_2 = (match.team_a_set_2 or 0) + (to_add if is_a else 0)
+            match.team_b_set_2 = (match.team_b_set_2 or 0) + (to_add if not is_a else 0)
         else:
-            match.team_a_set_3 += to_add if is_a else 0
-            match.team_b_set_3 += to_add if not is_a else 0
+            match.team_a_set_3 = (match.team_a_set_3 or 0) + (to_add if is_a else 0)
+            match.team_b_set_3 = (match.team_b_set_3 or 0) + (to_add if not is_a else 0)
         match.save()
 
         return self.retrieve(request, pk)
