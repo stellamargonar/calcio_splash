@@ -44,15 +44,16 @@ export class SoccerMatchReducer {
             case 'SOCCER_MATCH_SCORE': {
                 let currentMatch = clone(prevState.match),
                     isA = action.teamId === currentMatch.team_a.pk,
-                    team = isA ? currentMatch.team_a : currentMatch.team_b;
+                    team = isA ? currentMatch.team_a : currentMatch.team_b,
+                    diff = (action.remove) ? -1 : 1
 
-                currentMatch.score_a = currentMatch.score_a + (isA ? 1 : 0);
-                currentMatch.score_b = currentMatch.score_b + (isA ? 0 : 1);
+                currentMatch.score_a = currentMatch.score_a + (isA ? diff : 0);
+                currentMatch.score_b = currentMatch.score_b + (isA ? 0 : diff);
 
                 let player = null;
                 if (action.playerId != null) {
                     player = team.players.find((p) => p.pk === action.playerId);
-                    player.score += 1;
+                    player.score += diff;
                 }
 
                 return {

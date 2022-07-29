@@ -43,17 +43,18 @@ export class BeachMatchReducer {
 
             case 'BEACH_MATCH_SCORE': {
                 let currentMatch = clone(prevState.match),
-                    isA = action.teamId === currentMatch.team_a.pk;
+                    isA = action.teamId === currentMatch.team_a.pk,
+                    diff = (action.remove) ? -1 : 1;
 
                 if (action.set == 1) {
-                    currentMatch.team_a_set_1 = currentMatch.team_a_set_1 + (isA ? 1 : 0);
-                    currentMatch.team_b_set_1 = currentMatch.team_b_set_1 + (isA ? 0 : 1);
+                    currentMatch.team_a_set_1 = currentMatch.team_a_set_1 + (isA ? diff : 0);
+                    currentMatch.team_b_set_1 = currentMatch.team_b_set_1 + (isA ? 0 : diff);
                 } else if (action.set == 2) {
-                    currentMatch.team_a_set_2 = currentMatch.team_a_set_2 + (isA ? 1 : 0);
-                    currentMatch.team_b_set_2 = currentMatch.team_b_set_2 + (isA ? 0 : 1);
+                    currentMatch.team_a_set_2 = currentMatch.team_a_set_2 + (isA ? diff : 0);
+                    currentMatch.team_b_set_2 = currentMatch.team_b_set_2 + (isA ? 0 : diff);
                 } else {
-                    currentMatch.team_a_set_3 = currentMatch.team_a_set_3 + (isA ? 1 : 0);
-                    currentMatch.team_b_set_3 = currentMatch.team_b_set_3 + (isA ? 0 : 1);
+                    currentMatch.team_a_set_3 = currentMatch.team_a_set_3 + (isA ? diff : 0);
+                    currentMatch.team_b_set_3 = currentMatch.team_b_set_3 + (isA ? 0 : diff);
                 }
 
                 return {
