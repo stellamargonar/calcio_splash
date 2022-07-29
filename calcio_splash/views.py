@@ -27,13 +27,11 @@ class TeamDetailView(DetailView):
         team_id = context['object'].id
         # Add in a QuerySet of all the books
         context['players'] = Player.objects.filter(teams=team_id)
-        context['matches'] = Match.objects.filter(Q(team_a=team_id) | Q(team_b=team_id))
-        context['matches'].order_by('match_date_time')
+        context['matches'] = Match.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by('match_date_time')
         context['matches'] = [
             MatchHelper.build_match(match)[0] for match in context['matches']
         ]
-        context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id))
-        context['beach_matches'].order_by('match_date_time')
+        context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by('match_date_time')
 
         return context
 

@@ -20,17 +20,23 @@
           <tr>
             <th>&nbsp;</th>
             <th>Punti</th>
+            {% if not group.is_beach %}
             <th>Goal fatti</th>
             <th>Goal subiti</th>
             <th>Diff reti</th>
+            {% endif %}
           </tr>
           {% for team_name, team in group.teams.items %}
           <tr>
-            <td>{{team_name}}</td>
+            <td>
+                <a href="{% url 'team-detail' team.pk %}">{{ team_name }}</a>
+            </td>
             <td>{{team.points}}</td>
+            {% if not group.is_beach %}
             <td>{{team.goals_done}}</td>
             <td>{{team.goals_taken}}</td>
             <td>{{team.goals_diff}}</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </table>

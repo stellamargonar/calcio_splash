@@ -155,11 +155,15 @@ class BeachMatch(models.Model):
 
     @property
     def winner(self):
+        if not self.ended:
+            return None
         set_a_won, set_b_won = self._compute_set_won()
         return self.team_a if set_a_won > set_b_won else self.team_b
 
     @property
     def loser(self):
+        if not self.ended:
+            return None
         set_a_won, set_b_won = self._compute_set_won()
         return self.team_a if set_a_won < set_b_won else self.team_b
 

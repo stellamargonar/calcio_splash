@@ -42,7 +42,9 @@
           </tr>
           {% for team_name, team in group.teams.items %}
           <tr>
-            <td>{{team.name}}</td>
+            <td>
+                <a href="{% url 'team-detail' team.pk %}">{{team.name}}</a>
+            </td>
             <td>{{team.points}}</td>
             {% if not group.is_beach %}
             <td>{{team.goals_done}}</td>
