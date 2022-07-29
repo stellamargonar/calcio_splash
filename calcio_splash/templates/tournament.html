@@ -73,9 +73,11 @@
 
                   {% if group.is_beach %}
                       <td colspan="2">
-                          {{ match.team_a_set_1 }} - {{ match.team_b_set_1 }} /
-                          {{  match.team_a_set_2 }} - {{  match.team_b_set_2 }} /
-                          {{ match.team_a_set_3 }} - {{ match.team_b_set_3 }}
+                          {{ match.team_a_set_1|default_if_none:"" }} - {{ match.team_b_set_1|default_if_none:"" }} /
+                          {{ match.team_a_set_2|default_if_none:"" }} - {{ match.team_b_set_2|default_if_none:"" }}
+                          {% if match.team_a_set_3 != None and match.team_b_set_3 != None %}
+                              / {{ match.team_a_set_3|default_if_none:"" }} - {{ match.team_b_set_3|default_if_none:"" }}
+                          {% endif %}
                       </td>
                   {% else %}
                       <td>{{ match.team_a_score }}</td>

@@ -119,8 +119,8 @@ class Goal(models.Model):
 
 
 class BeachMatch(models.Model):
-    team_a = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_a')
-    team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_b')
+    team_a = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_a', null=True, blank=True)
+    team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_b', null=True, blank=True)
     match_date_time = models.DateTimeField()
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='beach_matches')

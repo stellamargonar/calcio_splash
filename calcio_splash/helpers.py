@@ -56,6 +56,9 @@ class GroupHelper:
         for match in group.beach_matches.all().order_by('match_date_time'):
             matches += [match]
 
+            if match.team_a is None or match.team_b is None:
+                continue
+
             team_a = teams.get(match.team_a.name, {})
             team_b = teams.get(match.team_b.name, {})
 
