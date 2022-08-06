@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django.views.generic import TemplateView
 from django.http import JsonResponse, HttpResponseServerError, HttpResponseRedirect
@@ -77,6 +79,8 @@ class CalcioSplashAdminSite(admin.AdminSite):
 
 
 admin_site = CalcioSplashAdminSite()
+
+admin_site.register(User, UserAdmin)
 
 
 class TeamYearFilter(AbstractListFilterWithDefault):

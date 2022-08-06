@@ -48,7 +48,7 @@ class MatchSerializer(serializers.ModelSerializer):
         fields = ['pk', 'team_a', 'team_b', 'score_a', 'score_b', 'date_time', 'group', 'ended']
 
     def get_date_time(self, instance: Match) -> str:
-        return instance.match_date_time.strftime('%a %-d - %H:%M')
+        return instance.match_date_time.isoformat()
 
     def get_ended(self, instance: Match) -> bool:
         return instance.end_time is not None
@@ -78,4 +78,4 @@ class BeachMatchSerializer(serializers.ModelSerializer):
         ]
 
     def get_date_time(self, instance: Match) -> str:
-        return instance.match_date_time.strftime('%a %-d - %H:%M')
+        return instance.match_date_time.isoformat()

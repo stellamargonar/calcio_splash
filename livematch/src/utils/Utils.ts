@@ -23,3 +23,20 @@ export function getCookie(name: string): string {
     }
     return cookieValue;
 }
+
+
+const days = [
+  'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat'
+]
+
+
+export function formatDate(strDate: string): string {
+    let date = new Date(strDate);
+    return `${days[date.getDay()]} - ${date.toLocaleTimeString().substring(0, 5)}`
+}

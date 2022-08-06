@@ -3,6 +3,7 @@ import {getSoccerMatchActionsHelper, SoccerMatch} from "./SoccerMatchActionsHelp
 import {boundMethod} from "autobind-decorator";
 import {Badge, Button, ButtonGroup, Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import { formatDate } from "../utils/Utils";
 
 export interface SoccerMatchListUIProps {
     match: SoccerMatch;
@@ -66,7 +67,7 @@ export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {
         return (
             <Card key={`match-${this.props.match.pk}`} className='mb-4'>
                 <Card.Header className='d-flex justify-content-between'>
-                    <h5>{this.props.match.date_time}</h5>
+                    <h5>{formatDate(this.props.match.date_time)}</h5>
                     {this.renderGroup()}
                 </Card.Header>
                 <Card.Body>
