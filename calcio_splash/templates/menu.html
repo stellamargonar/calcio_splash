@@ -1,0 +1,54 @@
+<!-- Collect the nav links, forms, and other content for toggling -->
+<div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+    <ul class="nav navbar-nav">
+        <li class="{% block header_menu_class_home %}{% endblock %}">
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+
+        {%  if MODE_TOURNAMENT %}
+            <li class="dropdown {% block header_menu_class_tournament %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Torneo <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'tournament-detail' 12 %}">Maschile</a></li>
+                    <li><a href="{% url 'tournament-detail' 13 %}">Femminile</a></li>
+                    <li><a href="{% url 'tournament-detail' 14 %}">Beach Volley</a></li>
+                    <li><a href="{% url 'matches' 2023 %}">Le Partite</a></li>
+                </ul>
+            </li>
+        {%  endif %}
+
+        <li class="dropdown {% block header_menu_class_albo %}{% endblock %}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edizione passate <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'albomarcatori' 'M' %}">Albo d'oro Maschile</a></li>
+                <li><a href="{% url 'albomarcatori' 'F' %}">Albo d'oro Femminile</a></li>
+
+                <li><a href="{% url 'albo' 2022 %}">Edizione 2022</a></li>
+                <li><a href="{% url 'albo' 2019 %}">Edizione 2019</a></li>
+                <li><a href="{% url 'albo' 2018 %}">Edizione 2018</a></li>
+                <li><a href="{% url 'albo' 2017 %}">Edizione 2017</a></li>
+
+            </ul>
+        </li>
+        <li class="dropdown {% block header_menu_class_info %}{% endblock %}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Info <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% if MODE_TOURNAMENT %}
+                    <li><a href="{% url 'regulation' %}">Regolamento</a></li>
+                    <li><a href="{% url 'regulation-beach' %}">Regolamento Beach Volley</a></li>
+                    <li><a href="{% url 'iscrizioni' %}">Iscrizioni</a></li>
+                {%  endif %}
+                <li><a href="{% url 'fuoriposto' %}">Chi Siamo</a></li>
+            </ul>
+        </li>
+        {% if user.is_authenticated %}
+            <li class="dropdown {% block header_menu_class_private %}{% endblock %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Area Riservata <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'livematch' %}">Calcio Splash</a></li>
+                    <li><a href="{% url 'beachmatch' %}">Beach Volley</a></li>
+                </ul>
+            </li>
+        {% endif %}
+    </ul>
+</div>

@@ -70,6 +70,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "calcio_splash.context_processor.website_mode",
             ],
         },
     },
@@ -174,3 +175,6 @@ if SENTRY_DSN:
         send_default_pii=True
     )
 
+# "tournament": da usare da maggio a fine torneo, mostra le info della prossima edizione, moduli da scaricare, squadre, partite...
+# default = tutto il resto dell'anno, nasconde info e moduli, partite, lascia solo wall of fame e classifiche.
+WEBSITE_MODE = "default"  # "tournament"
