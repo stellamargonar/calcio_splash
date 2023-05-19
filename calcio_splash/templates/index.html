@@ -3,97 +3,118 @@
 {% block header_menu_class_home %}active{% endblock %}
 
 {% block header_container %}
-<section id="intro" class="intro">
+    <section id="intro" class="intro">
 
-  <div class="slogan">
-    <h2>CALCIO SPLASH ALA</h2>
-      <h3>Quinta Edizione</h3>
-      <h2>4-5-6 Agosto 2023</h2>
-  </div>
-  <div class="page-scroll">
-    <a href="#programma" class="btn btn-circle">
-      <i class="fa fa-angle-double-down animated"></i>
-    </a>
-  </div>
-</section>
+        <div class="slogan">
+            <h2>CALCIO SPLASH ALA</h2>
+            <h3>Quinta Edizione</h3>
+            <h2>4-5-6 Agosto 2023</h2>
+        </div>
+        <div class="page-scroll">
+            <a href="#programma" class="btn btn-circle">
+                <i class="fa fa-angle-double-down animated"></i>
+            </a>
+        </div>
+    </section>
 {% endblock %}
 
 {% block content %}
-    <!-- Section: Programma -->
-    <section class="home-section" id="programma">
-        <div class="wow bounceInDown" data-wow-delay="0.4s">
-            <div class="heading-about text-center">
+    {% if MODE_TOURNAMENT %}
+        <!-- Section: Programma -->
+        <section class="home-section" id="programma">
+            <div class="wow bounceInDown" data-wow-delay="0.4s">
+                <div class="heading-about text-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2">
+                                <div class="section-heading">
+                                    <h2>Anche quest'anno schiuma e divertimento al Parco Bastie</h2>
+                                    <i class="fa fa-2x fa-angle-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="section-heading">
-                                <h2>Anche quest'anno schiuma e divertimento al Parco Bastie</h2>
-                                <i class="fa fa-2x fa-angle-down"></i>
+                    <div class="row programma">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2">
+                            <p>Tenetevi liberi: ad agosto torna a Ala il torneo di calcetto saponato organizzato
+                                dall'Associazione Fuori Posto!</p>
+                            {#                    <p>Dopo il successo dell'ultima edizione, ritorna anche il torneo paralleo di Beach Volley! Trovi#}
+                            {#                        <b><a href="/iscrizioni">qui</a></b> tutte le info</p>#}
+                            <p>Non conosci la nostra Associazione? Segui <b><a
+                                    href="https://www.facebook.com/AssociazioneFuoriPosto/">la
+                                nostra pagina</a></b> per rimanere aggiornato sulle prossime attività</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="home-section">
+            <div class="heading-about">
+                <div class="container">
+                    <div class="section-heading text-center">
+                        <h2>Programma</h2>
+                        <h4>Coming soon</h4>
+                    </div>
+                    {#                <div class="row programma">#}
+                    {#                    <div class="col-md-4 col-xs-12">#}
+                    {#                        <h4>VENERDI’ 4 AGOSTO</h4>#}
+                    {#                        <ul>#}
+                    {#                            <li>18:00: Inizio torneo Calciosplash</li>#}
+                    {#                            <li>22:00: Fine partite, ma inizia la festa con Ivans & Anze djs</li>#}
+                    {#                            <li>02:00: Chiusura serata</li>#}
+                    {#                        </ul>#}
+                    {#                    </div>#}
+                    {#                    <div class="col-md-4 col-xs-12">#}
+                    {#                        <h4>SABATO 5 AGOSTO</h4>#}
+                    {#                        <ul>#}
+                    {#                            <li>10:00: Inizio torneo Calciosplash</li>#}
+                    {#                            <li>12:00: Apertura stand gastronomici</li>#}
+                    {#                            <li>15.00: inizio torneo Beachvolley</li>#}
+                    {#                            <li>19:00: Happy Hour</li>#}
+                    {#                            <li>22:00: Fine partite, ma la festa continua con Dj Zan-f</li>#}
+                    {#                            <li>02:00: Chiusura serata</li>#}
+                    {#                        </ul>#}
+                    {#                    </div>#}
+                    {#                    <div class="col-md-4 col-xs-12">#}
+                    {#                        <h4>DOMENICA 6 AGOSTO</h4>#}
+                    {#                        <ul>#}
+                    {#                            <li>10:00: Inizio torneo Calciosplash</li>#}
+                    {#                            <li>12:00: Apertura stand gastronomici</li>#}
+                    {#                            <li>15.00: Fine fase a gironi e finali torneo Beach Volley</li>#}
+                    {#                            <li>19:00: Happy Hour</li>#}
+                    {#                            <li>21.00: Fine partite Calciosplash</li>#}
+                    {#                            <li>22.00: Premiazioni tornei e festa con dj Ema</li>#}
+                    {#                        </ul>#}
+                    {#                    </div>#}
+                    {#                </div>#}
+                </div>
+            </div>
+        </section>
+        <!-- /Section: programma -->
+
+    {% else %}
+
+        <section class="home-section" id="programma">
+            <div class="wow bounceInDown" data-wow-delay="0.4s">
+                <div class="heading-about text-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2">
+                                <div class="section-heading">
+                                    <h2>Seguici su <a href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> e <a href="https://www.facebook.com/AssociazioneFuoriPosto">Facebook</a> per rimanere aggiornato sulle novità per la prossima edizoine</h2>
+                                    <i class="fa fa-2x fa-angle-down"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        <div class="container">
-            <div class="row programma">
-                <div class="col-xs-12 col-md-8 col-md-offset-2">
-                    <p>Tenetevi liberi: ad agosto torna a Ala il torneo di calcetto saponato organizzato
-                        dall'Associazione Fuori Posto!</p>
-{#                    <p>Dopo il successo dell'ultima edizione, ritorna anche il torneo paralleo di Beach Volley! Trovi#}
-{#                        <b><a href="/iscrizioni">qui</a></b> tutte le info</p>#}
-                    <p>Non conosci la nostra Associazione? Segui <b><a
-                            href="https://www.facebook.com/AssociazioneFuoriPosto/">la
-                        nostra pagina</a></b> per rimanere aggiornato sulle prossime attività</p>
-                </div>
-            </div>
-        </div>
-        </div>
-    </section>
-    <section class="home-section">
-        <div class="heading-about">
-            <div class="container">
-                <div class="section-heading text-center">
-                    <h2>Programma</h2>
-                    <h4>Coming soon</h4>
-                </div>
-{#                <div class="row programma">#}
-{#                    <div class="col-md-4 col-xs-12">#}
-{#                        <h4>VENERDI’ 4 AGOSTO</h4>#}
-{#                        <ul>#}
-{#                            <li>18:00: Inizio torneo Calciosplash</li>#}
-{#                            <li>22:00: Fine partite, ma inizia la festa con Ivans & Anze djs</li>#}
-{#                            <li>02:00: Chiusura serata</li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <div class="col-md-4 col-xs-12">#}
-{#                        <h4>SABATO 5 AGOSTO</h4>#}
-{#                        <ul>#}
-{#                            <li>10:00: Inizio torneo Calciosplash</li>#}
-{#                            <li>12:00: Apertura stand gastronomici</li>#}
-{#                            <li>15.00: inizio torneo Beachvolley</li>#}
-{#                            <li>19:00: Happy Hour</li>#}
-{#                            <li>22:00: Fine partite, ma la festa continua con Dj Zan-f</li>#}
-{#                            <li>02:00: Chiusura serata</li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <div class="col-md-4 col-xs-12">#}
-{#                        <h4>DOMENICA 6 AGOSTO</h4>#}
-{#                        <ul>#}
-{#                            <li>10:00: Inizio torneo Calciosplash</li>#}
-{#                            <li>12:00: Apertura stand gastronomici</li>#}
-{#                            <li>15.00: Fine fase a gironi e finali torneo Beach Volley</li>#}
-{#                            <li>19:00: Happy Hour</li>#}
-{#                            <li>21.00: Fine partite Calciosplash</li>#}
-{#                            <li>22.00: Premiazioni tornei e festa con dj Ema</li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </div>#}
-            </div>
-        </div>
-    </section>
-<!-- /Section: programma -->
+        </section>
+    {% endif %}
 
-
+    <!-- Section: Wall of fame -->
     <section class="home-section bg-gray">
         <div class="heading-about text-center">
             <div class="container">
@@ -123,80 +144,82 @@
                     </div>
                     <div class="wow bounceInUp">
 
-                    <div class="row" data-wow-delay="0.2s">
-                        <div class="col-md-1">
-                            <h4><a href="{% url 'albo' 2022 %}">Edizione 2022</a></h4>
+                        <div class="row" data-wow-delay="0.2s">
+                            <div class="col-md-1">
+                                <h4><a href="{% url 'albo' 2022 %}">Edizione 2022</a></h4>
+                            </div>
+                            <div class="col-md-4"><small>Maschile</small><h5>ROTTAMI</h5></div>
+                            <div class="col-md-4"><small>Femminile</small><h5>LE CHAPET</h5></div>
+                            <div class="col-md-3"><small>Beach Volley</small><h5>VOLLEY BERE</h5></div>
                         </div>
-                        <div class="col-md-4"><small>Maschile</small><h5>ROTTAMI</h5></div>
-                        <div class="col-md-4"><small>Femminile</small><h5>LE CHAPET</h5></div>
-                        <div class="col-md-3"><small>Beach Volley</small><h5>VOLLEY BERE</h5></div>
-                    </div>
 
-                    <div class="row wow" data-wow-delay="0.2s">
-                        <div class="col-md-1">
-                            <h4><a href="{% url 'albo' 2019 %}">Edizione 2019</a></h4>
+                        <div class="row wow" data-wow-delay="0.2s">
+                            <div class="col-md-1">
+                                <h4><a href="{% url 'albo' 2019 %}">Edizione 2019</a></h4>
+                            </div>
+                            <div class="col-md-4"><small>Maschile</small><h5>CGB GAMBERONI</h5></div>
+                            <div class="col-md-4"><small>Femminile</small><h5>LE MAI UNA GIO(IA)</h5></div>
+                            <div class="col-md-3"><small>Beach Volley</small><h5>VOLLEY MA OPERA ZIA PIA</h5></div>
                         </div>
-                        <div class="col-md-4"><small>Maschile</small><h5>CGB GAMBERONI</h5></div>
-                        <div class="col-md-4"><small>Femminile</small><h5>LE MAI UNA GIO(IA)</h5></div>
-                        <div class="col-md-3"><small>Beach Volley</small><h5>VOLLEY MA OPERA ZIA PIA</h5></div>
-                    </div>
 
-                    <div class="row" data-wow-delay="0.2s">
-                        <div class="col-md-1">
-                            <h4><a href="{% url 'albo' 2018 %}">Edizione 2018</a></h4>
+                        <div class="row" data-wow-delay="0.2s">
+                            <div class="col-md-1">
+                                <h4><a href="{% url 'albo' 2018 %}">Edizione 2018</a></h4>
+                            </div>
+                            <div class="col-md-4"><small>Maschile</small><h5>ROTTAMI</h5></div>
+                            <div class="col-md-4"><small>Femminile</small><h5>LE MAI UNA GIOIA</h5></div>
                         </div>
-                        <div class="col-md-4"><small>Maschile</small><h5>ROTTAMI</h5></div>
-                        <div class="col-md-4"><small>Femminile</small><h5>LE MAI UNA GIOIA</h5></div>
-                    </div>
-                    <div class="row" data-wow-delay="0.2s">
-                        <div class="col-md-1">
-                            <h4><a href="{% url 'albo' 2017 %}">Edizione 2017</a></h4>
+                        <div class="row" data-wow-delay="0.2s">
+                            <div class="col-md-1">
+                                <h4><a href="{% url 'albo' 2017 %}">Edizione 2017</a></h4>
+                            </div>
+                            <div class="col-md-4"><small>Maschile</small><h5>U.S. GUARNA</h5></div>
+                            <div class="col-md-4"><small>Femminile</small><h5>TETTA PIG</h5></div>
                         </div>
-                        <div class="col-md-4"><small>Maschile</small><h5>U.S. GUARNA</h5></div>
-                        <div class="col-md-4"><small>Femminile</small><h5>TETTA PIG</h5></div>
-                    </div>
 
-</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-<section class="home-section">
-  <div class="heading-about text-center">
-    <div class="container">
-      <div class="row programma">
-        <h1>Vuoi partecipare?</h1>
-          <h2>Le iscrizioni apriranno a breve, seguici su <a href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> per rimanere aggiornato</h2>
-{#        <h2>Scarica <a href="https://drive.google.com/file/d/1F0LIqHglZzY35xRZjEigdeNcgeeu0L1J/">QUI (calcio)</a> e#}
-{#            <a href="https://drive.google.com/file/d/1I5UyzXEyxFbBmuhs5YmM-h8T_aos3TTr/">QUI (beach)</a> il modulo</h2>#}
-{#        <p>Le iscrizioni si apriranno il 20 giugno e si chiuderanno al#}
-{#          raggiungimento di 20 squadre maschili e 8 femminili</p>#}
-      </div>
-    </div>
-  </div>
-</section>
+    {% if MODE_TOURNAMENT %}
+        <!-- Section: Iscrizioni -->
+        <section class="home-section">
+            <div class="heading-about text-center">
+                <div class="container">
+                    <div class="row programma">
+                        <h1>Vuoi partecipare?</h1>
+                        <h2>Le iscrizioni apriranno a breve, seguici su <a
+                                href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> per rimanere
+                            aggiornato</h2>
+                        {#        <h2>Scarica <a href="https://drive.google.com/file/d/1F0LIqHglZzY35xRZjEigdeNcgeeu0L1J/">QUI (calcio)</a> e#}
+                        {#            <a href="https://drive.google.com/file/d/1I5UyzXEyxFbBmuhs5YmM-h8T_aos3TTr/">QUI (beach)</a> il modulo</h2>#}
+                        {#        <p>Le iscrizioni si apriranno il 20 giugno e si chiuderanno al#}
+                        {#          raggiungimento di 20 squadre maschili e 8 femminili</p>#}
+                    </div>
+                </div>
+            </div>
+        </section>
 
-
-
-
-{##}
-{#<section class="home-section ">#}
-{#  <div class="container">#}
-{#    <div class="row">#}
-{#      <div class="col-md-7">#}
-{#          <iframe src="https://yandex.com/map-widget/v1/-/CBuKvWBVtC" width="560" height="400" frameborder="1" allowfullscreen="true"></iframe>#}
-{#        <div id="map"></div>#}
-{#      </div>#}
-{#      <div class="col-md-5">#}
-{#        <h4>Dove Siamo</h4>#}
-{#        <p>Il torneo si terrà presso il campo del parco Bastie di Ala.</p>#}
-{#        <p>Per tutti i partecipanti al torneo, la struttura mette a disposizione#}
-{#          spogliatoi.</p>#}
-{#      </div>#}
-{#    </div>#}
-{#  </div>#}
-{#</section>#}
-
+        <!-- Section: Dove con mappa -->
+        <section class="home-section ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        <iframe src="https://yandex.com/map-widget/v1/-/CBuKvWBVtC" width="560" height="400"
+                                frameborder="1" allowfullscreen="true"></iframe>
+                        <div id="map"></div>
+                    </div>
+                    <div class="col-md-5">
+                        <h4>Dove Siamo</h4>
+                        <p>Il torneo si terrà presso il campo del parco Bastie di Ala.</p>
+                        <p>Per tutti i partecipanti al torneo, la struttura mette a disposizione
+                            spogliatoi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
 {% endblock %}
 
