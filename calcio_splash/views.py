@@ -109,7 +109,7 @@ class TournamentDetailView(DetailView):
             GroupHelper.build_group(group)
             for group in tournament.groups.all()
         ], key=lambda x: x.id)
-
+        AlboDoroHelper.build_albo(tournament)
         context['tournament'] = tournament
 
         return context
