@@ -1,80 +1,77 @@
-from fabric.api import run
-from fabric.context_managers import cd, prefix, shell_env
-from fabric.contrib.project import rsync_project
-from fabric.decorators import with_settings
-from fabric.state import env
+import json
+from fabric import task
 
-from fabfile.utils import settings_from_json
+with open("fabfile/settings-default.json") as f:
+    config = json.load(f)
 
-s = settings_from_json()
-
-
-@with_settings(**s)
-def code_update_local():
-    """ update remote code by copying from local"""
-    rsync_project(env.remote_path, './', exclude=['.git', '.idea', '__pycache__'])
+try:
+    with open("fabfile/settings-local.json") as f:
+        config.update(json.load(f))
+except FileNotFoundError:
+    pass
 
 
-@with_settings(**s)
-def code_update_git():
+env = {
+    "DJANGO_EXTRA_SETTINGS": config["django_extra_settings"],
+    "PATH": "/home/ubuntu/.local/bin/:$PATH",
+}
+
+
+@task(hosts=config["hosts"])
+def code_update_git(c):
     """ update remote code by copying from git"""
-    with cd(env.remote_path):
-        run("git fetch --all")
-        run("git reset --hard origin/master")
+    with c.cd(config['remote_path']):
+        c.run("git fetch --all", env=env)
+        c.run("git reset --hard origin/master", env=env)
 
 
-@with_settings(**s)
-def dependencies_update():
+@task()
+def code_update_local(c):
+    """ update remote code by copying from local"""
+    raise NotImplemented("Not yet, rsync should be migrated")
+    # rsync_project(env.remote_path, './', exclude=['.git', '.idea', '__pycache__'])
+
+
+@task(hosts=config["hosts"])
+def dependencies_update(c):
     """ update python dependencies"""
-    with cd(env.remote_path):
-        run("poetry install --no-dev")
+    with c.cd(config['remote_path']):
+        c.run("poetry install --only main", env=env)
 
 
-@with_settings(**s)
-def db_migrate():
-    """ apply DB migrations"""
-    with cd(env.remote_path), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
-        run("poetry run python manage.py migrate")
+@task(hosts=config["hosts"])
+def db_migrate(c):
+    with c.cd(config['remote_path']):
+        c.run("poetry run python manage.py migrate", env=env)
 
 
-@with_settings(**s)
-def statics_update():
+@task(hosts=config["hosts"])
+def statics_update(c):
     """ publish updated static files to the configured storage"""
-    with cd(env.remote_path), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
-        run("poetry run python manage.py collectstatic --no-input")
+    with c.cd(config['remote_path']):
+        c.run("poetry run python manage.py collectstatic --no-input", env=env)
 
 
-@with_settings(**s)
-def webserver_restart():
+@task(hosts=config["hosts"])
+def webserver_restart(c):
     """ restart uwsgi"""
-    run("touch {}".format(env.uwsgi_conf_path))
+    c.run("touch {}".format(config['uwsgi_conf_path']))
 
 
-@with_settings(**s)
-def deploy(mode='git'):
+@task(code_update_git, dependencies_update, db_migrate, statics_update, webserver_restart)
+def deploy(c):
     """ full deploy; by default use git code"""
-    assert mode in {'local', 'git'}, 'Invalid mode: {}; select between "local" and "git" (the default)'.format(mode)
-
-    if mode == 'local':
-        code_update_local()
-    else:
-        code_update_git()
-
-    dependencies_update()
-    db_migrate()
-    statics_update()
-    webserver_restart()
+    pass
 
 
-@with_settings(**s)
-def deploy_local():
-    """ full deploy, using local code"""
-    deploy(mode='local')
+@task(code_update_local, dependencies_update, db_migrate, statics_update, webserver_restart)
+def deploy_local(c):
+    """ update remote code by copying from local"""
+    pass
 
 
-@with_settings(**s)
-# [sp] usage: fab manage:command=showmigrations
-def manage(command):
-    """ execute a generic python manage.py <command>"""
-    with cd(env.remote_path), shell_env(DJANGO_EXTRA_SETTINGS=env.django_extra_settings):
-        run("poetry run python manage.py " + command)
+# [sp] usage: fab manage showmigrations
+@task(hosts=config["hosts"])
+def manage(c, command):
+    with c.cd(config['remote_path']):
+        c.run("poetry run python manage.py " + command, env=env)

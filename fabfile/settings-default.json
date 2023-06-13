@@ -1,6 +1,6 @@
 {
   "remote_path": "/var/www/calcio_splash",
-  "virtualenv_path": "/var/www/venv/calcio_splash",
   "django_extra_settings": "/var/www/conf/calcio_splash_settings.py",
-  "uwsgi_conf_path": "/var/www/conf/calcio_splash.ini"
+  "uwsgi_conf_path": "/var/www/conf/calcio_splash.ini",
+  "hosts": []
 }

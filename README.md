@@ -38,6 +38,11 @@ example file you can use:
 ```
 $ cp fabfile/settings-local.json.example fabfile/settings-local.json
 $ $EDITOR fabfile/settings-local.json
+$ $EDITOR ~/.ssh/config
+# add something like this:
+Host <your-host>
+    IdentityFile ~/.ssh/fuoriposto-master.pem
+    User ubuntu
 ```
 
 Remember to also edit the `settings-default.json` according to your configuration, if you didn't use our own.
@@ -50,7 +55,7 @@ $ fab deploy
 If you want instead to publish in production your own local code (risky, but it might be needed to test a few things,
 or to quickly deploy an hotfix) you can use:
 ```
-$ fab deploy_local
+$ fab deploy-local
 ```
 
 Both scripts will:
@@ -89,10 +94,10 @@ aws s3 cp --recursive /path/to/conf/ s3://aws_backup_bucket/conf/ --exclude *.py
 
 You can run management commands with `fab`; if you want to create a superuser, for example, you can simply:
 ```
-$ fab manage:createsuperuser
+$ fab manage createsuperuser
 ```
 
 Be aware, though, that to pass parameters you have to enclose the whole command between doublequotes:
 ```
-$ fab manage:"createsuperuser --help"
+$ fab manage "createsuperuser --help"
 ```

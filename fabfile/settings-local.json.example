@@ -1,5 +1,3 @@
 {
-  "host_string": "<your-host-string-here",
-  "user": "<your-username-here>",
-  "key_filename": "<path-to-key-file>"
+  "hosts": ["<your-host-string-here>"],
 }

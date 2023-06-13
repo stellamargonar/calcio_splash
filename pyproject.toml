@@ -14,8 +14,8 @@ djangorestframework = "^3.13.1"
 uWSGI = "^2.0.21"
 sentry-sdk = "^1.9.0"
 
-[tool.poetry.dev-dependencies]
-Fabric3 = "^1.14.post1"
+[tool.poetry.group.dev.dependencies]
+fabric = "^3.1.0"
 pre-commit = "^2.18.1"
 
 [build-system]
