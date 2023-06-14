@@ -3,55 +3,56 @@
 {% block header_menu_class_tournament %}active{% endblock %}
 
 {% block header %}
-<h2>Torneo {{ tournament.name }}</h2>
-<h5>edizione {{ tournament.edition_year }}</h5>
+  <h2>Torneo {{ tournament.name }}</h2>
+  <h5>edizione {{ tournament.edition_year }}</h5>
 {% endblock %}
 
 
 {% block content %}
-<section id="teams" class="page-head-section text-center">
+  <section id="teams" class="page-head-section text-center">
 
     <!-- MARCATORI -->
     {% if tournament.players %}
-        <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-            <h1>Classifica Marcatori {{ tournament.year }} (top 10)</h1>
-                <table class="group-rank">
-                    <tr>
-                        <th style="width: 15%;"># Classifica</th>
-                        <th>Giocatore</th>
-                        <th>Reti</th>
-                    </tr>
-                    {% for player in tournament.players %}
-                        {% if forloop.counter <= 10 %}
-                        <tr>
-                            <td style="width: 10%;">{{ forloop.counter }}</td>
-                            <td style="width: 80%;">{{ player.0.name }} {{ player.0.surname }}</td>
-                            <td style="width: 20%;">{{ player.1 }}</td>
-                        </tr>
-                        {% endif %}
-                    {% endfor %}
-                </table>
-            </div>
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <h1>Classifica Marcatori {{ tournament.year }} (top 10)</h1>
+          <table class="group-rank">
+            <tr>
+              <th style="width: 15%;"># Classifica</th>
+              <th>Giocatore</th>
+              <th>Reti</th>
+            </tr>
+            {% for player in tournament.players %}
+              {% if forloop.counter <= 10 %}
+                <tr>
+                  <td style="width: 10%;">{{ forloop.counter }}</td>
+                  <td style="width: 80%;">{{ player.0.name }} {{ player.0.surname }}</td>
+                  <td style="width: 20%;">{{ player.1 }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
         </div>
+      </div>
     {% endif %}
 
 
     <div class="row">
-    <div class="col-lg-2 col-lg-offset-5">
-      <hr class="marginbot-50">
-    </div>
-  </div>
-    <h1>GIRONI</h1>
-
-  <div class="container">
-    {% if tournament.groups %}
-    {% for group in tournament.groups_clean %}
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Girone: <a href="{% url 'group-detail' group.id %}">{{ group.name }}</a></h3>
+      <div class="col-lg-2 col-lg-offset-5">
+        <hr class="marginbot-50">
       </div>
     </div>
+
+    <h1>GIRONI</h1>
+
+    <div class="container">
+      {% if tournament.groups.count %}
+        {% for group in tournament.groups_clean %}
+          <div class="row">
+            <div class="col-md-12">
+              <h3>Girone: <a href="{% url 'group-detail' group.id %}">{{ group.name }}</a></h3>
+            </div>
+          </div>
 
     <!-- GROUP CLASSIFICA -->
     {% if not group.is_final %}
@@ -85,46 +86,46 @@
     </div>
     <!-- /GROUP CLASSIFICA -->
 
-    {% else %}
-    <div class="row">
-      <div class="col-md-12">
-        <table class="group-rank">
-          <tr>
-            <th colspan="2">Partita</th>
-            <th colspan="2">Risultato</th>
-          </tr>
-          {% for match in group.group_matches %}
-              <tr>
-                  <td>{{ match.team_a.name }}</td>
-                  <td>{{ match.team_b.name }}</td>
+          {% else %}
+            <div class="row">
+              <div class="col-md-12">
+                <table class="group-rank">
+                  <tr>
+                    <th colspan="2">Partita</th>
+                    <th colspan="2">Risultato</th>
+                  </tr>
+                  {% for match in group.group_matches %}
+                    <tr>
+                      <td>{{ match.team_a.name }}</td>
+                      <td>{{ match.team_b.name }}</td>
 
-                  {% if group.is_beach %}
-                      <td colspan="2">
+                      {% if group.is_beach %}
+                        <td colspan="2">
                           {{ match.team_a_set_1|default_if_none:"" }} - {{ match.team_b_set_1|default_if_none:"" }} /
                           {{ match.team_a_set_2|default_if_none:"" }} - {{ match.team_b_set_2|default_if_none:"" }}
                           {% if match.team_a_set_3 != None and match.team_b_set_3 != None %}
-                              / {{ match.team_a_set_3|default_if_none:"" }} - {{ match.team_b_set_3|default_if_none:"" }}
+                            / {{ match.team_a_set_3|default_if_none:"" }} - {{ match.team_b_set_3|default_if_none:"" }}
                           {% endif %}
-                      </td>
-                  {% else %}
-                      <td>{{ match.team_a_score }}</td>
-                      <td>{{ match.team_b_score }}</td>
-                  {% endif %}
-              </tr>
-          {% endfor %}
-        </table>
-      </div>
+                        </td>
+                      {% else %}
+                        <td>{{ match.team_a_score }}</td>
+                        <td>{{ match.team_b_score }}</td>
+                      {% endif %}
+                    </tr>
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+
+
+          {% endif %}
+
+        {% endfor %}
+      {% else %}
+        <p>Non è stato ancora inserito alcun girone.</p>
+      {% endif %}
     </div>
 
 
-    {% endif %}
-
-    {% endfor %}
-    {% else %}
-    <p>Nessun girone in questo torneo</p>
-    {% endif %}
-  </div>
-
-
-</section>
+  </section>
 {% endblock %}
