@@ -175,6 +175,8 @@ if SENTRY_DSN:
         send_default_pii=True
     )
 
-# "tournament": da usare da maggio a fine torneo, mostra le info della prossima edizione, moduli da scaricare, squadre, partite...
-# default = tutto il resto dell'anno, nasconde info e moduli, partite, lascia solo wall of fame e classifiche.
-WEBSITE_MODE = "default"  # "tournament"
+# "tournament": da usare da maggio a fine torneo, mostra le info della prossima edizione,
+#               moduli da scaricare, squadre, partite...
+# "default": tutto il resto dell'anno, nasconde info e moduli, partite, lascia solo wall of fame e classifiche.
+# WEBSITE_MODE = "default"
+WEBSITE_MODE = "tournament"
