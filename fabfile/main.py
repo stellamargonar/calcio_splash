@@ -75,3 +75,8 @@ def deploy_local(c):
 def manage(c, command):
     with c.cd(config['remote_path']):
         c.run("poetry run python manage.py " + command, env=env)
+
+
+@task(hosts=config["hosts"])
+def download_db(c):
+    c.get("/var/www/db/calcio_splash.db", "db.sqlite3")
