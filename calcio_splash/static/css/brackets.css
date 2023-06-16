@@ -1,0 +1,24 @@
+.brackets-viewer {
+  --round-margin: 20px;
+  --match-width: 200px;
+  --connector-border-width: 1px;
+}
+
+.brackets-viewer h3 {
+    color: white;
+    background-color: rgb(228, 151, 83);
+}
+
+.brackets-viewer div {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.brackets-viewer .result {
+    width: 60px !important;
+    text-align: right !important;
+}
+
+.brackets-viewer .bye {
+    color: #AAA;
+}

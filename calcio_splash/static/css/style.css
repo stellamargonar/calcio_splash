@@ -13,12 +13,14 @@ body {
     width: 100%;
     height: 100%;
     font-family: 'Lato',sans-serif;
-	  font-weight: 300;
+    font-weight: 300;
     color: #666;
     background-color: #fff;
     font-size: 16px;
     text-align: justify;
-
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 html {
@@ -68,7 +70,7 @@ a:focus {
 
 .navbar {
     margin-bottom: 0;
-    border-bottom: 1px solid rgba(255,255,255,.3);
+    border-bottom: 1px solid rgba(255,255,255,.4);
 
 }
 
@@ -244,9 +246,9 @@ a:focus {
   margin: -5px auto 0 auto;
   left: 0;
   right: 0;
-  border-radius: 0px;
+  border-radius: 0;
   border: 5px solid #FF4136;
-  box-shadow: 10px 0px #39CCCC, 10px 0px #01FF70;
+  box-shadow: 10px 0 #39CCCC, 10px 0 #01FF70;
   animation: shadowSpin 1s ease-in-out infinite;
 }
 
@@ -342,7 +344,6 @@ hr {
 
 .intro .slogan h2 {
 	color: #FFF;
-	text-shadow: none;
 	font-size: 60px;
 	line-height: 60px;
 	font-weight: 700;
@@ -350,7 +351,7 @@ hr {
 	background-color: rgba(0, 0, 0, 0);
 	text-decoration: none;
 	text-transform: uppercase;
-	border-width: 0px;
+	border-width: 0;
 	border-color: #000;
 	border-style: none;
 	text-shadow: -1px 0 1px #000;
@@ -563,7 +564,7 @@ form#contact-form input:focus,form#contact-form select:focus,form#contact-form t
 footer {
 	text-align: center;
 	padding: 50px 0 ;
-
+    margin-top: auto;
 }
 
 footer p {
@@ -814,7 +815,7 @@ Parallax
 @media (max-width:480px) {
 
 	.navbar-custom .nav.navbar-nav {
-    background-color: rgba(255,255,255,.4);
+    background-color: rgba(255,255,255,.8);
 	}
 
 	.navbar.navbar-custom.navbar-fixed-top {

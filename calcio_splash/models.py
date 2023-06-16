@@ -71,6 +71,10 @@ class Group(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='groups')
 
     is_final = models.BooleanField(default=False)
+    ordering = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ("ordering", "pk")
 
     def __str__(self):
         return '{} ({})'.format(self.name, self.tournament.edition_year)
@@ -95,20 +99,36 @@ class Match(models.Model):
         return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
 
     @property
-    def score_a(self) -> str:
+    def score_a(self) -> int:
         return self.goals.filter(team=self.team_a).count()
 
     @property
-    def score_b(self) -> str:
+    def score_b(self) -> int:
         return self.goals.filter(team=self.team_b).count()
 
     @property
+    def team_a_score(self):
+        return self.score_a
+
+    @property
+    def team_b_score(self):
+        return self.score_b
+
+    @property
     def winner(self):
+        if not self.ended:
+            return None
         return self.team_a if self.score_a > self.score_b else self.team_b
 
     @property
     def loser(self):
+        if not self.ended:
+            return None
         return self.team_b if self.score_a > self.score_b else self.team_a
+
+    @property
+    def ended(self):
+        return self.end_time is not None
 
 
 class Goal(models.Model):

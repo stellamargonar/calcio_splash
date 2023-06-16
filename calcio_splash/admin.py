@@ -234,7 +234,7 @@ class MatchAdmin(admin.ModelAdmin):
 
     def get_score(self, obj):
         match, _ = MatchHelper.build_match(obj)
-        if match.end_time is None:
+        if not match.ended:
             return '-'
         return '{} - {}'.format(match.team_a_score, match.team_b_score)
 
@@ -300,7 +300,7 @@ class GroupYearListFilter(AbstractListFilterWithDefault):
 
 
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_tournament']
+    list_display = ['name', 'ordering', 'get_tournament']
     list_filter = (GroupYearListFilter, )
 
     def get_tournament(self, obj):

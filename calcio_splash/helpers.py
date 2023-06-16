@@ -1,4 +1,7 @@
 from collections import OrderedDict
+from itertools import chain
+
+from calcio_splash.models import Tournament, Team, Match
 
 
 class GroupHelper:
@@ -43,7 +46,7 @@ class GroupHelper:
             'goals_diff': team.get('goals_done', 0) - team.get('goals_taken', 0),
             'pk': team['pk'],
         } for team_name, team in teams.items()]
-        sorted_teams = sorted(team_list, key=lambda x: -x['points'])
+        sorted_teams = sorted(team_list, key=lambda x: (x['points'], x['goals_diff']), reverse=True)
 
         group.teams = OrderedDict([(team['name'], team) for team in sorted_teams])
         group.is_beach = False
@@ -91,8 +94,8 @@ class GroupHelper:
         return group
 
     @staticmethod
-    def _score_from_match(match):
-        if match.end_time is None:
+    def _score_from_match(match: Match):
+        if not match.ended:
             return 0, 0
         if match.team_a_score == match.team_b_score:
             return 1, 1
@@ -103,26 +106,13 @@ class GroupHelper:
 
 class MatchHelper:
     @staticmethod
-    def build_match(match):
+    def build_match(match: Match):
         goals = match.goals.all()
-
-        # compute score
-        team_a_score = 0
-        team_b_score = 0
-
         players_map = dict()
 
         for goal in goals:
-            if goal.team == match.team_a:
-                team_a_score += 1
-            if goal.team == match.team_b:
-                team_b_score += 1
             if goal.player:
                 players_map[goal.player.id] = players_map.get(goal.player.id, 0) + 1
-
-        match.goals.set(goals)
-        match.team_a_score = team_a_score
-        match.team_b_score = team_b_score
 
         return match, players_map
 
@@ -170,3 +160,111 @@ class AlboDoroHelper:
         player_list = [(obj['player'], obj['goals']) for obj in players.values()]
         player_list.sort(key=lambda x: -x[1])
         return player_list
+
+
+class BracketsHelper:
+
+    @classmethod
+    def _add_participant_if_missing(cls, participants: dict, team: Team):
+        if not team or team.pk in participants:
+            return
+        participants[team.pk] = {"id": team.pk, "tournament_id": 0, "name": team.name}
+
+    @classmethod
+    def _match_result(cls, match: Match, team: Team):
+        if not match.ended:
+            return
+        winner = match.winner
+        if winner == team:
+            return "win"
+        return "loss"
+
+    @classmethod
+    def build_brackets(cls, tournament: Tournament):
+        groups = tournament.groups.filter(is_final=True)
+        matches = []
+        match_games = []
+        participants = {}
+        rounds = []
+        for n_group, group in enumerate(groups):
+            rounds.append({"id": n_group, "number": n_group + 1, "stage_id": 0, "group_id": 0})
+            is_finalissima_group = n_group == groups.count() - 1
+
+            for n_match, match in enumerate(chain(group.matches.all(), group.beach_matches.all())):
+                # [sp] this is a dirty hack to hide a mess we did in 2018: in the F tournament, for some reason
+                # we let play the 3rd and the 4th of the two round-robin groups, just because.
+                if isinstance(match, Match) and match.pk in {99, 100}:
+                    continue
+                is_consolation_final = is_finalissima_group and n_match == 0
+                cls._add_participant_if_missing(participants, match.team_a)
+                cls._add_participant_if_missing(participants, match.team_b)
+
+                status = 0  # waiting
+                if match.team_a or match.team_b:
+                    status = 1  # waiting
+                if match.team_a and match.team_b:
+                    status = 2  # ready
+                if match.ended:
+                    status = 4  # completed
+
+                match_dict = {
+                    "id": match.id,
+                    "number": n_match + 1,
+                    "stage_id": 0,
+                    "group_id": 1 if is_consolation_final else 0,
+                    "round_id": n_group,  # the JS library sorts by this, so we can't use group.pk :/
+                    "round_id_real": group.pk,
+                    "status": status,
+                    "opponent1": {
+                        "id": match.team_a.pk,
+                        "result": cls._match_result(match, match.team_a)
+                    } if match.team_a else None,
+                    "opponent2": {
+                        "id": match.team_b.pk,
+                        "result": cls._match_result(match, match.team_b)
+                    } if match.team_b else None,
+                }
+
+                if isinstance(match, Match):
+                    if match.team_a:
+                        match_dict["opponent1"]["score"] = match.score_a
+                    if match.team_b:
+                        match_dict["opponent2"]["score"] = match.score_b
+                else:
+                    match_dict["child_count"] = 3
+                    if match.team_a:
+                        match_dict["opponent1"]["score"] = "-".join(
+                            str(x) for x in [match.team_a_set_1, match.team_a_set_2, match.team_a_set_3] if x is not None
+                        )
+                    if match.team_b:
+                        match_dict["opponent2"]["score"] = "-".join(
+                            str(x) for x in [match.team_b_set_1, match.team_b_set_2, match.team_b_set_3] if x is not None
+                        )
+
+                matches.append(match_dict)
+
+        if not rounds:
+            return None
+
+        return {
+            "participants": list(participants.values()),
+            "stages": [
+                {
+                    "id": 0,
+                    "tournament_id": 0,
+                    "name": "",
+                    "type": "single_elimination",
+                    "number": 1,
+                    "settings": {
+                        "size": len(participants),
+                        "seedOrdering": ["natural"],
+                        "grandFinal": "single",
+                        "consolationFinal": True,
+                    }
+                }
+            ],
+            "groups": [{"id": 0, "stage_id": 0, "number": 1}, {"id": 1, "stage_id": 0, "number": 2}],
+            "rounds": rounds,
+            "matches": matches,
+            "matchGames": match_games,
+        }

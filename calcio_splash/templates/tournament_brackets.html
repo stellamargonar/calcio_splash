@@ -1,0 +1,59 @@
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/brackets-viewer@latest/dist/brackets-viewer.min.css"/>
+  <link href="{% static "css/brackets.css" %}" rel="stylesheet">
+  <script type="text/javascript"
+          src="https://cdn.jsdelivr.net/npm/brackets-viewer@latest/dist/brackets-viewer.min.js"></script>
+{% endblock %}
+
+<div id="brackets" class="brackets-viewer"></div>
+
+{{ tournament.brackets|json_script:"brackets-data" }}
+
+<script type="module">
+    const data = JSON.parse(document.getElementById('brackets-data').textContent);
+
+    window.bracketsViewer.addLocale('en', {
+        "common": {
+            "bye": "Da individuare",
+        },
+        "match-label": {
+            "standard-bracket-final": "Finalissima",
+            "consolation-final": "Finale 3⁰-4⁰ posto",
+        }
+    });
+
+    await window.bracketsViewer.render({
+        stages: data.stages,
+        matches: data.matches,
+        matchGames: data.matchGames,
+        participants: data.participants,
+    }, {
+        selector: '#brackets',
+        participantOriginPlacement: 'before',
+        separatedChildCountLabel: true,
+        showSlotsOrigin: true,
+        showLowerBracketSlotsOrigin: true,
+        highlightParticipantOnHover: true,
+        customRoundName: info => {
+            if (info.finalType === "consolation-final") {
+                return "Finale 3⁰-4⁰"
+            }
+            let fromLast = info.roundCount - info.roundNumber;
+            if (fromLast === 0) {
+                return "Finalissima"
+            }
+            if (fromLast === 1) {
+                return "Semifinali"
+            }
+            if (fromLast === 2) {
+                return "Quarti"
+            }
+            return null
+        }
+    })
+
+    window.bracketsViewer._onMatchClick = (match) => {
+          window.location.href = '/group/' + match.round_id_real
+    }
+</script>

@@ -43,21 +43,21 @@
 	.black-match .team-img {
 		float: none;
 		text-align: center;
-		margin: 10px 0px;
+		margin: 10px 0;
 	}
 
 	.white-match .team-name,
 	.black-match .team-name {
-		margin: 0px !important;
+		margin: 0 !important;
 		float: none;
 		text-align: center;
 	}
 
 	.white-match .team-date,
 	.black-match .team-date {
-		padding: 25px 0px;
+		padding: 25px 0;
 		position: relative;
-		margin: 10px 0px;
+		margin: 10px 0;
 	}
 
 	.white-match .team-date:after,
@@ -122,7 +122,7 @@
 }
 
 .page-head-section {
-    padding-top: 0px;
+    padding-top: 0;
     padding-bottom: 50px;
 	  display:block;
     position:relative;
@@ -140,17 +140,21 @@
     background-size: cover;
 }
 
-@@media(min-width:767px) {
+@media(min-width:767px) {
   .page-title-section {
     padding: 120px 0 0 60px;
   }
 }
+
 @media(max-width:767px) {
   .row > div {
     padding-top: 30px;
   }
   hr.marginbot-50 {
     margin-bottom: 20px !important;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
   }
   .white-match {
     margin: 0 5px;
@@ -231,12 +235,16 @@ tbody.group-rank {
 }
 
 table.group-rank {
-  margin-bottom: 40px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0px;
-  width: 80%;
+    margin: 20px auto 40px;
+    border: 0;
+    width: 80%;
+}
+
+@media(max-width:767px) {
+    table.group-rank {
+        margin: 0;
+        width: 100%;
+    }
 }
 
 .team-player {

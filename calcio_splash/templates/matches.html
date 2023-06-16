@@ -120,5 +120,9 @@
 
     {% endif %}
 
+    {% if not match_list and not beach_match_list %}
+      <p>Le partite non sono ancora state inserite.</p>
+    {% endif %}
+
 </section>
 {% endblock %}

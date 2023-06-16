@@ -8,7 +8,7 @@
 
 
 {% block content %}
-    <section id="teams" class="page-head-section text-center">
+    <section id="teams" class="page-head-section text-center container">
         {% for tournament in beach %}
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -37,6 +37,7 @@
                                                 </h5></li>
                                             </ul>
                                         {% endif %}
+                                        <a href="/tournament/{{ tournament.pk }}">Visualizza dettagli torneo</a>
                                     </div>
                                 </div>
                             </div>
@@ -76,6 +77,7 @@
                                                 </h5></li>
                                             </ul>
                                         {% endif %}
+                                        <a href="/tournament/{{ tournament.pk }}">Visualizza dettagli torneo</a>
                                     </div>
                                 </div>
                             </div>

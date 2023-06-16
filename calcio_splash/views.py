@@ -2,7 +2,7 @@ from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView
 
 from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch
-from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper
+from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BracketsHelper
 
 
 def handler404(request, exception=None):
@@ -105,10 +105,11 @@ class TournamentDetailView(DetailView):
         tournament = context['tournament']
 
         # load each group team stats
-        tournament.groups_clean = sorted([
+        tournament.groups_clean = [
             GroupHelper.build_group(group)
-            for group in tournament.groups.all()
-        ], key=lambda x: x.id)
+            for group in tournament.groups.filter(is_final=False)
+        ]
+        tournament.brackets = BracketsHelper.build_brackets(tournament)
         AlboDoroHelper.build_albo(tournament)
         context['tournament'] = tournament
 
