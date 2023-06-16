@@ -1,4 +1,5 @@
 from django.db.models import Count, Q
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 
 from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch

@@ -34,5 +34,5 @@ urlpatterns = [
 
 ]
 
-handler404 = TemplateView.as_view(template_name='errors/404.html')
-handler500 = TemplateView.as_view(template_name='errors/500.html')
+handler404 = "calcio_splash.views.handler404"
+handler500 = "calcio_splash.views.handler500"
