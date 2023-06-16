@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "webpack --mode development --entry ./livematch/src/index.ts --output-path ./calcio_splash/static/livematch",
-    "build": "webpack --mode production --entry ./livematch/src/index.js --output-path ./calcio_splash/static/livematch",
+    "build": "webpack --mode production --entry ./livematch/src/index.ts --output-path ./calcio_splash/static/livematch",
     "watch": "webpack watch --mode development --entry ./livematch/src/index.ts --output-path ./calcio_splash/static/livematch"
   },
   "keywords": [],
