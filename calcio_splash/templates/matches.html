@@ -3,126 +3,123 @@
 {% block header_menu_class_tournament %}active{% endblock %}
 
 {% block header %}
-<h2>Le Partite</h2>
+  <h2>Le Partite</h2>
+  <h3>edizione <u>{{ year }}</u></h3>
 {% endblock %}
 
 {% block content %}
-<section id="teams" class="page-head-section text-center">
+  <section id="teams" class="page-head-section text-center container">
 
     {% if match_list %}
-        <div class="row">
-            <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
 
-                <h1>Partite Calcio Splash</h1>
-                <table class="group-rank">
-                    <tr>
-                        <th>Orario</th>
-                        <th>Girone</th>
-                        <th>Squadra 1</th>
-                        <th>Squadra 2</th>
-                        <th>Risultato</th>
-                    </tr>
+          <h1>Partite Calcio Splash</h1>
+          <table class="group-rank">
+            <tr>
+              <th>Orario</th>
+              <th>Squadre</th>
+              <th>Risultato</th>
+            </tr>
 
-                    {% for match in match_list %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'match-detail' match.id %}">
-                                    {{ match.match_date_time | date:"D d - H:i" }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'group-detail' match.group.id %}">{{ match.group.name }}</a>
-                            </td>
-                            <td>
-                                {% if match.team_a %}
-                                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if match.team_b %}
-                                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if match.team_a_score is not None %}
-                                    {{ match.team_a_score }} - {{ match.team_b_score }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
+            {% for match in match_list %}
+              <tr>
+                <td>
+                  <a href="{% url 'match-detail' match.id %}">
+                    {{ match.match_date_time | date:"D d" }}<br/>
+                    {{ match.match_date_time | date:"H:i" }}
+                  </a>
+                </td>
+                <td>
+                  {% if match.team_a %}
+                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                  {% else %}
+                    -
+                  {% endif %}
+
+                  <br/>vs<br/>
+
+                  {% if match.team_b %}
+                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if match.team_a_score is not None %}
+                    {{ match.team_a_score }} - {{ match.team_b_score }}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
         </div>
+      </div>
 
     {% endif %}
 
 
     {% if beach_match_list %}
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Partite Beach Volley</h1>
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Partite Beach Volley</h1>
 
-                <table class="group-rank">
-                    <tr>
-                        <th>Orario</th>
-                        <th>Girone</th>
-                        <th>Squadra 1</th>
-                        <th>Squadra 2</th>
-                        <th>Risultato</th>
-                    </tr>
+          <table class="group-rank">
+            <tr>
+              <th>Orario</th>
+              <th>Squadre</th>
+              <th>Risultato</th>
+            </tr>
 
-                    {% for match in beach_match_list %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'beach-match-detail' match.id %}">
-                                    {{ match.match_date_time | date:"D d - H:i" }}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="{% url 'group-detail' match.group.id %}">{{ match.group.name }}</a>
-                            </td>
-                            <td>
-                                {% if match.team_a %}
-                                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if match.team_b %}
-                                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if match.team_a_set_1 is not None %}
-                                    {{ match.team_a_set_1 }} - {{ match.team_b_set_1 }}
-                                {% endif %}
+            {% for match in beach_match_list %}
+              <tr>
+                <td>
+                  <a href="{% url 'beach-match-detail' match.id %}">
+                    {{ match.match_date_time | date:"D d" }}<br/>
+                    {{ match.match_date_time | date:"H:i" }}
+                  </a>
+                </td>
+                <td>
+                  {% if match.team_a %}
+                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                  {% else %}
+                    -
+                  {% endif %}
 
-                                {% if match.team_a_set_2 is not None %}
-                                    / {{ match.team_a_set_2 }} - {{ match.team_b_set_2 }}
-                                {% endif %}
+                  <br/>vs<br/>
 
-                                {% if match.team_a_set_3 is not None %}
-                                    / {{ match.team_a_set_3 }} - {{ match.team_b_set_3 }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
+                  {% if match.team_b %}
+                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td>
+                  {% if match.team_a_set_1 is not None %}
+                    {{ match.team_a_set_1 }} - {{ match.team_b_set_1 }}
+                  {% endif %}
+
+                  {% if match.team_a_set_2 is not None %}
+                    / {{ match.team_a_set_2 }} - {{ match.team_b_set_2 }}
+                  {% endif %}
+
+                  {% if match.team_a_set_3 is not None %}
+                    / {{ match.team_a_set_3 }} - {{ match.team_b_set_3 }}
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
         </div>
+      </div>
 
     {% endif %}
 
     {% if not match_list and not beach_match_list %}
-      <p>Le partite non sono ancora state inserite.</p>
+      <div class="row">
+        <p>Le partite non sono ancora state inserite.</p>
+      </div>
     {% endif %}
 
-</section>
+  </section>
 {% endblock %}

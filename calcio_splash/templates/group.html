@@ -3,7 +3,8 @@
 {% block header_menu_class_tournament %}active{% endblock %}
 
 {% block header %}
-<h2>Girone: {{ group.name }}</h2>
+  <h2>Girone: {{ group.name }}</h2>
+  <h3>Torneo {{ group.tournament.name }} - <u>{{ group.tournament.edition_year }}</u></h3>
 {% endblock %}
 
 
@@ -21,9 +22,9 @@
             <th>&nbsp;</th>
             <th>Punti</th>
             {% if not group.is_beach %}
-            <th>Goal fatti</th>
-            <th>Goal subiti</th>
-            <th>Diff reti</th>
+            <th>GF</th>
+            <th>GS</th>
+            <th>DR</th>
             {% endif %}
           </tr>
           {% for team_name, team in group.teams.items %}

@@ -49,6 +49,7 @@ class MatchListView(ListView):
         year = self.kwargs['year']
         context = super().get_context_data(**kwargs)
 
+        context['year'] = year
         context['match_list'] = [
             MatchHelper.build_match(match)[0] for match in context['object_list']
         ]
@@ -134,6 +135,7 @@ class AlboView(ListView):
             AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
             if tournament.gender == Team.BEACH
         ]
+        context['year'] = self.kwargs['year']
         return context
 
 
