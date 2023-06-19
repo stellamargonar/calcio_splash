@@ -1,4 +1,14 @@
-.slogan  h3{
+.navbar-brand > h1 {
+    display: inline-block;
+    vertical-align: sub;
+}
+
+.navbar-brand > img {
+    height: 100%;
+    display: inline-block;
+}
+
+.slogan h3{
     color: white;
     font-size: 30px;
 }

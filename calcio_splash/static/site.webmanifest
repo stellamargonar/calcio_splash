@@ -1,0 +1,26 @@
+{
+  "name": "Calcio Splash Ala",
+  "short_name": "Calcio Splash Ala",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/static/img/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/maskable.png",
+      "sizes": "1465x1466",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#E49753",
+  "background_color": "#E49753",
+  "display": "standalone"
+}
