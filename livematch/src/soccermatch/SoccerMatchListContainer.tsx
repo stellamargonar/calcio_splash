@@ -52,7 +52,7 @@ export class SoccerMatchListContainerComponent extends React.Component<SoccerMat
     private renderHeader(): React.ReactNode {
         return (
             <div className='topbar d-flex mb-4 bg-primary p-3 justify-content-between'>
-                <h1 style={{color: 'white'}}>Partite torneo 2022</h1>
+                <h1 style={{color: 'white'}}>Partite torneo 2023</h1>
                 <ButtonGroup>
                     {this.renderHideEndedButton()}
                 </ButtonGroup>
