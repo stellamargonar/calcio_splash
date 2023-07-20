@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db.models import Count, Q
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
 from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch
@@ -101,17 +104,23 @@ class GroupDetailView(DetailView):
 class TournamentDetailView(DetailView):
     model = Tournament
     template_name = 'tournament.html'
+    rilascio_gironi = datetime.strptime('2023-07-29+00:00', '%Y-%m-%d%z')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tournament = context['tournament']
 
-        # load each group team stats
-        tournament.groups_clean = [
-            GroupHelper.build_group(group)
-            for group in tournament.groups.filter(is_final=False)
-        ]
-        tournament.brackets = BracketsHelper.build_brackets(tournament)
+        # non mostrare i gironi prima del 1 agosto
+        if tournament.edition_year != timezone.now().year or timezone.now() >= self.rilascio_gironi:
+            # load each group team stats
+            tournament.groups_clean = [
+                GroupHelper.build_group(group)
+                for group in tournament.groups.filter(is_final=False)
+            ]
+            tournament.brackets = BracketsHelper.build_brackets(tournament)
+        else:
+            tournament.teams = Team.objects.filter(year=tournament.edition_year, gender=tournament.gender)
+
         AlboDoroHelper.build_albo(tournament)
         context['tournament'] = tournament
 

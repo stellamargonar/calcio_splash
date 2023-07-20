@@ -64,7 +64,27 @@
           <!-- /GROUP CLASSIFICA -->
         {% endfor %}
       {% else %}
-        <p>Non è stato ancora inserito alcun girone.</p>
+          <p>Non è stato ancora inserito alcun girone.</p>
+          <h1>SQUADRE</h1>
+          <div class="container-fluid">
+          <div class="row">
+          {% for team in tournament.teams %}
+              <div class="col-md-6 col-xs-12">
+                  <table class="group-rank">
+                      <tr>
+                          <th>{{ team.name }}</th>
+                      </tr>
+                      <tbody>
+                      {% for player in team.player.all %}
+                          <tr>
+                              <td>{{ player.name }} {{ player.surname }}</td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          {% endfor %}
+          </div></div>
       {% endif %}
     </div>
 
