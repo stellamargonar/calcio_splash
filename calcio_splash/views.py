@@ -9,6 +9,13 @@ from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, B
 from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BracketsHelper
 
 
+def can_show_gironi_and_matches(obj_year= None):
+    if obj_year is not None and int(obj_year) < timezone.now().year:
+        return True
+    rilascio_gironi = datetime.strptime('2023-07-29+00:00', '%Y-%m-%d%z')
+    return timezone.now() >= rilascio_gironi
+
+
 def handler404(request, exception=None):
     response = render(request, 'errors/404.html')
     response.status_code = 404
@@ -53,6 +60,10 @@ class MatchListView(ListView):
         year = self.kwargs['year']
         context = super().get_context_data(**kwargs)
 
+        if not can_show_gironi_and_matches(year):
+            context.pop('match_list', None)
+            return context
+
         context['year'] = year
         context['match_list'] = [
             MatchHelper.build_match(match)[0] for match in context['object_list']
@@ -70,7 +81,11 @@ class MatchDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['match'], _ = MatchHelper.build_match(context['match'])
+        match = context['match']
+        if not can_show_gironi_and_matches(match.group.tournament.edition_year):
+            context.pop('match', None)
+            return context
+        context['match'], _ = MatchHelper.build_match(match)
         return context
 
 
@@ -80,7 +95,11 @@ class BeachMatchDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['match'] = context['beachmatch']
+        match = context['beachmatch']
+        if not can_show_gironi_and_matches(match.group.tournament.edition_year):
+            context.pop('match', None)
+            return context
+        context['match'] = match
         context['is_beach'] = True
         return context
 
@@ -92,6 +111,9 @@ class GroupDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         group = context['group']
+        if not can_show_gironi_and_matches(group.tournament.edition_year):
+            context.pop('group', None)
+            return context
 
         # load each group team stats
         group = GroupHelper.build_group(group)
@@ -104,14 +126,13 @@ class GroupDetailView(DetailView):
 class TournamentDetailView(DetailView):
     model = Tournament
     template_name = 'tournament.html'
-    rilascio_gironi = datetime.strptime('2023-07-29+00:00', '%Y-%m-%d%z')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tournament = context['tournament']
 
         # non mostrare i gironi prima del 1 agosto
-        if tournament.edition_year != timezone.now().year or timezone.now() >= self.rilascio_gironi:
+        if can_show_gironi_and_matches(tournament.edition_year):
             # load each group team stats
             tournament.groups_clean = [
                 GroupHelper.build_group(group)

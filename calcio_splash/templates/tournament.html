@@ -24,7 +24,7 @@
 
     <div class="container">
       <h1>GIRONI</h1>
-      {% if tournament.groups.count %}
+      {% if tournament.groups_clean.count %}
         {% for group in tournament.groups_clean %}
           <div class="row">
             <div class="col-md-12">
