@@ -798,3 +798,21 @@ footer p {
 	}
 
 }
+
+@media print {
+    h1::before , .page-break {
+        clear: both;
+        page-break-before: always;
+    }
+    section#intro {
+        display: none;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    a:link:after, a:visited:after {
+        content: "";
+    }
+}

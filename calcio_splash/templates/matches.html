@@ -24,23 +24,26 @@
 
             {% for match in match_list %}
               <tr>
-                <td>
+                <td style="padding: 18px;">
                   <a href="{% url 'match-detail' match.id %}">
-                    {{ match.match_date_time | date:"D d" }}<br/>
+                    {{ match.match_date_time | date:"D d" }}
                     {{ match.match_date_time | date:"H:i" }}
                   </a>
                 </td>
                 <td>
                   {% if match.team_a %}
-                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                    <a href="{% url 'team-detail' match.team_a.id %}">
+                        {{ match.team_a.name }}
+                    </a>
                   {% else %}
                     -
                   {% endif %}
-
-                  <br/>vs<br/>
+                    <br />
 
                   {% if match.team_b %}
-                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                    <a href="{% url 'team-detail' match.team_b.id %}">
+                        {{ match.team_b.name }}
+                    </a>
                   {% else %}
                     -
                   {% endif %}
@@ -58,7 +61,7 @@
 
     {% endif %}
 
-
+    <div class="page-break"></div>
     {% if beach_match_list %}
       <div class="row">
         <div class="col-md-12">
@@ -73,23 +76,27 @@
 
             {% for match in beach_match_list %}
               <tr>
-                <td>
+                <td style="padding: 18px;>
                   <a href="{% url 'beach-match-detail' match.id %}">
-                    {{ match.match_date_time | date:"D d" }}<br/>
+                    {{ match.match_date_time | date:"D d" }}
                     {{ match.match_date_time | date:"H:i" }}
                   </a>
                 </td>
                 <td>
                   {% if match.team_a %}
-                    <a href="{% url 'team-detail' match.team_a.id %}">{{ match.team_a.name }}</a>
+                    <a href="{% url 'team-detail' match.team_a.id %}">
+                        {{ match.team_a.name }}
+                    </a>
                   {% else %}
                     -
                   {% endif %}
 
-                  <br/>vs<br/>
+                    <br />
 
                   {% if match.team_b %}
-                    <a href="{% url 'team-detail' match.team_b.id %}">{{ match.team_b.name }}</a>
+                    <a href="{% url 'team-detail' match.team_b.id %}">
+                        {{ match.team_b.name }}
+                    </a>
                   {% else %}
                     -
                   {% endif %}
