@@ -12,7 +12,7 @@ from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, Brac
 def can_show_gironi_and_matches(obj_year= None):
     if obj_year is not None and int(obj_year) < timezone.now().year:
         return True
-    rilascio_gironi = datetime.strptime('2023-07-29+00:00', '%Y-%m-%d%z')
+    rilascio_gironi = datetime.strptime('2023-07-28+07:00', '%Y-%m-%d%z')
     return timezone.now() >= rilascio_gironi
 
 
