@@ -227,12 +227,13 @@ class BracketsHelper:
 
                 if isinstance(match, Match):
                     started = match.ended or match.score_a > 0 or match.score_b > 0
+                    match_dict["child_count"] = 1
                     if started and match.team_a:
                         match_dict["opponent1"]["score"] = match.score_a
                     if started and match.team_b:
                         match_dict["opponent2"]["score"] = match.score_b
                 else:
-                    started = match.ended or match.team_a_set_1 > 0 or match.team_b_set_1 > 0
+                    started = match.ended or match.team_a_set_1 is not None and match.team_b_set_1 is not None
                     match_dict["child_count"] = 3
                     if started and match.team_a:
                         match_dict["opponent1"]["score"] = "-".join(
@@ -249,7 +250,7 @@ class BracketsHelper:
             return None
 
         return {
-            "participants": list(participants.values()),
+            "participants": list(participants.values()) or [{}],  # participants must not be empty
             "stages": [
                 {
                     "id": 0,
