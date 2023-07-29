@@ -5,6 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    {% if GOOGLE_ANALYTICS_ID %}
+        {% include "ga.html" %}
+    {% endif %}
+
     <title>Calcio Splash Ala</title>
 
     <!-- Bootstrap Core CSS -->

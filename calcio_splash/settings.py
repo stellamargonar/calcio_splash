@@ -71,7 +71,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "calcio_splash.context_processor.website_mode",
+                "calcio_splash.context_processor.global_setting",
             ],
         },
     },
@@ -181,6 +181,8 @@ if SENTRY_DSN:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True
     )
+
+GOOGLE_ANALYTICS_ID = None
 
 # "tournament": da usare da maggio a fine torneo, mostra le info della prossima edizione,
 #               moduli da scaricare, squadre, partite...
