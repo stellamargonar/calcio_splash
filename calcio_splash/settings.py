@@ -145,6 +145,7 @@ STORAGES = {
 }
 
 SENTRY_DSN = None  # set in DJANGO_EXTRA_SETTINGS file
+GOOGLE_ANALYTICS_ID = None  # set in DJANGO_EXTRA_SETTINGS file
 
 
 # *************************************************************
@@ -181,8 +182,6 @@ if SENTRY_DSN:
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=True
     )
-
-GOOGLE_ANALYTICS_ID = None
 
 # "tournament": da usare da maggio a fine torneo, mostra le info della prossima edizione,
 #               moduli da scaricare, squadre, partite...
