@@ -11,7 +11,7 @@ admin.autodiscover()
 
 
 urlpatterns = [
-    re_path(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    re_path(r'^$', views.IndexView.as_view(), name='home'),
     re_path(r'^regulation/$', TemplateView.as_view(template_name='regulation.html'), name='regulation'),
     re_path(
         r'^regulation-beach/$', TemplateView.as_view(template_name='regulation_beach.html'), name='regulation-beach'

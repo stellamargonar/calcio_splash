@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db.models import Count, Q
 from django.shortcuts import render
 from django.utils import timezone
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
 from calcio_splash.helpers import AlboDoroHelper, BracketsHelper, GroupHelper, MatchHelper
 from calcio_splash.models import BeachMatch, Goal, Group, Match, Player, Team, Tournament
@@ -26,6 +26,42 @@ def handler500(request, exception=None):
     response = render(request, 'errors/500.html')
     response.status_code = 404
     return response
+
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not can_show_gironi_and_matches(timezone.now().year):
+            return context
+
+        context['match'] = self._get_current_match()
+        context['next_match'] = self._get_next_match()
+
+        context['match_beach'] = self._get_current_match(True)
+        context['next_match_beach'] = self._get_next_match(True)
+
+        return context
+
+    def _get_current_match(self, is_beach=False):
+        now = timezone.now()
+        last_year = timezone.now() - timedelta(days=365)
+        qs = None
+        if is_beach:
+            qs = BeachMatch.objects.filter(ended=False)
+        else:
+            qs = Match.objects.filter(end_time__isnull=True)
+        return qs.filter(match_date_time__lte=now, match_date_time__gt=last_year).order_by('match_date_time').first()
+
+    def _get_next_match(self, is_beach=False):
+        now = timezone.now()
+        qs = None
+        if is_beach:
+            qs = BeachMatch.objects.filter(ended=False)
+        else:
+            qs = Match.objects.filter(end_time__isnull=True)
+        return qs.filter(match_date_time__gt=now).order_by('match_date_time').first()
 
 
 class TeamDetailView(DetailView):

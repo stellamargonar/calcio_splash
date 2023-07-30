@@ -20,42 +20,58 @@
 
 {% block content %}
     {% if MODE_TOURNAMENT %}
-        <!-- Section: Programma -->
-{#        <section class="home-section container" id="partite">#}
-{#            <div class="wow bounceInDown" data-wow-delay="0.4s">#}
-{#                <div class="heading-about text-center">#}
-{#                    <div class="row">#}
-{#                        <div class="col-lg-8 col-lg-offset-2">#}
-{#                            <div class="section-heading">#}
-{#                                <h2><a href="/matches/2023/">Segui in diretta le partite</a></h2>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </section>#}
+        <section class="home-section container" id="partite">
+            <div class="heading-about text-center">
+                <div class="row">
+                    <h3><a href="/matches/2023/">Segui in diretta le partite</a></h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        {% if match %}
+                            <h4>Stanno giocando</h4>
+                            {% include 'match_template.html' with match=match is_beach=False %}
+                        {% elif next_match %}
+                            <h4>Prossima partita Calcio Splash</h4>
+                            {% include 'match_template.html' with match=next_match is_beach=False %}
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-8 col-lg-offset-2" style="margin-top: 16px;">
+                        {% if match_beach %}
+                            <h4>Stanno giocando</h4>
+                            {% include 'match_template.html' with match=match_beach is_beach=True %}
+                        {% elif next_match_beach %}
+                            <h4>Prossima partita Beach Volley</h4>
+                            {% include 'match_template.html' with match=next_match_beach is_beach=True %}
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </section>
 
 
         <!-- Section: Programma -->
         <section class="home-section container" id="programma">
-            <div class="wow bounceInDown" data-wow-delay="0.4s">
-                <div class="heading-about text-center">
-                    <div class="row">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <div class="section-heading">
-                                <h2>Anche quest'anno schiuma e divertimento al Parco Bastie</h2>
-                                <i class="fa fa-2x fa-angle-down"></i>
-                            </div>
+            <div class="heading-about text-center">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="section-heading">
+                            <h2>Anche quest'anno schiuma e divertimento al Parco Bastie</h2>
+                            <i class="fa fa-2x fa-angle-down"></i>
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="row programma">
-                        <div class="col-xs-12 col-md-8 col-md-offset-2">
-                            <p>Tenetevi liberi: ad agosto torna a Ala il torneo di calcetto saponato organizzato dall'Associazione Fuori Posto!</p>
-                            <p>Dopo il successo dell'ultima edizione, ritorna anche il torneo paralleo di Beach Volley! Trovi <b><a href="/iscrizioni">qui</a></b> tutte le info</p>
-                            <p>Non conosci la nostra Associazione? Segui <b><a href="https://www.facebook.com/AssociazioneFuoriPosto/">la nostra pagina</a></b> per rimanere aggiornato sulle prossime attività</p>
-                        </div>
+            </div>
+            <div class="container">
+                <div class="row programma">
+                    <div class="col-xs-12 col-md-8 col-md-offset-2">
+                        <p>Tenetevi liberi: ad agosto torna a Ala il torneo di calcetto saponato organizzato
+                            dall'Associazione Fuori Posto!</p>
+                        <p>Dopo il successo dell'ultima edizione, ritorna anche il torneo paralleo di Beach Volley!
+                            Trovi <b><a href="/iscrizioni">qui</a></b> tutte le info</p>
+                        <p>Non conosci la nostra Associazione? Segui <b><a
+                                href="https://www.facebook.com/AssociazioneFuoriPosto/">la nostra pagina</a></b> per
+                            rimanere aggiornato sulle prossime attività</p>
                     </div>
                 </div>
             </div>
@@ -66,39 +82,39 @@
                     <div class="section-heading text-center">
                         <h2>Programma</h2>
                     </div>
-                        <div class="row programma">
-                            <div class="col-md-4 col-xs-12">
-                                <h4>VENERDÌ 4 AGOSTO</h4>
-                                <ul>
-                                    <li>19:00 Inizio torneo Calcio Splash</li>
-                                    <li>22:00 Fine partite, ma inizia la festa Dj Matteo (Aldo) b2b Martin B.</li>
-                                    <li>01:00 Chiusura serata</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4 col-xs-12">
-                                <h4>SABATO 5 AGOSTO</h4>
-                                <ul>
-                                    <li>10:00 Inizio torneo Calcio Splash</li>
-                                    <li>12:00 Apertura stand gastronomici</li>
-                                    <li>16:00 Inizio torneo Beach Volley</li>
-                                    <li>18:30 Happy Bear</li>
-                                    <li>20.00 Djs Anze e Ivan</li>
-                                    <li>22.30 Dj Matin Horizon</li>
-                                    <li>01:00 Chiusura serata</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4 col-xs-12">
-                                <h4>DOMENICA 6 AGOSTO</h4>
-                                <ul>
-                                    <li>10:00 Inizio torneo Calcio Splash</li>
-                                    <li>12:00 Apertura stand gastronomici</li>
-                                    <li>14.30 Fine fase a gironi e finali torneo Beach Volley</li>
-                                    <li>18:30 Happy Bear</li>
-                                    <li>20.00 Fine partite e premiazioni tornei</li>
-                                    <li>22.00 Continua la festa con Dj Centi</li>
-                                </ul>
-                            </div>
+                    <div class="row programma">
+                        <div class="col-md-4 col-xs-12">
+                            <h4>VENERDÌ 4 AGOSTO</h4>
+                            <ul>
+                                <li>19:00 Inizio torneo Calcio Splash</li>
+                                <li>22:00 Fine partite, ma inizia la festa Dj Matteo (Aldo) b2b Martin B.</li>
+                                <li>01:00 Chiusura serata</li>
+                            </ul>
                         </div>
+                        <div class="col-md-4 col-xs-12">
+                            <h4>SABATO 5 AGOSTO</h4>
+                            <ul>
+                                <li>10:00 Inizio torneo Calcio Splash</li>
+                                <li>12:00 Apertura stand gastronomici</li>
+                                <li>16:00 Inizio torneo Beach Volley</li>
+                                <li>18:30 Happy Bear</li>
+                                <li>20.00 Djs Anze e Ivan</li>
+                                <li>22.30 Dj Matin Horizon</li>
+                                <li>01:00 Chiusura serata</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <h4>DOMENICA 6 AGOSTO</h4>
+                            <ul>
+                                <li>10:00 Inizio torneo Calcio Splash</li>
+                                <li>12:00 Apertura stand gastronomici</li>
+                                <li>14.30 Fine fase a gironi e finali torneo Beach Volley</li>
+                                <li>18:30 Happy Bear</li>
+                                <li>20.00 Fine partite e premiazioni tornei</li>
+                                <li>22.00 Continua la festa con Dj Centi</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -112,7 +128,9 @@
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2">
                             <div class="section-heading">
-                                <h2>Seguici su <a href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> e <a href="https://www.facebook.com/AssociazioneFuoriPosto">Facebook</a> per rimanere aggiornato sulle novità per la prossima edizione</h2>
+                                <h2>Seguici su <a href="https://www.instagram.com/associazionefuoriposto/">Instagram</a>
+                                    e <a href="https://www.facebook.com/AssociazioneFuoriPosto">Facebook</a> per
+                                    rimanere aggiornato sulle novità per la prossima edizione</h2>
                                 <i class="fa fa-2x fa-angle-down"></i>
                             </div>
                         </div>
@@ -206,13 +224,15 @@
                 <div class="container">
                     <div class="row programma">
                         <h1>Vuoi partecipare?</h1>
-{#                        <h2>Le iscrizioni apriranno a breve, seguici su <a#}
-{#                                href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> per rimanere#}
-{#                            aggiornato</h2>#}
-                                <h2>Scarica <a href="https://drive.google.com/file/d/1U6wtUjG3BManSEGi-Ec3CFDdHUYc_oRL/view" target="_blank">QUI (calcio)</a> e
-                                    <a href="https://drive.google.com/file/d/1ZYjv1DV2fuV43chatu05trwT8YcsxQMB/view" target="_blank">QUI (beach)</a> il modulo</h2>
-                                <p>Le iscrizioni si apriranno il 20 giugno e si chiuderanno al
-                                  raggiungimento di 20 squadre maschili e 8 femminili</p>
+                        {#                        <h2>Le iscrizioni apriranno a breve, seguici su <a#}
+                        {#                                href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> per rimanere#}
+                        {#                            aggiornato</h2>#}
+                        <h2>Scarica <a href="https://drive.google.com/file/d/1U6wtUjG3BManSEGi-Ec3CFDdHUYc_oRL/view"
+                                       target="_blank">QUI (calcio)</a> e
+                            <a href="https://drive.google.com/file/d/1ZYjv1DV2fuV43chatu05trwT8YcsxQMB/view"
+                               target="_blank">QUI (beach)</a> il modulo</h2>
+                        <p>Le iscrizioni si apriranno il 20 giugno e si chiuderanno al
+                            raggiungimento di 20 squadre maschili e 8 femminili</p>
                     </div>
                 </div>
             </div>
@@ -223,7 +243,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-7">
-                        <iframe src="https://yandex.com/map-widget/v1/-/CBuKvWBVtC" width="560" height="400" style="width: 100%"
+                        <iframe src="https://yandex.com/map-widget/v1/-/CBuKvWBVtC" width="560" height="400"
+                                style="width: 100%"
                                 frameborder="1" allowfullscreen="true"></iframe>
                     </div>
                     <div class="col-md-5">
