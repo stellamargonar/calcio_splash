@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from itertools import chain
 
-from calcio_splash.models import Tournament, Team, Match
+from calcio_splash.models import Match, Team, Tournament
 
 
 class GroupHelper:

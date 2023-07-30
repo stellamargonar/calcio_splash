@@ -1,12 +1,13 @@
-from django.shortcuts import render
-from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
-from calcio_splash.models import Match, Team, Player, Goal, BeachMatch
-from livematch.serializers import MatchSerializer, BeachMatchSerializer
+from django.shortcuts import render
+from django.utils import timezone
+
+from calcio_splash.models import BeachMatch, Goal, Match, Player, Team
+from livematch.serializers import BeachMatchSerializer, MatchSerializer
 
 
 def index(request):

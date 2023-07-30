@@ -1,4 +1,5 @@
 import json
+
 from fabric import task
 
 with open("fabfile/settings-default.json") as f:

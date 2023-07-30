@@ -1,7 +1,7 @@
 """calcio_splash URL Configuration
 """
-from django.urls import include, re_path
 from django.contrib import admin
+from django.urls import include, re_path
 from django.views.generic import TemplateView
 
 from calcio_splash import views

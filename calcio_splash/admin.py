@@ -1,15 +1,14 @@
+from datetime import datetime, timedelta
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 
-from datetime import datetime, timedelta
-
-
-from calcio_splash.models import Goal, Group, Match, Player, Team, Tournament, BeachMatch
-from calcio_splash.helpers import MatchHelper, BeachMatchHelper
-from calcio_splash.forms import MatchForm, PlayerAdminInline, BeachMatchForm
+from calcio_splash.forms import BeachMatchForm, MatchForm, PlayerAdminInline
+from calcio_splash.helpers import BeachMatchHelper, MatchHelper
+from calcio_splash.models import BeachMatch, Goal, Group, Match, Player, Team, Tournament
 
 
 class AbstractListFilterWithDefault(admin.SimpleListFilter):

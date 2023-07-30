@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.utils import timezone
 
-from calcio_splash.models import Group, Match, Player, BeachMatch
+from calcio_splash.models import BeachMatch, Group, Match, Player
 
 
 class GroupSelectField(forms.ModelChoiceField):

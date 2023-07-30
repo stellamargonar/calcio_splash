@@ -1,8 +1,9 @@
-from django.db.models import QuerySet
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from calcio_splash.models import Match, Team, Player, Goal, Group, BeachMatch
+from django.db.models import QuerySet
+
+from calcio_splash.models import BeachMatch, Goal, Group, Match, Player, Team
 
 
 class PlayerSerializer(serializers.ModelSerializer):

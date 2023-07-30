@@ -5,8 +5,8 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
-from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, BeachMatch
-from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BracketsHelper
+from calcio_splash.helpers import AlboDoroHelper, BracketsHelper, GroupHelper, MatchHelper
+from calcio_splash.models import BeachMatch, Goal, Group, Match, Player, Team, Tournament
 
 
 def can_show_gironi_and_matches(obj_year=None):
