@@ -1,6 +1,6 @@
-<div class="row" style="margin-bottom: 24px;">
-    <div class="col-sm-4 col-xs-5">
-        <div class="match-left">
+<div class="row">
+    <div class="col-sm-4 col-xs-6">
+        <div style="float: right;">
             <div class="team-name">
                 <h4>
                     {% if match.team_a %}
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-4 col-xs-2">
+    <div class="col-sm-4 hidden-xs">
         <div class="match-date">
             {% if is_beach %}
                 <h2>{{ match.team_a_set_1|default_if_none:"0" }} - {{ match.team_b_set_1|default_if_none:"0" }}</h2>
@@ -24,15 +24,13 @@
                             - {{ match.team_b_set_3|default_if_none:"0" }}</h2>
                     {% endif %}
                 {% endif %}
-                <b><a href="{% url 'beach-match-detail' match.id %}">{{ match.match_date_time|date:"D d - H:i" }}</a></b>
             {% else %}
-                <h2>{{ match.team_a_score|default_if_none:"" }} - {{ match.team_b_score|default_if_none:"" }}</h2>
-                <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"D d - H:i" }}</a></b>
+                <h2>{{ match.team_a_score|default_if_none:"0" }} - {{ match.team_b_score|default_if_none:"0" }}</h2>
             {% endif %}
         </div>
     </div>
-    <div class="col-sm-4 col-xs-5">
-        <div class="match-right">
+    <div class="col-sm-4 col-xs-6">
+        <div style="float: left;">
             <div class="team-name">
                 <h4>
                     {% if match.team_b %}
@@ -44,5 +42,32 @@
             </div>
 
         </div>
+    </div>
+
+</div>
+<div class="row" style="margin-bottom: 24px; margin-top: -28px;">
+    <div class="col-xs-12 hidden-lg hidden-sm hidden-md" style="padding-top: 0;">
+        {% if is_beach %}
+            <h2>{{ match.team_a_set_1|default_if_none:"0" }} - {{ match.team_b_set_1|default_if_none:"0" }}</h2>
+            {% if group.is_final %}
+                <h2>{{ match.team_a_set_2|default_if_none:"0" }}
+                    - {{ match.team_b_set_2|default_if_none:"0" }}</h2>
+                {% if match.team_a_set_3 != None and match.team_b_set_3 != None %}
+                    <h2>{{ match.team_a_set_3|default_if_none:"0" }}
+                        - {{ match.team_b_set_3|default_if_none:"0" }}</h2>
+                {% endif %}
+            {% endif %}
+
+        {% else %}
+            <h2>{{ match.team_a_score|default_if_none:"0" }} - {{ match.team_b_score|default_if_none:"0" }}</h2>
+        {% endif %}
+    </div>
+    <div class="col-xs-12" style="padding-top: 0;">
+        {% if is_beach %}
+            <b><a href="{% url 'beach-match-detail' match.id %}">{{ match.match_date_time|date:"D d - H:i" }}</a></b>
+
+        {% else %}
+            <b><a href="{% url 'match-detail' match.id %}">{{ match.match_date_time|date:"D d - H:i" }}</a></b>
+        {% endif %}
     </div>
 </div>
