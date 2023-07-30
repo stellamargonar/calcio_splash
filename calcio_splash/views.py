@@ -194,7 +194,7 @@ class AlboMarcatori(ListView):
             agg = Goal.objects.filter(player__pk=player['pk']).values(agg_field).annotate(dcount=Count(agg_field))
 
             player_data = {
-                'player': '{} {}'.format(player['name'], player['surname'], player['pk']),
+                'player': f"{player['name']} { player['surname']}",
                 'team': Team.objects.filter(player__pk=player['pk']).last(),
             }
 
