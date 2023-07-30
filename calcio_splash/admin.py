@@ -31,9 +31,12 @@ class AbstractListFilterWithDefault(admin.SimpleListFilter):
         for lookup, title in self.lookup_choices:
             yield {
                 'selected': self.value() == lookup,
-                'query_string': cl.get_query_string({
-                    self.parameter_name: lookup,
-                }, []),
+                'query_string': cl.get_query_string(
+                    {
+                        self.parameter_name: lookup,
+                    },
+                    [],
+                ),
                 'display': title,
             }
 
@@ -64,9 +67,7 @@ class TeamYearFilter(AbstractListFilterWithDefault):
 
     def lookups(self, request, model_admin):
         years = Team.objects.values('year').distinct()
-        return [
-            (year['year'], year['year']) for year in years
-        ]
+        return [(year['year'], year['year']) for year in years]
 
     def queryset_filter(self, request, queryset, value):
         return queryset.filter(year=value)
@@ -76,7 +77,7 @@ class TeamAdmin(admin.ModelAdmin):
     inlines = (PlayerAdminInline,)
     list_display = ['name', 'year', 'gender', 'nr_players']
     list_filter = (TeamYearFilter, 'gender')
-    search_fields = ('name', )
+    search_fields = ('name',)
 
     def nr_players(self, instance) -> int:
         return instance.player.count()
@@ -91,7 +92,8 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display = ['surname', 'name', 'date_of_birth']
     ordering = ('name', 'surname', 'date_of_birth')
     search_fields = ('name', 'surname')
-    filter_horizontal = ('teams', )
+    filter_horizontal = ('teams',)
+
 
 admin_site.register(Player, PlayerAdmin)
 
@@ -155,10 +157,10 @@ class MatchDateListFilter(AbstractListFilterWithDefault):
     def lookup_values(self, request, model_admin):
         return [
             (datetime.strftime(day, '%Y-%m-%d'), datetime.strftime(day, '%d/%m'))
-            for day in Match.objects
-                            .filter(match_date_time__year=timezone.now().year)
-                            .exclude(match_date_time__date=self.default)
-                            .dates('match_date_time', 'day').all()
+            for day in Match.objects.filter(match_date_time__year=timezone.now().year)
+            .exclude(match_date_time__date=self.default)
+            .dates('match_date_time', 'day')
+            .all()
         ]
 
     def queryset_filter(self, request, queryset, value):
@@ -175,8 +177,9 @@ class MatchYearListFilter(AbstractListFilterWithDefault):
     def lookup_values(self, request, model_admin):
         return [
             (year.year, datetime.strftime(year, '%Y'))
-            for year in
-            Match.objects.exclude(match_date_time__year=timezone.now().year).dates('match_date_time', 'year').all()
+            for year in Match.objects.exclude(match_date_time__year=timezone.now().year)
+            .dates('match_date_time', 'year')
+            .all()
         ]
 
     def queryset_filter(self, request, queryset, value):
@@ -184,13 +187,31 @@ class MatchYearListFilter(AbstractListFilterWithDefault):
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['get_datetime', 'get_team_a', 'get_team_b', 'get_score', 'get_tournament', 'get_group', ]
+    list_display = [
+        'get_datetime',
+        'get_team_a',
+        'get_team_b',
+        'get_score',
+        'get_tournament',
+        'get_group',
+    ]
     form = MatchForm
     actions = ['go_to_match_page']
-    list_filter = (MatchDateListFilter, MatchEndedListFilter, MatchTournamentListFilter, MatchYearListFilter, 'group', )
+    list_filter = (
+        MatchDateListFilter,
+        MatchEndedListFilter,
+        MatchTournamentListFilter,
+        MatchYearListFilter,
+        'group',
+    )
     search_fields = ['team_a__name', 'team_b__name']
-    ordering = ['match_date_time', ]
-    raw_id_fields = ['team_a', 'team_b', ]
+    ordering = [
+        'match_date_time',
+    ]
+    raw_id_fields = [
+        'team_a',
+        'team_b',
+    ]
 
     def get_tournament(self, obj):
         return '{} ({})'.format(obj.group.tournament.name, obj.group.tournament.edition_year)
@@ -240,9 +261,12 @@ class BeachMatchAdmin(MatchAdmin):
 
         field_template = 'team_{}_set_{}'
         scores = []
-        for set_nr in range(1, current_set+1):
+        for set_nr in range(1, current_set + 1):
             scores.append(
-                '{} - {}'.format(getattr(match, field_template.format('a', set_nr)), getattr(match, field_template.format('b', set_nr)))
+                '{} - {}'.format(
+                    getattr(match, field_template.format('a', set_nr)),
+                    getattr(match, field_template.format('b', set_nr)),
+                )
             )
         return ' | '.join(scores)
 
@@ -262,10 +286,7 @@ class GroupYearListFilter(AbstractListFilterWithDefault):
     _zero_value = '*'
 
     def lookup_values(self, request, model_admin):
-        return [
-            (year, year)
-            for year in set(Tournament.objects.values_list('edition_year', flat=True))
-        ]
+        return [(year, year) for year in set(Tournament.objects.values_list('edition_year', flat=True))]
 
     def queryset_filter(self, request, queryset, value):
         return queryset.filter(tournament__edition_year=value)
@@ -273,7 +294,7 @@ class GroupYearListFilter(AbstractListFilterWithDefault):
 
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['name', 'ordering', 'get_tournament']
-    list_filter = (GroupYearListFilter, )
+    list_filter = (GroupYearListFilter,)
 
     def get_tournament(self, obj):
         return '{} ({})'.format(obj.tournament.name, obj.tournament.edition_year)
@@ -285,8 +306,12 @@ admin_site.register(Group, GroupAdmin)
 
 
 class TournamentAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'edition_year', 'name', ]
-    list_filter = ('edition_year', )
+    list_display = [
+        'pk',
+        'edition_year',
+        'name',
+    ]
+    list_filter = ('edition_year',)
     raw_id_fields = ('team_1', 'team_2', 'team_3', 'goalkeeper', 'top_scorer')
 
 
@@ -302,10 +327,7 @@ class GoalGroupListFilter(admin.SimpleListFilter):
     parameter_name = 'group'
 
     def lookups(self, request, model_admin):
-        return [
-            (group.name, group.name)
-            for group in Group.objects.all()
-        ]
+        return [(group.name, group.name) for group in Group.objects.all()]
 
     def queryset(self, request, queryset):
         return queryset.filter(match__group__name=self.value())

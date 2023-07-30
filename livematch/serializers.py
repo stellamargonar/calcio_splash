@@ -42,7 +42,6 @@ class MatchSerializer(serializers.ModelSerializer):
     group = GroupSerializer()
     ended = SerializerMethodField()
 
-
     class Meta:
         model = Match
         fields = ['pk', 'team_a', 'team_b', 'score_a', 'score_b', 'date_time', 'group', 'ended']

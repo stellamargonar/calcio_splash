@@ -32,4 +32,4 @@ class TeamForm(forms.ModelForm):
 
 class PlayerAdminInline(admin.TabularInline):
     model = Player.teams.through
-    raw_id_fields = ('player', )
+    raw_id_fields = ('player',)

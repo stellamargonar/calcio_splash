@@ -9,7 +9,7 @@ from calcio_splash.models import Group, Match, Player, Team, Tournament, Goal, B
 from calcio_splash.helpers import AlboDoroHelper, GroupHelper, MatchHelper, BracketsHelper
 
 
-def can_show_gironi_and_matches(obj_year= None):
+def can_show_gironi_and_matches(obj_year=None):
     if obj_year is not None and int(obj_year) < timezone.now().year:
         return True
     rilascio_gironi = datetime.strptime('2023-07-28+07:00', '%Y-%m-%d%z')
@@ -39,10 +39,10 @@ class TeamDetailView(DetailView):
         # Add in a QuerySet of all the books
         context['players'] = Player.objects.filter(teams=team_id)
         context['matches'] = Match.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by('match_date_time')
-        context['matches'] = [
-            MatchHelper.build_match(match)[0] for match in context['matches']
-        ]
-        context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by('match_date_time')
+        context['matches'] = [MatchHelper.build_match(match)[0] for match in context['matches']]
+        context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by(
+            'match_date_time'
+        )
 
         return context
 
@@ -65,9 +65,7 @@ class MatchListView(ListView):
             return context
 
         context['year'] = year
-        context['match_list'] = [
-            MatchHelper.build_match(match)[0] for match in context['object_list']
-        ]
+        context['match_list'] = [MatchHelper.build_match(match)[0] for match in context['object_list']]
         context['beach_match_list'] = [
             match
             for match in BeachMatch.objects.filter(group__tournament__edition_year=year).order_by('match_date_time')
@@ -135,8 +133,7 @@ class TournamentDetailView(DetailView):
         if can_show_gironi_and_matches(tournament.edition_year):
             # load each group team stats
             tournament.groups_clean = [
-                GroupHelper.build_group(group)
-                for group in tournament.groups.filter(is_final=False)
+                GroupHelper.build_group(group) for group in tournament.groups.filter(is_final=False)
             ]
             tournament.brackets = BracketsHelper.build_brackets(tournament)
         else:
@@ -159,11 +156,13 @@ class AlboView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['calcio'] = [
-            AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
+            AlboDoroHelper.build_albo(tournament)
+            for tournament in context['object_list']
             if tournament.gender != Team.BEACH
         ]
         context['beach'] = [
-            AlboDoroHelper.build_albo(tournament) for tournament in context['object_list']
+            AlboDoroHelper.build_albo(tournament)
+            for tournament in context['object_list']
             if tournament.gender == Team.BEACH
         ]
         context['year'] = self.kwargs['year']
@@ -192,20 +191,14 @@ class AlboMarcatori(ListView):
 
             player_id_set.add(player['pk'])
 
-            agg = Goal.objects\
-                .filter(player__pk=player['pk'])\
-                .values(agg_field)\
-                .annotate(dcount=Count(agg_field))
+            agg = Goal.objects.filter(player__pk=player['pk']).values(agg_field).annotate(dcount=Count(agg_field))
 
             player_data = {
                 'player': '{} {}'.format(player['name'], player['surname'], player['pk']),
                 'team': Team.objects.filter(player__pk=player['pk']).last(),
             }
 
-            player_data.update({
-                item[agg_field]: item['dcount']
-                for item in agg
-            })
+            player_data.update({item[agg_field]: item['dcount'] for item in agg})
             player_data['total'] = sum(item['dcount'] for item in agg)
             player_classifica.append(player_data)
 

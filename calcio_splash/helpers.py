@@ -38,14 +38,17 @@ class GroupHelper:
         group.group_matches = matches
 
         # post process teams
-        team_list = [{
-            'name': team_name,
-            'points': team.get('points', 0),
-            'goals_done': team.get('goals_done', 0),
-            'goals_taken': team.get('goals_taken', 0),
-            'goals_diff': team.get('goals_done', 0) - team.get('goals_taken', 0),
-            'pk': team['pk'],
-        } for team_name, team in teams.items()]
+        team_list = [
+            {
+                'name': team_name,
+                'points': team.get('points', 0),
+                'goals_done': team.get('goals_done', 0),
+                'goals_taken': team.get('goals_taken', 0),
+                'goals_diff': team.get('goals_done', 0) - team.get('goals_taken', 0),
+                'pk': team['pk'],
+            }
+            for team_name, team in teams.items()
+        ]
         sorted_teams = sorted(team_list, key=lambda x: (x['points'], x['goals_diff']), reverse=True)
 
         group.teams = OrderedDict([(team['name'], team) for team in sorted_teams])
@@ -83,11 +86,14 @@ class GroupHelper:
         group.group_matches = matches
 
         # post process teams
-        team_list = [{
-            'name': team_name,
-            'points': team.get('points', 0),
-            'pk': team['pk'],
-        } for team_name, team in teams.items()]
+        team_list = [
+            {
+                'name': team_name,
+                'points': team.get('points', 0),
+                'pk': team['pk'],
+            }
+            for team_name, team in teams.items()
+        ]
         sorted_teams = sorted(team_list, key=lambda x: -x['points'])
         group.teams = OrderedDict([(team['name'], team) for team in sorted_teams])
         group.is_beach = True
@@ -163,7 +169,6 @@ class AlboDoroHelper:
 
 
 class BracketsHelper:
-
     @classmethod
     def _add_participant_if_missing(cls, participants: dict, team: Team):
         if not team or team.pk in participants:
@@ -215,14 +220,12 @@ class BracketsHelper:
                     "round_id": n_group,  # the JS library sorts by this, so we can't use group.pk :/
                     "round_id_real": group.pk,
                     "status": status,
-                    "opponent1": {
-                        "id": match.team_a.pk,
-                        "result": cls._match_result(match, match.team_a)
-                    } if match.team_a else None,
-                    "opponent2": {
-                        "id": match.team_b.pk,
-                        "result": cls._match_result(match, match.team_b)
-                    } if match.team_b else None,
+                    "opponent1": {"id": match.team_a.pk, "result": cls._match_result(match, match.team_a)}
+                    if match.team_a
+                    else None,
+                    "opponent2": {"id": match.team_b.pk, "result": cls._match_result(match, match.team_b)}
+                    if match.team_b
+                    else None,
                 }
 
                 if isinstance(match, Match):
@@ -237,11 +240,15 @@ class BracketsHelper:
                     match_dict["child_count"] = 3
                     if started and match.team_a:
                         match_dict["opponent1"]["score"] = "-".join(
-                            str(x) for x in [match.team_a_set_1, match.team_a_set_2, match.team_a_set_3] if x is not None
+                            str(x)
+                            for x in [match.team_a_set_1, match.team_a_set_2, match.team_a_set_3]
+                            if x is not None
                         )
                     if started and match.team_b:
                         match_dict["opponent2"]["score"] = "-".join(
-                            str(x) for x in [match.team_b_set_1, match.team_b_set_2, match.team_b_set_3] if x is not None
+                            str(x)
+                            for x in [match.team_b_set_1, match.team_b_set_2, match.team_b_set_3]
+                            if x is not None
                         )
 
                 matches.append(match_dict)
@@ -263,7 +270,7 @@ class BracketsHelper:
                         "seedOrdering": ["natural"],
                         "grandFinal": "single",
                         "consolationFinal": True,
-                    }
+                    },
                 }
             ],
             "groups": [{"id": 0, "stage_id": 0, "number": 1}, {"id": 1, "stage_id": 0, "number": 2}],
