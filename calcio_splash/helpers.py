@@ -23,11 +23,15 @@ class GroupHelper:
             team_a['pk'] = match.team_a.pk
             team_a['goals_done'] = team_a.get('goals_done', 0) + match.team_a_score
             team_a['goals_taken'] = team_a.get('goals_taken', 0) + match.team_b_score
+            if match.ended:
+                team_a['partite_giocate'] = team_a.get('partite_giocate', 0) + 1
 
             team_b = teams.get(match.team_b.name, {})
             team_b['pk'] = match.team_b.pk
             team_b['goals_done'] = team_b.get('goals_done', 0) + match.team_b_score
             team_b['goals_taken'] = team_b.get('goals_taken', 0) + match.team_a_score
+            if match.ended:
+                team_b['partite_giocate'] = team_b.get('partite_giocate', 0) + 1
 
             points_a, points_b = GroupHelper._score_from_match(match)
             team_a['points'] = team_a.get('points', 0) + points_a
@@ -46,6 +50,7 @@ class GroupHelper:
                 'goals_taken': team.get('goals_taken', 0),
                 'goals_diff': team.get('goals_done', 0) - team.get('goals_taken', 0),
                 'pk': team['pk'],
+                'partite_giocate': team.get('partite_giocate', 0),
             }
             for team_name, team in teams.items()
         ]
@@ -77,9 +82,12 @@ class GroupHelper:
 
             team_a['points'] = team_a.get('points', 0) + points_a
             team_a['pk'] = match.team_a.pk
+            if match.ended:
+                team_a['partite_giocate'] = team_a.get('partite_giocate', 0) + 1
             team_b['points'] = team_b.get('points', 0) + points_b
             team_b['pk'] = match.team_b.pk
-
+            if match.ended:
+                team_b['partite_giocate'] = team_b.get('partite_giocate', 0) + 1
             teams[match.team_a.name] = team_a
             teams[match.team_b.name] = team_b
 
@@ -91,6 +99,7 @@ class GroupHelper:
                 'name': team_name,
                 'points': team.get('points', 0),
                 'pk': team['pk'],
+                'partite_giocate': team.get('partite_giocate', 0)
             }
             for team_name, team in teams.items()
         ]

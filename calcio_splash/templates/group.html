@@ -26,6 +26,7 @@
             <th>GS</th>
             <th>DR</th>
             {% endif %}
+            <th>Partite giocate</th>
           </tr>
           {% for team_name, team in group.teams.items %}
           <tr>
@@ -38,6 +39,7 @@
             <td>{{team.goals_taken}}</td>
             <td>{{team.goals_diff}}</td>
             {% endif %}
+            <td>{{team.partite_giocate}}</td>
           </tr>
           {% endfor %}
         </table>
