@@ -250,10 +250,13 @@ table.group-rank {
     width: 80%;
 }
 
+
 @media(max-width:767px) {
     table.group-rank {
         margin: 0;
-        width: 100%;
+        width: 600px;
+        display:block;
+        overflow-x: auto;
     }
 }
 

@@ -161,9 +161,13 @@ class AlboDoroHelper:
                 for goal in match.goals.all():
                     if goal.player:
                         key = goal.player.pk
-                        players[key] = {'player': goal.player, 'goals': players.get(key, {}).get('goals', 0) + 1}
+                        players[key] = {
+                            'player': goal.player,
+                            'goals': players.get(key, {}).get('goals', 0) + 1,
+                            'team': goal.player.teams.filter(year=tournament.edition_year).first(),
+                        }
 
-        player_list = [(obj['player'], obj['goals']) for obj in players.values()]
+        player_list = [(obj['player'], obj['goals'], obj['team']) for obj in players.values()]
         player_list.sort(key=lambda x: -x[1])
         return player_list
 
