@@ -9,10 +9,9 @@
             <li class="dropdown {% block header_menu_class_tournament %}{% endblock %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Torneo <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{% url 'tournament-detail' 11 %}">Maschile</a></li>
-                    <li><a href="{% url 'tournament-detail' 12 %}">Femminile</a></li>
-                    <li><a href="{% url 'tournament-detail' 13 %}">Beach Volley</a></li>
-                    <li><a href="{% url 'matches' 2023 %}">Le Partite</a></li>
+                    <li><a href="{% url 'tournament-detail' 14 %}">Maschile</a></li>
+                    <li><a href="{% url 'tournament-detail' 15 %}">Femminile</a></li>
+                    <li><a href="{% url 'matches' 2024 %}">Le Partite</a></li>
                 </ul>
             </li>
         {%  endif %}
@@ -23,6 +22,7 @@
                 <li><a href="{% url 'albomarcatori' 'M' %}">Albo d'oro Maschile</a></li>
                 <li><a href="{% url 'albomarcatori' 'F' %}">Albo d'oro Femminile</a></li>
 
+                <li><a href="{% url 'albo' 2023 %}">Edizione 2023</a></li>
                 <li><a href="{% url 'albo' 2022 %}">Edizione 2022</a></li>
                 <li><a href="{% url 'albo' 2019 %}">Edizione 2019</a></li>
                 <li><a href="{% url 'albo' 2018 %}">Edizione 2018</a></li>
@@ -35,7 +35,6 @@
             <ul class="dropdown-menu">
                 {% if MODE_TOURNAMENT %}
                     <li><a href="{% url 'regulation' %}">Regolamento</a></li>
-                    <li><a href="{% url 'regulation-beach' %}">Regolamento Beach Volley</a></li>
                     <li><a href="{% url 'iscrizioni' %}">Iscrizioni</a></li>
                 {%  endif %}
                 <li><a href="{% url 'fuoriposto' %}">Chi Siamo</a></li>

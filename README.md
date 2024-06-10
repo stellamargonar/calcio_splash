@@ -1,10 +1,11 @@
 # Development
 
 ## How to Setup
-Better using virtualenv:
+Better using [asdf](https://asdf-vm.com/):
 
 ```
-$ mkvirtualenv calcio_spash
+$ asdf install
+$ poetry shell
 $ poetry install
 ```
 
