@@ -157,9 +157,6 @@
 }
 
 @media(max-width:767px) {
-  .row > div {
-    padding-top: 30px;
-  }
   hr.marginbot-50 {
     margin-bottom: 20px !important;
     margin-top: 50px;
@@ -245,20 +242,15 @@ tbody.group-rank {
 }
 
 table.group-rank {
-    margin: 20px auto 40px;
+    /*margin: 20px auto 40px;*/
     border: 0;
-    width: 80%;
+    /*width: 80%;*/
 }
 
-
-@media(max-width:767px) {
-    table.group-rank {
-        margin: 0;
-        width: 600px;
-        display:block;
-        overflow-x: auto;
-    }
+.table-responsive {
+    border: 0;
 }
+
 
 .team-player {
     font-size: 12px;

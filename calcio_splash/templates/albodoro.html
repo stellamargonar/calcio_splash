@@ -9,129 +9,135 @@
 
 
 {% block content %}
-    <section id="teams" class="page-head-section text-center container">
-        {% for tournament in beach %}
+  <section id="teams" class="text-center">
+    <div class="container">
+      {% for tournament in beach %}
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Classifica {{ tournament.name }}</h3>
-                        </div>
-                    </div>
+              <div class="col-md-12">
+                <h3>Classifica {{ tournament.name }}</h3>
+              </div>
+            </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="wow bounceInUp" data-wow-delay="0.2s">
-                                <div class="team boxed-grey">
-                                    <div class="inner">
-                                        <h4>Classifica Squadre</h4>
-                                        {% if tournament.team_1 %}
-                                            <ul>
-                                                <li><h5>1. <a
-                                                        href="{% url 'team-detail' tournament.team_1.id %}">{{ tournament.team_1.name }}</a>
-                                                </h5></li>
-                                                <li><h5>2. <a
-                                                        href="{% url 'team-detail' tournament.team_2.id %}">{{ tournament.team_2.name }}</a>
-                                                </h5></li>
-                                                <li><h5>3. <a
-                                                        href="{% url 'team-detail' tournament.team_3.id %}">{{ tournament.team_3.name }}</a>
-                                                </h5></li>
-                                            </ul>
-                                        {% endif %}
-                                        <a href="/tournament/{{ tournament.pk }}">Visualizza dettagli torneo</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="wow bounceInUp" data-wow-delay="0.2s">
+                  <div class="team boxed-grey">
+                    <div class="inner">
+                      <h4>Classifica Squadre</h4>
+                      {% if tournament.team_1 %}
+                        <ul>
+                          <li><h5>1. <a
+                                  href="{% url 'team-detail' tournament.team_1.id %}">{{ tournament.team_1.name }}</a>
+                          </h5></li>
+                          <li><h5>2. <a
+                                  href="{% url 'team-detail' tournament.team_2.id %}">{{ tournament.team_2.name }}</a>
+                          </h5></li>
+                          <li><h5>3. <a
+                                  href="{% url 'team-detail' tournament.team_3.id %}">{{ tournament.team_3.name }}</a>
+                          </h5></li>
+                        </ul>
+                      {% endif %}
+                      <a href="/tournament/{{ tournament.pk }}">Visualizza dettagli torneo</a>
                     </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
+
+      {% endfor %}
+
+      <div class="row">
+        {% for tournament in calcio %}
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Classifica {{ tournament.name }}</h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="wow bounceInUp" data-wow-delay="0.2s">
+                  <div class="team boxed-grey">
+                    <div class="inner">
+                      <h4>Classifica Squadre</h4>
+                      {% if tournament.team_1 %}
+                        <ul>
+                          <li><h5>1. <a
+                                  href="{% url 'team-detail' tournament.team_1.id %}">{{ tournament.team_1.name }}</a>
+                          </h5></li>
+                          <li><h5>2. <a
+                                  href="{% url 'team-detail' tournament.team_2.id %}">{{ tournament.team_2.name }}</a>
+                          </h5></li>
+                          <li><h5>3. <a
+                                  href="{% url 'team-detail' tournament.team_3.id %}">{{ tournament.team_3.name }}</a>
+                          </h5></li>
+                        </ul>
+                      {% endif %}
+                      <a href="/tournament/{{ tournament.pk }}">Visualizza dettagli torneo</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <br/>
-
-        {% endfor %}
-
-        <div class="row">
-            {% for tournament in calcio %}
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>Classifica {{ tournament.name }}</h3>
-                        </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="wow bounceInUp" data-wow-delay="0.2s">
+                  <div class="team boxed-grey">
+                    <div class="inner">
+                      <h4>Miglior Giocatore</h4>
+                      {% if tournament.top_scorer %}
+                        <h6>{{ tournament.top_scorer }}</h6>
+                      {% endif %}
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="wow bounceInUp" data-wow-delay="0.2s">
-                                <div class="team boxed-grey">
-                                    <div class="inner">
-                                        <h4>Classifica Squadre</h4>
-                                        {% if tournament.team_1 %}
-                                            <ul>
-                                                <li><h5>1. <a
-                                                        href="{% url 'team-detail' tournament.team_1.id %}">{{ tournament.team_1.name }}</a>
-                                                </h5></li>
-                                                <li><h5>2. <a
-                                                        href="{% url 'team-detail' tournament.team_2.id %}">{{ tournament.team_2.name }}</a>
-                                                </h5></li>
-                                                <li><h5>3. <a
-                                                        href="{% url 'team-detail' tournament.team_3.id %}">{{ tournament.team_3.name }}</a>
-                                                </h5></li>
-                                            </ul>
-                                        {% endif %}
-                                        <a href="/tournament/{{ tournament.pk }}">Visualizza dettagli torneo</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="wow bounceInUp" data-wow-delay="0.2s">
-                                <div class="team boxed-grey">
-                                    <div class="inner">
-                                        <h4>Miglior Giocatore</h4>
-                                        {% if tournament.top_scorer %}
-                                            <h6>{{ tournament.top_scorer }}</h6>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="wow bounceInUp" data-wow-delay="0.2s">
-                                <div class="team boxed-grey">
-                                    <div class="inner">
-                                        <h4>Miglior Portiere</h4>
-                                        {% if tournament.goalkeeper %}
-                                            <h6>{{ tournament.goalkeeper }}</h6>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br/>
-                    <div class="row">
-                        <table class="group-rank" width="75%">
-                            <tr>
-                                <th style="width: 15%;"># Classifica</th>
-                                <th>Giocatore</th>
-                                <th>Reti</th>
-                            </tr>
-                            {% for player in tournament.players %}
-                                <tr>
-                                <td style="width: 10%;">{{ forloop.counter }}</td>
-                                    <td style="width: 80%;">{{ player.0.name }} {{ player.0.surname }}</td>
-                                    <td style="width: 20%;">{{ player.1 }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
+                  </div>
                 </div>
-            {% endfor %}
-        </div>
-    </section>
+              </div>
+
+              <div class="col-md-6">
+                <div class="wow bounceInUp" data-wow-delay="0.2s">
+                  <div class="team boxed-grey">
+                    <div class="inner">
+                      <h4>Miglior Portiere</h4>
+                      {% if tournament.goalkeeper %}
+                        <h6>{{ tournament.goalkeeper }}</h6>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br/>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="table-responsive">
+                  <table class="table group-rank">
+                    <tr>
+                      <th style="width: 15%;"># Classifica</th>
+                      <th>Giocatore</th>
+                      <th>Reti</th>
+                    </tr>
+                    {% for player in tournament.players %}
+                      <tr>
+                        <td style="width: 10%;">{{ forloop.counter }}</td>
+                        <td style="width: 80%;">{{ player.0.name }} {{ player.0.surname }}</td>
+                        <td style="width: 20%;">{{ player.1 }}</td>
+                      </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 {% endblock %}

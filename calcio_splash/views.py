@@ -9,10 +9,15 @@ from calcio_splash.helpers import AlboDoroHelper, BracketsHelper, GroupHelper, M
 from calcio_splash.models import BeachMatch, Goal, Group, Match, Player, Team, Tournament
 
 
-def can_show_gironi_and_matches(obj_year=None):
-    if obj_year is not None and int(obj_year) < timezone.now().year:
+def can_show_gironi_and_matches(obj_year: int | str):
+    if obj_year is None:
+        return False
+    tournament_year = int(obj_year)
+    this_year = timezone.now().year
+    if tournament_year < this_year:
         return True
-    rilascio_gironi = datetime.strptime('2023-07-28+07:00', '%Y-%m-%d%z')
+
+    rilascio_gironi = datetime.strptime(f'{this_year}-07-28+07:00', '%Y-%m-%d%z')
     return timezone.now() >= rilascio_gironi
 
 

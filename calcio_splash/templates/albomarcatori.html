@@ -3,45 +3,50 @@
 {% block header_menu_class_albo %}active{% endblock %}
 
 {% block header %}
-    <h2>Classifica Marcatori</h2>
+  <h2>Classifica Marcatori</h2>
 {% endblock %}
 
 
 {% block content %}
-    <section id="teams" class="page-head-section text-center container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="row">
-                    <table class="group-rank" width="75%">
-                        <tr>
-                            <th style="width: 10%;"># Classifica</th>
-                            <th style="width: 10%;">Reti Totali</th>
-                            <th>Giocatore</th>
-                            <th style="width: 10%;">2017</th>
-                            <th style="width: 10%;">2018</th>
-                            <th style="width: 10%;">2019</th>
-                            <th style="width: 10%;">2022</th>
-                            <th style="width: 10%;">2023</th>
-                        </tr>
-                        {% for player in classifica %}
-                            {% if player.total > 0 %}
-                                <tr>
-                                    <td style="width: 10%;">{{ forloop.counter }}</td>
-                                    <td style="width: 10%;"><b>{{ player.total }}</b></td>
-                                    <td><b>{{ player.player }}</b></td>
+  <section id="teams" class="text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="table-responsive">
+            <table class="table group-rank">
+              <thead>
+              <tr>
+                <th style="width: 10%;"># Classifica</th>
+                <th style="width: 10%;">Reti Totali</th>
+                <th>Giocatore</th>
+                <th style="width: 10%;">2017</th>
+                <th style="width: 10%;">2018</th>
+                <th style="width: 10%;">2019</th>
+                <th style="width: 10%;">2022</th>
+                <th style="width: 10%;">2023</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for player in classifica %}
+                {% if player.total > 0 %}
+                  <tr>
+                    <td style="width: 10%;">{{ forloop.counter }}</td>
+                    <td style="width: 10%;"><b>{{ player.total }}</b></td>
+                    <td><b>{{ player.player }}</b></td>
 
-                                    <td style="width: 10%;">{{ player.2017 }}</td>
-                                    <td style="width: 10%;">{{ player.2018 }}</td>
-                                    <td style="width: 10%;">{{ player.2019 }}</td>
-                                    <td style="width: 10%;">{{ player.2022 }}</td>
-                                    <td style="width: 10%;">{{ player.2023 }}</td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-
-                    </table>
-                </div>
-            </div>
+                    <td style="width: 10%;">{{ player.2017 }}</td>
+                    <td style="width: 10%;">{{ player.2018 }}</td>
+                    <td style="width: 10%;">{{ player.2019 }}</td>
+                    <td style="width: 10%;">{{ player.2022 }}</td>
+                    <td style="width: 10%;">{{ player.2023 }}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 {% endblock %}

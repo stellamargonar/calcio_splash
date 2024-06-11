@@ -17,32 +17,34 @@
     {% if not group.is_final %}
     <div class="row">
       <div class="col-md-12">
-        <table class="group-rank">
-          <tr>
-            <th>&nbsp;</th>
-            <th>Punti</th>
-            {% if not group.is_beach %}
-            <th>GF</th>
-            <th>GS</th>
-            <th>DR</th>
-            {% endif %}
-            <th>Partite giocate</th>
-          </tr>
-          {% for team_name, team in group.teams.items %}
-          <tr>
-            <td>
-                <a href="{% url 'team-detail' team.pk %}">{{ team_name }}</a>
-            </td>
-            <td>{{team.points}}</td>
-            {% if not group.is_beach %}
-            <td>{{team.goals_done}}</td>
-            <td>{{team.goals_taken}}</td>
-            <td>{{team.goals_diff}}</td>
-            {% endif %}
-            <td>{{team.partite_giocate}}</td>
-          </tr>
-          {% endfor %}
-        </table>
+        <div class="table-responsive">
+          <table class="table group-rank">
+            <tr>
+              <th>&nbsp;</th>
+              <th>Punti</th>
+              {% if not group.is_beach %}
+              <th>GF</th>
+              <th>GS</th>
+              <th>DR</th>
+              {% endif %}
+              <th>Partite giocate</th>
+            </tr>
+            {% for team_name, team in group.teams.items %}
+            <tr>
+              <td>
+                  <a href="{% url 'team-detail' team.pk %}">{{ team_name }}</a>
+              </td>
+              <td>{{team.points}}</td>
+              {% if not group.is_beach %}
+              <td>{{team.goals_done}}</td>
+              <td>{{team.goals_taken}}</td>
+              <td>{{team.goals_diff}}</td>
+              {% endif %}
+              <td>{{team.partite_giocate}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
     </div>
     {% endif %}
@@ -50,14 +52,16 @@
 
     <!-- GROUP MATCHES -->
     <div class="row">
-      {% if group.matches %}
-      {% for match in group.group_matches %}
-      <div class="white-match">
-        {% include 'match_template.html' with match=match is_beach=group.is_beach %}
+      <div class="col-xs-12">
+        {% if group.matches %}
+        {% for match in group.group_matches %}
+        <div class="white-match">
+          {% include 'match_template.html' with match=match is_beach=group.is_beach %}
+        </div>
+  
+        {% endfor %}
+        {% endif %}
       </div>
-
-      {% endfor %}
-      {% endif %}
     </div>
     <!-- /GROUP MATCHES -->
 
