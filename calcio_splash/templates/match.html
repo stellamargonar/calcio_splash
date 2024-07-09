@@ -87,7 +87,7 @@
                                 <li><h5>Marcatori</h5></li>
                                 {% for goal in match.goals.all %}
                                     {% if goal.team.id == match.team_a.id %}
-                                        <li>{{ goal.player.name }} {{ goal.player.surname }}</li>
+                                        <li>{{ goal.player.full_name }}</li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
@@ -98,7 +98,7 @@
                                 <li><h5>Marcatori</h5></li>
                                 {% for goal in match.goals.all %}
                                     {% if goal.team.id == match.team_b.id %}
-                                        <li>{{ goal.player.name }} {{ goal.player.surname }}</li>
+                                        <li>{{ goal.player.full_name }}</li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>

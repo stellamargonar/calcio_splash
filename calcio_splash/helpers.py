@@ -171,7 +171,7 @@ class AlboDoroHelper:
                     if goal.player:
                         key = goal.player.pk
                         players[key] = {
-                            'player': goal.player,
+                            'player': goal.player.full_name,
                             'goals': players.get(key, {}).get('goals', 0) + 1,
                             'team': goal.player.teams.filter(year=tournament.edition_year).first(),
                         }
