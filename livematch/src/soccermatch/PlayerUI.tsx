@@ -39,7 +39,7 @@ export class PlayerUI extends React.PureComponent<PlayerUIProps> {
     }
 
     private renderLabel(): React.ReactNode {
-        return <div className='flex-grow-1'><EllipsableContent value={this.props.player.full_name} /> {this.renderScore()}</div>
+        return <div className='flex-grow-1'><EllipsableContent value={this.props.player.nickname_or_full_name} /> {this.renderScore()}</div>
     }
 
     public render(): React.ReactNode {

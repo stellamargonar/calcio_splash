@@ -30,10 +30,14 @@ class Player(models.Model):
     teams = models.ManyToManyField(Team, related_name='player', blank=True)
 
     def __str__(self):
-        return f"{self.name} {self.nickname}" if self.nickname else f"{self.name} {self.surname}"
+        return " ".join([self.name, self.surname])
 
     @property
     def full_name(self):
+        return " ".join([self.name, self.surname])
+
+    @property
+    def nickname_or_full_name(self):
         return " ".join([self.name, f"({self.nickname})"]) if self.nickname else " ".join([self.name, self.surname])
 
 
