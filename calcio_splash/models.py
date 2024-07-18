@@ -30,7 +30,7 @@ class Player(models.Model):
     teams = models.ManyToManyField(Team, related_name='player', blank=True)
 
     def __str__(self):
-        return " ".join([self.name, self.surname])
+        return self.full_name
 
     @property
     def full_name(self):
