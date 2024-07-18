@@ -38,7 +38,7 @@ class Player(models.Model):
 
     @property
     def nickname_or_full_name(self):
-        return " ".join([self.name, f"({self.nickname})"]) if self.nickname else " ".join([self.name, self.surname])
+        return " ".join([self.name, f"({self.nickname})"]) if self.nickname else self.full_name
 
 
 class Tournament(models.Model):
