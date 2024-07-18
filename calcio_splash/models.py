@@ -36,10 +36,6 @@ class Player(models.Model):
     def full_name(self):
         return " ".join([self.name, self.surname])
 
-    @property
-    def nickname_or_full_name(self):
-        return " ".join([self.name, f"({self.nickname})"]) if self.nickname else self.full_name
-
 
 class Tournament(models.Model):
     name = models.CharField(max_length=250)

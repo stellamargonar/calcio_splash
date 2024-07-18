@@ -7,7 +7,7 @@ import {initJQueryCSRF} from "../utils/Utils";
 export interface Player {
     pk: string;
     full_name: string;
-    nickname_or_full_name: string;
+    nickname: string;
     score: number;
 }
 

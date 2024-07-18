@@ -11,7 +11,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ['pk', 'full_name', 'nickname_or_full_name', 'score']
+        fields = ['pk', 'full_name', 'nickname', 'score']
 
     def get_score(self, instance: Player) -> int:
         match = self.parent.parent.parent.instance
