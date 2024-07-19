@@ -86,9 +86,9 @@ admin_site.register(Team, TeamAdmin)
 
 
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'name', 'date_of_birth']
-    ordering = ('name', 'surname', 'date_of_birth')
-    search_fields = ('name', 'surname')
+    list_display = ['surname', 'name', 'nickname', 'date_of_birth']
+    ordering = ('name', 'surname', 'nickname', 'date_of_birth')
+    search_fields = ('name', 'surname', 'nickname')
     filter_horizontal = ('teams',)
 
 

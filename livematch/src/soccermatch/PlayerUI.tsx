@@ -39,7 +39,15 @@ export class PlayerUI extends React.PureComponent<PlayerUIProps> {
     }
 
     private renderLabel(): React.ReactNode {
-        return <div className='flex-grow-1'><EllipsableContent value={this.props.player.full_name} /> {this.renderScore()}</div>
+        return <div className='flex-grow-1 d-flex justify-content-center align-items-center p-1'>
+            <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                <span><EllipsableContent value={this.props.player.full_name} /></span>
+                {this.props.player.nickname != null && (<em><EllipsableContent value={`(${this.props.player.nickname})`} /></em>)}
+            </div>
+            <div>
+                {this.renderScore()}
+            </div>
+        </div>
     }
 
     public render(): React.ReactNode {

@@ -226,17 +226,17 @@ class AlboMarcatori(ListView):
         player_qs = context['object_list']
 
         agg_field = 'match__group__tournament__edition_year'
-        for player in player_qs.values('pk', 'name', 'surname'):
-            if player['pk'] in player_id_set:
+        for player in player_qs.only("id", "name", "surname", "nickname"):
+            if player.pk in player_id_set:
                 continue
 
-            player_id_set.add(player['pk'])
+            player_id_set.add(player.pk)
 
-            agg = Goal.objects.filter(player__pk=player['pk']).values(agg_field).annotate(dcount=Count(agg_field))
+            agg = Goal.objects.filter(player__pk=player.pk).values(agg_field).annotate(dcount=Count(agg_field))
 
             player_data = {
-                'player': f"{player['name']} { player['surname']}",
-                'team': Team.objects.filter(player__pk=player['pk']).last(),
+                'player': player.full_name,
+                'team': Team.objects.filter(player__pk=player.pk).last(),
             }
 
             player_data.update({item[agg_field]: item['dcount'] for item in agg})

@@ -26,14 +26,15 @@ class Player(models.Model):
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     date_of_birth = models.DateField()
+    nickname = models.CharField(max_length=50, blank=True, null=True)
     teams = models.ManyToManyField(Team, related_name='player', blank=True)
 
     def __str__(self):
-        return '{} {}'.format(self.name, self.surname)
+        return self.full_name
 
     @property
     def full_name(self):
-        return ' '.join([self.name, self.surname])
+        return " ".join([self.name, self.surname])
 
 
 class Tournament(models.Model):

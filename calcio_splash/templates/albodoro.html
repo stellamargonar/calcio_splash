@@ -127,7 +127,7 @@
                     {% for player in tournament.players %}
                       <tr>
                         <td style="width: 10%;">{{ forloop.counter }}</td>
-                        <td style="width: 80%;">{{ player.0.name }} {{ player.0.surname }}</td>
+                        <td style="width: 80%;">{{ player.0.full_name }}</td>
                         <td style="width: 20%;">{{ player.1 }}</td>
                       </tr>
                     {% endfor %}
