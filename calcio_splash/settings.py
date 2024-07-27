@@ -186,3 +186,8 @@ if SENTRY_DSN:
 # "default": tutto il resto dell'anno, nasconde info e moduli, partite, lascia solo wall of fame e classifiche.
 # WEBSITE_MODE = "default"
 WEBSITE_MODE = "tournament"
+
+from django.utils import timezone
+
+this_year = timezone.now().year
+DATETIME_RILASCIO_PARTITE = f"{this_year}-07-29+07:00"

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.conf import settings
 from django.db.models import Count, Q
 from django.shortcuts import render
 from django.utils import timezone
@@ -17,7 +18,7 @@ def can_show_gironi_and_matches(obj_year: int | str):
     if tournament_year < this_year:
         return True
 
-    rilascio_gironi = datetime.strptime(f'{this_year}-07-28+07:00', '%Y-%m-%d%z')
+    rilascio_gironi = datetime.strptime(settings.DATETIME_RILASCIO_PARTITE, '%Y-%m-%d%z')
     return timezone.now() >= rilascio_gironi
 
 
