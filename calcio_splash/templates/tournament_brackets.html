@@ -15,7 +15,7 @@
 
     window.bracketsViewer.addLocale('en', {
         "common": {
-            "bye": "Da individuare",
+            "bye": "-",
         },
         "match-label": {
             "standard-bracket-final": "Finalissima",
@@ -34,6 +34,7 @@
         separatedChildCountLabel: true,
         showSlotsOrigin: true,
         showLowerBracketSlotsOrigin: true,
+        showPopoverOnMatchLabelClick: false,
         highlightParticipantOnHover: true,
         customRoundName: info => {
             if (info.finalType === "consolation-final") {
@@ -48,6 +49,9 @@
             }
             if (fromLast === 2) {
                 return "Quarti"
+            }
+            if (fromLast === 3) {
+                return "Ottavi"
             }
             return null
         }
