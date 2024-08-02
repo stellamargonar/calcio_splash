@@ -123,6 +123,11 @@ class Match(models.Model):
     def ended(self):
         return self.end_time is not None
 
+    @property
+    def started(self):
+        # [sp] it would be nice to use `start_date`, but we are not setting it anywhere; let's rely on the score;
+        return self.score_a > 0 or self.score_b > 0 or self.ended
+
 
 class Goal(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='goals')
