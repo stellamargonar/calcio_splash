@@ -191,6 +191,7 @@ class MatchAdmin(admin.ModelAdmin):
         'get_score',
         'get_tournament',
         'get_group',
+        'brackets_offset',
     ]
     form = MatchForm
     actions = ['go_to_match_page']

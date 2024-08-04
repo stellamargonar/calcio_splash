@@ -85,6 +85,8 @@ class Match(models.Model):
     end_primo_tempo = models.DateTimeField(null=True, blank=True)
     start_secondo_tempo = models.DateTimeField(null=True, blank=True)
 
+    brackets_offset = models.IntegerField(default=0)
+
     class Meta:
         verbose_name_plural = 'Matches'
 
@@ -153,6 +155,8 @@ class BeachMatch(models.Model):
     team_b_set_3 = models.IntegerField(null=True, blank=True)
 
     ended = models.BooleanField(default=False)
+
+    brackets_offset = models.IntegerField(default=0)
 
     class Meta:
         verbose_name_plural = 'Beach Matches'

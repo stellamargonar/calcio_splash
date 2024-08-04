@@ -227,7 +227,7 @@ class BracketsHelper:
 
                 match_dict = {
                     "id": match.id,
-                    "number": n_match + 1,
+                    "number": n_match + 1 + match.brackets_offset,
                     "stage_id": 0,
                     "group_id": 1 if is_consolation_final else 0,
                     "round_id": n_group,  # the JS library sorts by this, so we can't use group.pk :/
