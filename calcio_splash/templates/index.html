@@ -2,13 +2,17 @@
 
 {% block header_menu_class_home %}active{% endblock %}
 
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+{% endblock %}
+
 {% block header_container %}
     <section id="intro" class="intro">
 
         <div class="slogan">
-            <h2>CALCIO SPLASH ALA</h2>
-            <h3>Sesta Edizione</h3>
-            <h2>2-3-4 Agosto 2024</h2>
+            <h2>Festival Fuori Posto</h2>
+            <h3>Settima Edizione</h3>
+            <h2>1-2-3 Agosto 2025</h2>
         </div>
         <div class="page-scroll">
             <a href="#programma" class="btn btn-circle">
@@ -23,7 +27,7 @@
         <section class="home-section container" id="partite">
             <div class="heading-about text-center">
                 <div class="row">
-                    <h3><a href="/matches/2024/">Segui in diretta le partite</a></h3>
+                    <h3><a href="{% url 'matches' 2025 %}">Segui in diretta le partite</a></h3>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
@@ -40,7 +44,7 @@
                             <h4>Stanno giocando</h4>
                             {% include 'match_template.html' with match=match_beach is_beach=True %}
                         {% elif next_match_beach %}
-                            <h4>Prossima partita Beach Volley</h4>
+                            <h4>Prossima partita Green Volley</h4>
                             {% include 'match_template.html' with match=next_match_beach is_beach=True %}
                         {% endif %}
                     </div>
@@ -56,9 +60,7 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="section-heading">
-                            <h2>Cambio di location! Quest'anno schiuma e divertimento all'Oratorio di Ala</h2>
-                            <p>Con il cambio di location riusciamo a garantire nuovi spogliatoi e spazi per tutti i
-                                partecipanti!!!</p>
+                            <h2>Anche quest'anno schiuma e divertimento all'Oratorio di Ala</h2>
                             <i class="fa fa-2x fa-angle-down"></i>
                         </div>
                     </div>
@@ -85,36 +87,38 @@
                     </div>
                     <div class="row programma">
                         <div class="col-md-4 col-xs-12">
-                            <h4>VENERDÌ 2 AGOSTO</h4>
+                            <h4>VENERDÌ 1 AGOSTO</h4>
                             <ul>
-                                <li>18.00: Inizio torneo e apertura bar e cucina</li>
-                                <li>18.00 - 19.00: Happy hour</li>
-                                <li>20.30 - 22.30: inizia la festa con Dj Daniele Battan</li>
-                                <li>22.30 - 01.00: la festa continua con Dj Matteo (Aldo)</li>
-                                <li>1.30: fine serata e tutti a ricaricare le pile per sabato 💣</li>
+                                <li>18.00 inizio torneo Calcio Splash + apertura stand</li>
+                                <li>19.00 happy hour</li>
+                                <li>21.00 - 23.00 Dj Common Flaws</li>
+                                <li>23.00 - 01.00 Dj Matteo (Aldo)</li>
+                                <li>1.30 fine serata</li>
                             </ul>
                         </div>
                         <div class="col-md-4 col-xs-12">
-                            <h4>SABATO 3 AGOSTO</h4>
+                            <h4>SABATO 2 AGOSTO</h4>
                             <ul>
-                                <li>10:00 Inizio torneo</li>
-                                <li>12:00 Apertura bar e cucina</li>
-                                <li>18.00 - 19.00: Happy hour</li>
-                                <li>20.30 - 22.30: inizia la festa con Dj Valerio Lampis</li>
-                                <li>22.30 - 01.00: la festa continua con Dj Daniele Battan e vocalist Marco Segnana</li>
-                                <li>1.30: fine serata</li>
+                                <li>10.00 Inizio torneo Calcio Splash</li>
+                                <li>11.00 apertura stand</li>
+                                <li>14.00 - 18.00 animazione bimbi / stand AVIS/ stand Laborfonds</li>
+                                <li>17.00 - 22.00 sfide gonfiabili</li>
+                                <li>19.00 Happy hour</li>
+                                <li>19.30 - 22.00 Dj Centi</li>
+                                <li>22.00 - 1.00 Dj Matin Horizon</li>
+                                <li>1.30 fine serata</li>
                             </ul>
                         </div>
                         <div class="col-md-4 col-xs-12">
-                            <h4>DOMENICA 4 AGOSTO</h4>
+                            <h4>DOMENICA 3 AGOSTO</h4>
                             <ul>
-                                <li>10:00 Inizio torneo</li>
-                                <li>12:00 Apertura bar e cucina</li>
-                                <li>18.00 - 19.00: Happy hour</li>
-                                <li>18.00: FINALI 3° e 4° POSTO 🍾</li>
-                                <li>19.00: FINALI 1° e 2° POSTO 🍾</li>
-                                <li>20.00 Premiazioni 🎊🥇🥈🥉</li>
-                                <li>23.00: fine serata e degustazione degli ultimi fusti 🍻</li>
+                                <li>10.00 Inizio torneo CS</li>
+                                <li>11.00 apertura stand e inizio torneo Green Volley</li>
+                                <li>14.00 - 18.00 animazione bimbi / stand AVIS/ stand Laborfonds</li>
+                                <li>17.00 - 22.00 sfide gonfiabili</li>
+                                <li>19.00 Happy hour</li>
+                                <li>21.00 premiazioni</li>
+                                <li>00.00 fine serata</li>
                             </ul>
                         </div>
                     </div>
@@ -152,19 +156,19 @@
                     <div class="wow bounceInUp" data-wow-delay="0.2s">
                         <div class="col-md-6 team boxed-grey">
                             <div class="inner">
-                                <h4><a href="{% url 'albomarcatori' 'M' %}">Miglior Giocatore</a></h4>
+                                <h4><a href="{% url 'albomarcatori' 'M' %}">Miglior Marcatore</a></h4>
                                 <ul>
-                                    <li><h5>Davide Dalbosco (39)</h5></li>
-                                    <li><h5>Carlo Stedile (39)</h5></li>
+                                    <li><h5>Carlo Stedile (45)</h5></li>
+                                    <li><h5>Davide Dalbosco (43)</h5></li>
                                     <li><h5>Davide Pedroni (33)</h5></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-6 team boxed-grey">
                             <div class="inner">
-                                <h4><a href="{% url 'albomarcatori' 'F' %}">Miglior Giocatrice</a></h4>
+                                <h4><a href="{% url 'albomarcatori' 'F' %}">Miglior Marcatrice</a></h4>
                                 <ul>
-                                    <li><h5>Laura Manconi (45)</h5></li>
+                                    <li><h5>Laura Manconi (60)</h5></li>
                                     <li><h5>Margherita Pinter (36)</h5></li>
                                     <li><h5>Elisa Cavagna (22)</h5></li>
                                 </ul>
@@ -172,6 +176,17 @@
                         </div>
                     </div>
                     <div class="wow bounceInUp">
+
+                        <div class="col-md-12">
+                            <div class="row" data-wow-delay="0.2s">
+                                <div class="col-md-1">
+                                    <h4><a href="{% url 'albo' 2024 %}">Edizione 2024</a></h4>
+                                </div>
+                                <div class="col-md-4"><small>Maschile</small><h5>BACK TO BEC</h5></div>
+                                <div class="col-md-4"><small>Femminile</small><h5>BEVERLY INPS</h5></div>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="row" data-wow-delay="0.2s">
                                 <div class="col-md-1">
@@ -241,10 +256,9 @@
                         {#                        <h2>Le iscrizioni apriranno a breve, seguici su <a#}
                         {#                                href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> per rimanere#}
                         {#                            aggiornato</h2>#}
-                        <h2>Scarica <a href="https://drive.google.com/file/d/15Q0iEaeoF8o6Qe45aaXl37IKfWieNfJU/view"
-                                       target="_blank">QUI</a> il modulo</h2>
+                        <h2>Scarica <a href="{% url 'iscrizioni' %}">QUI</a> il modulo</h2>
                         <p>Le iscrizioni si apriranno il 20 giugno e si chiuderanno al
-                            raggiungimento di 20 squadre maschili e 8 femminili</p>
+                            raggiungimento del numero massimo di squadre</p>
                     </div>
                 </div>
             </div>
@@ -255,9 +269,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-7">
-                        <iframe src="https://yandex.com/map-widget/v1/-/CDrfACY7" width="560" height="400"
-                                style="width: 100%"
-                                frameborder="1" allowfullscreen="true"></iframe>
+                        <div id="map"></div>
                     </div>
                     <div class="col-md-5">
                         <h4>Dove Siamo</h4>
@@ -270,3 +282,46 @@
     {% endif %}
 {% endblock %}
 
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        const lat = 45.755513;
+        const lng = 11.005399;
+
+        const parcheggi = [
+            { id: 1, lat: 45.755225, lng: 11.003642, nome: "Parcheggio delle Scuole Medie" },
+            { id: 2, lat: 45.755294, lng: 11.003172, nome: "Parcheggio ex-canonica" },
+            { id: 3, lat: 45.754922, lng: 11.000898, nome: "Parcheggio parco Bastie" },
+            { id: 4, lat: 45.756713, lng: 11.002378, nome: "Parcheggio della piscina" }
+        ];
+
+        const map = L.map('map').setView([lat, lng], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const oratoioIcon = L.icon({
+            iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLW1hcC1waW4taWNvbiBsdWNpZGUtbWFwLXBpbiI+PHBhdGggZD0iTTIwIDEwYzAgNC45OTMtNS41MzkgMTAuMTkzLTcuMzk5IDExLjc5OWExIDEgMCAwIDEtMS4yMDIgMEM5LjUzOSAyMC4xOTMgNCAxNC45OTMgNCAxMGE4IDggMCAwIDEgMTYgMCIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTAiIHI9IjMiLz48L3N2Zz4=',
+            iconSize: [40, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34]
+        });
+
+        const parcheggiIcon = L.icon({
+            iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNpcmNsZS1wYXJraW5nLWljb24gbHVjaWRlLWNpcmNsZS1wYXJraW5nIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik05IDE3VjdoNGEzIDMgMCAwIDEgMCA2SDkiLz48L3N2Zz4=',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34]
+        });
+
+        const marker = L.marker([lat, lng], {icon: oratoioIcon}).addTo(map);
+        marker.bindPopup('<b>🍻 Oratorio di Ala</b>').openPopup();
+
+        parcheggi.forEach(parcheggio => {
+            const markerParcheggio = L.marker([parcheggio.lat, parcheggio.lng], {icon: parcheggiIcon}).addTo(map);
+            markerParcheggio.bindPopup(`<b>🅿️ ${parcheggio.nome}</b><br>Parcheggio disponibile`);
+        });
+    </script>
+{% endblock %}

@@ -101,12 +101,12 @@ class MatchListView(ListView):
     def get_context_data(self, **kwargs):
         year = self.kwargs['year']
         context = super().get_context_data(**kwargs)
+        context['year'] = year
 
         if not can_show_gironi_and_matches(year):
             context.pop('match_list', None)
             return context
 
-        context['year'] = year
         context['match_list'] = [MatchHelper.build_match(match)[0] for match in context['object_list']]
         context['beach_match_list'] = [
             match

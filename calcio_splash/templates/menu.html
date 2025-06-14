@@ -9,19 +9,21 @@
             <li class="dropdown {% block header_menu_class_tournament %}{% endblock %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Torneo <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{% url 'tournament-detail' 14 %}">Maschile</a></li>
-                    <li><a href="{% url 'tournament-detail' 15 %}">Femminile</a></li>
-                    <li><a href="{% url 'matches' 2024 %}">Le Partite</a></li>
+                    <li><a href="{% url 'tournament-detail' 16 %}">Maschile</a></li>
+                    <li><a href="{% url 'tournament-detail' 17 %}">Femminile</a></li>
+                    <li><a href="{% url 'tournament-detail' 18 %}">Green Volley</a></li>
+                    <li><a href="{% url 'matches' 2025 %}">Le Partite</a></li>
                 </ul>
             </li>
         {%  endif %}
 
         <li class="dropdown {% block header_menu_class_albo %}{% endblock %}">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edizione passate <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edizioni passate <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li><a href="{% url 'albomarcatori' 'M' %}">Albo d'oro Maschile</a></li>
                 <li><a href="{% url 'albomarcatori' 'F' %}">Albo d'oro Femminile</a></li>
 
+                <li><a href="{% url 'albo' 2024 %}">Edizione 2024</a></li>
                 <li><a href="{% url 'albo' 2023 %}">Edizione 2023</a></li>
                 <li><a href="{% url 'albo' 2022 %}">Edizione 2022</a></li>
                 <li><a href="{% url 'albo' 2019 %}">Edizione 2019</a></li>
@@ -34,7 +36,8 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Info <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 {% if MODE_TOURNAMENT %}
-                    <li><a href="{% url 'regulation' %}">Regolamento</a></li>
+                    <li><a href="{% url 'regulation' %}">Regolamento Calcio Splash</a></li>
+                    <li><a href="{% url 'regulation-beach' %}">Regolamento Green Volley</a></li>
                     <li><a href="{% url 'iscrizioni' %}">Iscrizioni</a></li>
                 {%  endif %}
                 <li><a href="{% url 'fuoriposto' %}">Chi Siamo</a></li>
@@ -45,7 +48,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Area Riservata <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="{% url 'livematch' %}">Calcio Splash</a></li>
-                    <li><a href="{% url 'beachmatch' %}">Beach Volley</a></li>
+                    <li><a href="{% url 'beachmatch' %}">Green Volley</a></li>
                 </ul>
             </li>
         {% endif %}
