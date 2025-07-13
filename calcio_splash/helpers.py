@@ -7,7 +7,7 @@ from calcio_splash.models import Match, Team, Tournament
 class GroupHelper:
     @staticmethod
     def build_group(group):
-        if 'beach' in group.tournament.name.lower():
+        if group.tournament.gender == Team.BEACH:
             return GroupHelper.build_beach_group(group)
 
         teams = dict()

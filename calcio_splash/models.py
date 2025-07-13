@@ -54,7 +54,7 @@ class Tournament(models.Model):
     def gender(self):
         if self.team_1 is not None:
             return self.team_1.gender
-        if "beach" in self.name.lower():
+        if "beach" in self.name.lower() or "green" in self.name.lower():
             return Team.BEACH
         return Team.MALE if "maschile" in self.name.lower() else Team.FEMALE
 

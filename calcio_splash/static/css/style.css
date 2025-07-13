@@ -571,7 +571,7 @@ footer p {
 	color: #f8f8f8;
 }
 
-.credits, .credits a {
+address, .credits, .credits a {
     color: #fff;
 }
 
@@ -818,4 +818,13 @@ footer p {
     a:link:after, a:visited:after {
         content: "";
     }
+}
+
+.team-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.team-row .col-md-6 {
+    display: flex;
 }

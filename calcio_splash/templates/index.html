@@ -2,8 +2,51 @@
 
 {% block header_menu_class_home %}active{% endblock %}
 
+{% block og_title %}Festival Fuori Posto 2025 - Calcio Splash Ala | 1-2-3 Agosto{% endblock %}
+{% block og_description %}Settima edizione del Festival Fuori Posto dal 1-2-3 Agosto 2025. Torneo di calcetto saponato, Green Volley e tanto divertimento all'Oratorio di Ala (TN).{% endblock %}
+
 {% block extra_head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <!-- Event Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "`https://schema.org`",
+        "@type": "Event",
+        "name": "Festival Fuori Posto 2025 - Calcio Splash",
+        "description": "Settima edizione del torneo di calcetto saponato con Green Volley e divertimento",
+        "startDate": "2025-08-01T18:00:00+02:00",
+        "endDate": "2025-08-03T24:00:00+02:00",
+        "eventStatus": "`https://schema.org/EventScheduled`",
+        "eventAttendanceMode": "`https://schema.org/OfflineEventAttendanceMode`",
+        "location": {
+            "@type": "Place",
+            "name": "Oratorio di Ala",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Ala",
+                "postalCode": "38061",
+                "addressRegion": "TN",
+                "addressCountry": "IT"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 45.755513,
+                "longitude": 11.005399
+            }
+        },
+        "organizer": {
+            "@type": "Organization",
+            "name": "Associazione Fuori Posto",
+            "url": "{{ request.build_absolute_uri }}"
+        },
+        "offers": {
+            "@type": "Offer",
+            "availability": "`https://schema.org/InStock`",
+            "price": "0",
+            "priceCurrency": "EUR"
+        }
+    }
+    </script>
 {% endblock %}
 
 {% block header_container %}
@@ -24,10 +67,10 @@
 
 {% block content %}
     {% if MODE_TOURNAMENT %}
-        <section class="home-section container" id="partite">
+        <section class="home-section container" id="partite" aria-labelledby="partite-title">
             <div class="heading-about text-center">
                 <div class="row">
-                    <h3><a href="{% url 'matches' 2025 %}">Segui in diretta le partite</a></h3>
+                    <h3 id="partite-title"><a href="{% url 'matches' 2025 %}">Segui in diretta le partite</a></h3>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">

@@ -5,6 +5,55 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}Festival Fuori Posto - Calcio Splash Ala | Torneo di Calcetto Saponato{% endblock %}</title>
+    <meta name="description" content="{% block description %}Festival Fuori Posto ad Ala (TN) - Torneo di calcetto saponato dal 1-2-3 Agosto 2025. Settima edizione con schiuma, divertimento e Green Volley all'Oratorio di Ala.{% endblock %}" />
+    <meta name="keywords" content="{% block keywords %}calcio splash, torneo calcetto, Ala, Trentino, festival, calcetto saponato, green volley, associazione fuori posto{% endblock %}" />
+    <meta name="author" content="Associazione Fuori Posto" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}Festival Fuori Posto - Calcio Splash Ala{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}Torneo di calcetto saponato dal 1-2-3 Agosto 2025 all'Oratorio di Ala (TN). Settima edizione del Festival Fuori Posto.{% endblock %}" />
+    <meta property="og:image" content="{% block og_image %}{% static 'img/android-chrome-192x192.png' %}{% endblock %}" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content="Festival Fuori Posto" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="twitter:title" content="{% block twitter_title %}Festival Fuori Posto - Calcio Splash Ala{% endblock %}" />
+    <meta property="twitter:description" content="{% block twitter_description %}Torneo di calcetto saponato dal 1-2-3 Agosto 2025 all'Oratorio di Ala (TN){% endblock %}" />
+    <meta property="twitter:image" content="{% static 'img/android-chrome-192x192.png' %}" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Associazione Fuori Posto",
+        "url": "{{ request.build_absolute_uri }}",
+        "logo": "{% static 'img/android-chrome-192x192.png' %}",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "via Sant'Anna, 15",
+            "addressLocality": "Ala",
+            "postalCode": "38061",
+            "addressRegion": "TN",
+            "addressCountry": "IT"
+        },
+        "sameAs": [
+            "https://www.instagram.com/associazionefuoriposto/",
+            "https://www.facebook.com/AssociazioneFuoriPosto"
+        ]
+    }
+    </script>
+
     {% if GOOGLE_ANALYTICS_ID %}
         {% include "ga.html" %}
     {% endif %}
@@ -30,14 +79,6 @@
     <meta name="theme-color" content="#E49753" />
 
     {% block extra_head %}{% endblock %}
-
-    <!-- =======================================================
-    Theme Name: Squadfree
-    Theme URL: https://bootstrapmade.com/squadfree-free-bootstrap-template-creative/
-    Author: BootstrapMade
-    Author URL: https://bootstrapmade.com
-    ======================================================= -->
-
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
@@ -46,14 +87,14 @@
     <div id="load"></div>
 </div>
 
-<nav class="navbar navbar-custom navbar-fixed-top " role="navigation">
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation" aria-label="Menu principale">
     <div class="container">
         <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse" aria-label="Apri menu">
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static "img/android-chrome-192x192.png" %}" alt="logo" />
+            <a class="navbar-brand" href="{% url 'home' %}" aria-label="Torna alla homepage">
+                <img src="{% static "img/android-chrome-192x192.png" %}" alt="Logo Festival Fuori Posto" />
                 <h1>Calcio Splash Ala</h1>
             </a>
         </div>
@@ -61,9 +102,7 @@
         {%  include 'menu.html' %}
 
     </div>
-    <!-- /.container -->
 </nav>
-
 
 {% block header_container %}
     <section id="intro" class="page-head-section text-center">
@@ -93,23 +132,19 @@
             <div class="col-md-12 col-lg-12">
                 <div class="wow shake" data-wow-delay="0.4s">
                     <div class="page-scroll marginbot-30">
-                        <a href="#intro" id="totop" class="btn btn-circle">
+                        <a href="#intro" id="totop" class="btn btn-circle" aria-label="Torna all'inizio">
                             <i class="fa fa-angle-double-up animated"></i>
                         </a>
                     </div>
                 </div>
+                <address>
+                    <strong>Associazione Fuori Posto</strong><br>
+                    via Sant'Anna, 15<br>
+                    38061 ALA (TN)<br>
+                    P.Iva 02466620222 C.Fiscale 94044310228
+                </address>
                 <div class="credits">
-
-                    Associazione Fuori Posto, via Sant'Anna, 15, 38061 ALA (TN).<br/>
-                    P.Iva 02466620222 C.Fiscale 94044310228.<br/>
-
-                    <!--
-                    All the links in the footer should remain intact.
-                    You can delete the links only if you purchased the pro version.
-                    Licensing information: https://bootstrapmade.com/license/
-                  -->
-                    <a href="https://bootstrapmade.com/free-one-page-bootstrap-themes-website-templates/">One Page
-                        Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    <a href="https://bootstrapmade.com/free-one-page-bootstrap-themes-website-templates/">One Page Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                 </div>
             </div>
         </div>
@@ -124,7 +159,6 @@
 <script src="{% static "js/wow.min.js" %}"></script>
 <!-- Custom Theme JavaScript -->
 <script src="{% static "js/custom.js" %}"></script>
-<!-- <script src="contactform/contactform.js"></script> -->
 
 {% block scripts %}
 {% endblock %}
