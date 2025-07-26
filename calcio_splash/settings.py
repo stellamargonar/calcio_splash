@@ -191,4 +191,4 @@ from django.utils import timezone
 
 this_year = timezone.now().year
 DATETIME_RILASCIO_GIRONI = f"{this_year}-07-26T14:00:00+02:00"
-DATETIME_RILASCIO_PARTITE = f"{this_year}-07-26T19:46:00+02:00"
+DATETIME_RILASCIO_PARTITE = f"{this_year}-07-28T19:00:00+02:00"
