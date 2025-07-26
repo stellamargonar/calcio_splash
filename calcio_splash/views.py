@@ -10,7 +10,7 @@ from calcio_splash.helpers import AlboDoroHelper, BracketsHelper, GroupHelper, M
 from calcio_splash.models import BeachMatch, Goal, Group, Match, Player, Team, Tournament
 
 
-def can_show_gironi_and_matches(obj_year: int | str):
+def can_show_gironi(obj_year: int | str):
     if obj_year is None:
         return False
     tournament_year = int(obj_year)
@@ -18,8 +18,20 @@ def can_show_gironi_and_matches(obj_year: int | str):
     if tournament_year < this_year:
         return True
 
-    rilascio_gironi = datetime.strptime(settings.DATETIME_RILASCIO_PARTITE, '%Y-%m-%d%z')
+    rilascio_gironi = datetime.strptime(settings.DATETIME_RILASCIO_GIRONI, '%Y-%m-%dT%H:%M:%S%z')
     return timezone.now() >= rilascio_gironi
+
+
+def can_show_matches(obj_year: int | str):
+    if obj_year is None:
+        return False
+    tournament_year = int(obj_year)
+    this_year = timezone.now().year
+    if tournament_year < this_year:
+        return True
+
+    rilascio_partite = datetime.strptime(settings.DATETIME_RILASCIO_PARTITE, '%Y-%m-%dT%H:%M:%S%z')
+    return timezone.now() >= rilascio_partite
 
 
 def handler404(request, exception=None):
@@ -39,7 +51,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if not can_show_gironi_and_matches(timezone.now().year):
+        if not can_show_matches(timezone.now().year):
             return context
 
         context['match'] = self._get_current_match()
@@ -80,11 +92,11 @@ class TeamDetailView(DetailView):
         team_id = context['object'].id
         # Add in a QuerySet of all the books
         context['players'] = Player.objects.filter(teams=team_id)
-        context['matches'] = Match.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by('match_date_time')
-        context['matches'] = [MatchHelper.build_match(match)[0] for match in context['matches']]
-        context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by(
-            'match_date_time'
-        )
+        if can_show_matches(self.object.year):
+            context['matches'] = [MatchHelper.build_match(match)[0] for match in Match.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by('match_date_time')]
+            context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by(
+                'match_date_time'
+            )
 
         return context
 
@@ -103,7 +115,7 @@ class MatchListView(ListView):
         context = super().get_context_data(**kwargs)
         context['year'] = year
 
-        if not can_show_gironi_and_matches(year):
+        if not can_show_matches(year):
             context.pop('match_list', None)
             return context
 
@@ -122,7 +134,7 @@ class MatchDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         match = context['match']
-        if not can_show_gironi_and_matches(match.group.tournament.edition_year):
+        if not can_show_matches(match.group.tournament.edition_year):
             context.pop('match', None)
             return context
         context['match'], _ = MatchHelper.build_match(match)
@@ -136,7 +148,7 @@ class BeachMatchDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         match = context['beachmatch']
-        if not can_show_gironi_and_matches(match.group.tournament.edition_year):
+        if not can_show_matches(match.group.tournament.edition_year):
             context.pop('match', None)
             return context
         context['match'] = match
@@ -151,7 +163,7 @@ class GroupDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         group = context['group']
-        if not can_show_gironi_and_matches(group.tournament.edition_year):
+        if not can_show_gironi(group.tournament.edition_year):
             context.pop('group', None)
             return context
 
@@ -159,6 +171,9 @@ class GroupDetailView(DetailView):
         group = GroupHelper.build_group(group)
 
         context['group'] = group
+
+        if not can_show_matches(group.tournament.edition_year):
+            context['group'].group_matches = None
 
         return context
 
@@ -172,7 +187,7 @@ class TournamentDetailView(DetailView):
         tournament = context['tournament']
 
         # non mostrare i gironi prima del 1 agosto
-        if can_show_gironi_and_matches(tournament.edition_year):
+        if can_show_gironi(tournament.edition_year):
             # load each group team stats
             tournament.groups_clean = [
                 GroupHelper.build_group(group) for group in tournament.groups.filter(is_final=False)
