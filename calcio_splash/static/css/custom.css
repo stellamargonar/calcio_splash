@@ -145,7 +145,6 @@
     width: 100%;
     position: relative;
     padding-top: 120px;
-    background-image: url(../img/slider-bg.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -230,7 +229,7 @@
 }
 
 .group-rank th {
-  background-color: rgb(228, 151, 83);
+  background-color: var(--primary-color);
   color: white;
 }
 .group-rank td {

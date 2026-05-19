@@ -1,0 +1,8 @@
+:root {
+    --primary-color: rgb(128, 0, 32);
+    /* --primary-color: #4CAF50; */
+}
+
+.intro {
+    background-image: url(../img/slider-bg-volley.jpg);
+}

@@ -97,6 +97,7 @@ class TeamDetailView(DetailView):
             context['beach_matches'] = BeachMatch.objects.filter(Q(team_a=team_id) | Q(team_b=team_id)).order_by(
                 'match_date_time'
             )
+        context['page_skin'] = "volley" if context.get('beach_matches') else "calcio"
 
         return context
 
@@ -138,6 +139,7 @@ class MatchDetailView(DetailView):
             context.pop('match', None)
             return context
         context['match'], _ = MatchHelper.build_match(match)
+        context['page_skin'] = "calcio"
         return context
 
 
@@ -153,6 +155,7 @@ class BeachMatchDetailView(DetailView):
             return context
         context['match'] = match
         context['is_beach'] = True
+        context['page_skin'] = "volley"
         return context
 
 
@@ -171,6 +174,7 @@ class GroupDetailView(DetailView):
         group = GroupHelper.build_group(group)
 
         context['group'] = group
+        context['page_skin'] = 'volley' if group.tournament.gender == Team.BEACH else 'calcio'
 
         if not can_show_matches(group.tournament.edition_year):
             context['group'].group_matches = None
@@ -198,6 +202,7 @@ class TournamentDetailView(DetailView):
 
         AlboDoroHelper.build_albo(tournament)
         context['tournament'] = tournament
+        context['page_skin'] = 'volley' if tournament.gender == Team.BEACH else 'calcio'
 
         return context
 
@@ -223,6 +228,8 @@ class AlboView(ListView):
             if tournament.gender == Team.BEACH
         ]
         context['year'] = self.kwargs['year']
+        context['page_skin'] = 'volley' if self.kwargs['year'] in {2026} else 'calcio'
+
         return context
 
 
@@ -260,6 +267,7 @@ class AlboMarcatori(ListView):
             player_classifica.append(player_data)
 
         context['classifica'] = sorted(player_classifica, key=lambda x: (x['total'], x['player']), reverse=True)
+        context['page_skin'] = 'calcio'
         return context
 
 

@@ -1,0 +1,9 @@
+:root {
+    --primary-color: rgb(128, 0, 32);
+    /* --primary-color: rgb(228, 151, 83); */
+}
+
+.intro,
+.page-title-section {
+    background-image: url(../img/slider-bg-color.jpg);
+}

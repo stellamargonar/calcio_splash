@@ -6,7 +6,7 @@
 
 .brackets-viewer h3 {
     color: white;
-    background-color: rgb(228, 151, 83);
+    background-color: var(--primary-color);
 }
 
 .brackets-viewer div {

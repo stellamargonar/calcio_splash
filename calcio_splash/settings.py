@@ -187,6 +187,10 @@ if SENTRY_DSN:
 # WEBSITE_MODE = "default"
 WEBSITE_MODE = "tournament"
 
+# "calcio": skin bordeaux con img Calcio Splash
+# "volley": skin bordeaux con img Green Volley
+ACTIVE_SKIN = os.environ.get("ACTIVE_SKIN", "volley")
+
 from django.utils import timezone
 
 this_year = timezone.now().year
