@@ -3,6 +3,7 @@
     /* --primary-color: #4CAF50; */
 }
 
-.intro {
+.intro,
+.page-title-section {
     background-image: url(../img/slider-bg-volley.jpg);
 }
