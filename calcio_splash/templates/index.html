@@ -2,8 +2,8 @@
 
 {% block header_menu_class_home %}active{% endblock %}
 
-{% block og_title %}Festival Fuori Posto 2025 - Calcio Splash Ala | 1-2-3 Agosto{% endblock %}
-{% block og_description %}Settima edizione del Festival Fuori Posto dal 1-2-3 Agosto 2025. Torneo di calcetto saponato, Green Volley e tanto divertimento all'Oratorio di Ala (TN).{% endblock %}
+{% block og_title %}Festival Fuori Posto 2026 - Green Volley Ala | 1 Agosto{% endblock %}
+{% block og_description %}Ottava edizione del Festival Fuori Posto, 1 Agosto 2026. Torneo di Green Volley e tanto divertimento all'Oratorio di Ala (TN).{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
@@ -12,10 +12,10 @@
     {
         "@context": "`https://schema.org`",
         "@type": "Event",
-        "name": "Festival Fuori Posto 2025 - Calcio Splash",
-        "description": "Settima edizione del torneo di calcetto saponato con Green Volley e divertimento",
-        "startDate": "2025-08-01T18:00:00+02:00",
-        "endDate": "2025-08-03T24:00:00+02:00",
+        "name": "Festival Fuori Posto 2026 - Green Volley",
+        "description": "Ottava edizione del torneo di Green Volley e divertimento",
+        "startDate": "2026-08-01T18:00:00+02:00",
+        "endDate": "2026-08-01T24:00:00+02:00",
         "eventStatus": "`https://schema.org/EventScheduled`",
         "eventAttendanceMode": "`https://schema.org/OfflineEventAttendanceMode`",
         "location": {
@@ -54,8 +54,8 @@
 
         <div class="slogan">
             <h2>Festival Fuori Posto</h2>
-            <h3>Settima Edizione</h3>
-            <h2>1-2-3 Agosto 2025</h2>
+            <h3>Ottava Edizione</h3>
+            <h2>1 Agosto 2026</h2>
         </div>
         <div class="page-scroll">
             <a href="#programma" class="btn btn-circle">
@@ -70,9 +70,10 @@
         <section class="home-section container" id="partite" aria-labelledby="partite-title">
             <div class="heading-about text-center">
                 <div class="row">
-                    <h3 id="partite-title"><a href="{% url 'matches' 2025 %}">Segui in diretta le partite</a></h3>
+                    <h3 id="partite-title"><a href="{% url 'matches' 2026 %}">Segui in diretta le partite</a></h3>
                 </div>
                 <div class="row">
+                    {% comment %}
                     <div class="col-lg-8 col-lg-offset-2">
                         {% if match %}
                             <h4>Stanno giocando</h4>
@@ -82,7 +83,8 @@
                             {% include 'match_template.html' with match=next_match is_beach=False %}
                         {% endif %}
                     </div>
-                    <div class="col-lg-8 col-lg-offset-2" style="margin-top: 16px;">
+                    {% endcomment %}
+                    <div class="col-lg-8 col-lg-offset-2" {% comment %}style="margin-top: 16px;"{% endcomment %}>
                         {% if match_beach %}
                             <h4>Stanno giocando</h4>
                             {% include 'match_template.html' with match=match_beach is_beach=True %}
@@ -103,7 +105,7 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="section-heading">
-                            <h2>Anche quest'anno schiuma e divertimento all'Oratorio di Ala</h2>
+                            <h2>Anche quest'anno Green Volley e divertimento all'Oratorio di Ala</h2>
                             <i class="fa fa-2x fa-angle-down"></i>
                         </div>
                     </div>
@@ -112,7 +114,7 @@
             <div class="container">
                 <div class="row programma">
                     <div class="col-xs-12 col-md-8 col-md-offset-2">
-                        <p>Tenetevi liberi: ad agosto torna a Ala il torneo di calcetto saponato organizzato
+                        <p>Tenetevi liberi: ad agosto torna a Ala il torneo di Green Volley organizzato
                             dall'Associazione Fuori Posto!</p>
                         <p>Trovi <b><a href="/iscrizioni">qui</a></b> tutte le info</p>
                         <p>Non conosci la nostra Associazione? Segui
@@ -129,6 +131,7 @@
                         <h2>Programma</h2>
                     </div>
                     <div class="row programma">
+                        {% comment %} 
                         <div class="col-md-4 col-xs-12">
                             <h4>VENERDÌ 1 AGOSTO</h4>
                             <ul>
@@ -162,6 +165,16 @@
                                 <li>19.00 Happy hour</li>
                                 <li>21.00 premiazioni</li>
                                 <li>00.00 fine serata</li>
+                            </ul>
+                        </div>
+                        {% endcomment %}
+                        <div class="col-md-6 col-md-offset-3 col-xs-12">
+                            <h4>SABATO 1 AGOSTO</h4>
+                            <ul>
+                                <li>10:00 inizio torneo Green Volley + apertura stand</li>
+                                <li>19:00 happy hour</li>
+                                <li>21:00 premiazioni</li>
+                                <li>24:00 fine serata</li>
                             </ul>
                         </div>
                     </div>
@@ -201,9 +214,9 @@
                             <div class="inner">
                                 <h4><a href="{% url 'albomarcatori' 'M' %}">Miglior Marcatore</a></h4>
                                 <ul>
-                                    <li><h5>Carlo Stedile (45)</h5></li>
-                                    <li><h5>Davide Dalbosco (43)</h5></li>
-                                    <li><h5>Davide Pedroni (33)</h5></li>
+                                    <li><h5>Carlo Stedile (48)</h5></li>
+                                    <li><h5>Davide Dalbosco (46)</h5></li>
+                                    <li><h5>Nadir Chitoui (38)</h5></li>
                                 </ul>
                             </div>
                         </div>
@@ -219,6 +232,17 @@
                         </div>
                     </div>
                     <div class="wow bounceInUp">
+
+                        <div class="col-md-12">
+                            <div class="row" data-wow-delay="0.2s">
+                                <div class="col-md-1">
+                                    <h4><a href="{% url 'albo' 2025 %}">Edizione 2025</a></h4>
+                                </div>
+                                <div class="col-md-4"><small>Maschile</small><h5>TAKA BRIGA</h5></div>
+                                <div class="col-md-4"><small>Femminile</small><h5>TEAMTATION CITY</h5></div>
+                                <div class="col-md-3"><small>Green Volley</small><h5>NDO VETO MORE</h5></div>
+                            </div>
+                        </div>
 
                         <div class="col-md-12">
                             <div class="row" data-wow-delay="0.2s">
@@ -300,7 +324,7 @@
                         {#                                href="https://www.instagram.com/associazionefuoriposto/">Instagram</a> per rimanere#}
                         {#                            aggiornato</h2>#}
                         <h2>Scarica <a href="{% url 'iscrizioni' %}">QUI</a> il modulo</h2>
-                        <p>Le iscrizioni si apriranno il 20 giugno e si chiuderanno al
+                        <p>Le iscrizioni si apriranno il 13 giugno e si chiuderanno al
                             raggiungimento del numero massimo di squadre</p>
                     </div>
                 </div>
