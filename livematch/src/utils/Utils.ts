@@ -40,3 +40,9 @@ export function formatDate(strDate: string): string {
     let date = new Date(strDate);
     return `${days[date.getDay()]} - ${date.toLocaleTimeString().substring(0, 5)}`
 }
+
+
+// teams are unknown until the group stage ends, in that case we show the free text notes (e.g. "1º girone A")
+export function teamLabel(team: {name: string}, notes: string): string {
+    return team?.name || notes || '-'
+}

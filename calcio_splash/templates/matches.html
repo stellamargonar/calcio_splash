@@ -36,7 +36,7 @@
                         {{ match.team_a.name }}
                     </a>
                   {% else %}
-                    -
+                    {{ match.team_a_display }}
                   {% endif %}
                     <br />
 
@@ -45,7 +45,7 @@
                         {{ match.team_b.name }}
                     </a>
                   {% else %}
-                    -
+                    {{ match.team_b_display }}
                   {% endif %}
                 </td>
                 <td>
@@ -88,7 +88,7 @@
                         {{ match.team_a.name }}
                     </a>
                   {% else %}
-                    -
+                    {{ match.team_a_display }}
                   {% endif %}
 
                     <br />
@@ -98,7 +98,7 @@
                         {{ match.team_b.name }}
                     </a>
                   {% else %}
-                    -
+                    {{ match.team_b_display }}
                   {% endif %}
                 </td>
                 <td>

@@ -202,9 +202,9 @@ class MatchAdmin(admin.ModelAdmin):
         MatchYearListFilter,
         'group',
     )
-    search_fields = ['team_a__name', 'team_b__name']
+    search_fields = ['team_a__name', 'team_b__name', 'team_a_notes', 'team_b_notes']
     ordering = [
-        'match_date_time',
+        'match_date_time', 'pk',
     ]
     raw_id_fields = [
         'team_a',
@@ -218,10 +218,10 @@ class MatchAdmin(admin.ModelAdmin):
         return obj.group.name
 
     def get_team_a(self, obj):
-        return obj.team_a.name if obj.team_a else '-'
+        return obj.team_a_display
 
     def get_team_b(self, obj):
-        return obj.team_b.name if obj.team_b else '-'
+        return obj.team_b_display
 
     def get_score(self, obj):
         match, _ = MatchHelper.build_match(obj)

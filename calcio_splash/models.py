@@ -76,6 +76,9 @@ class Group(models.Model):
 class Match(models.Model):
     team_a = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_a', null=True, blank=True)
     team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='matches_b', null=True, blank=True)
+    # [sp] free text shown in place of a team we don't know yet, e.g. "1º girone A"
+    team_a_notes = models.CharField(max_length=100, blank=True, default='')
+    team_b_notes = models.CharField(max_length=100, blank=True, default='')
     match_date_time = models.DateTimeField()
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='matches')
@@ -91,7 +94,19 @@ class Match(models.Model):
         verbose_name_plural = 'Matches'
 
     def __str__(self):
-        return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
+        return '{} vs {} ({})'.format(
+            self.team_a or self.team_a_notes or '-',
+            self.team_b or self.team_b_notes or '-',
+            self.group,
+        )
+
+    @property
+    def team_a_display(self):
+        return self.team_a.name if self.team_a else (self.team_a_notes or '-')
+
+    @property
+    def team_b_display(self):
+        return self.team_b.name if self.team_b else (self.team_b_notes or '-')
 
     @property
     def score_a(self) -> int:
@@ -141,6 +156,9 @@ class Goal(models.Model):
 class BeachMatch(models.Model):
     team_a = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_a', null=True, blank=True)
     team_b = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='beach_matches_b', null=True, blank=True)
+    # [sp] free text shown in place of a team we don't know yet, e.g. "1º girone A"
+    team_a_notes = models.CharField(max_length=100, blank=True, default='')
+    team_b_notes = models.CharField(max_length=100, blank=True, default='')
     match_date_time = models.DateTimeField()
 
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='beach_matches')
@@ -162,7 +180,19 @@ class BeachMatch(models.Model):
         verbose_name_plural = 'Beach Matches'
 
     def __str__(self):
-        return '{} vs {} ({})'.format(self.team_a, self.team_b, self.group)
+        return '{} vs {} ({})'.format(
+            self.team_a or self.team_a_notes or '-',
+            self.team_b or self.team_b_notes or '-',
+            self.group,
+        )
+
+    @property
+    def team_a_display(self):
+        return self.team_a.name if self.team_a else (self.team_a_notes or '-')
+
+    @property
+    def team_b_display(self):
+        return self.team_b.name if self.team_b else (self.team_b_notes or '-')
 
     def to_dict(self):
         return {

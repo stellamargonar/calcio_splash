@@ -189,6 +189,22 @@ class BracketsHelper:
         participants[team.pk] = {"id": team.pk, "tournament_id": 0, "name": team.name}
 
     @classmethod
+    def _add_placeholder_participant(cls, placeholders: list, notes: str) -> int:
+        # [sp] a slot we don't know yet, shown with its notes (e.g. "1º girone A"); negative ids can't
+        # collide with team pks, and a per-payload counter can't collide with other placeholders
+        placeholder_id = -(len(placeholders) + 1)
+        placeholders.append({"id": placeholder_id, "tournament_id": 0, "name": notes})
+        return placeholder_id
+
+    @classmethod
+    def _opponent(cls, match: Match, team: Team, notes: str, placeholders: list):
+        if team:
+            return {"id": team.pk, "result": cls._match_result(match, team)}
+        if notes:
+            return {"id": cls._add_placeholder_participant(placeholders, notes)}
+        return None
+
+    @classmethod
     def _match_result(cls, match: Match, team: Team):
         if not match.ended:
             return
@@ -203,6 +219,7 @@ class BracketsHelper:
         matches = []
         match_games = []
         participants = {}
+        placeholders = []
         rounds = []
         for n_group, group in enumerate(groups):
             rounds.append({"id": n_group, "number": n_group + 1, "stage_id": 0, "group_id": 0})
@@ -233,12 +250,8 @@ class BracketsHelper:
                     "round_id": n_group,  # the JS library sorts by this, so we can't use group.pk :/
                     "round_id_real": group.pk,
                     "status": status,
-                    "opponent1": {"id": match.team_a.pk, "result": cls._match_result(match, match.team_a)}
-                    if match.team_a
-                    else None,
-                    "opponent2": {"id": match.team_b.pk, "result": cls._match_result(match, match.team_b)}
-                    if match.team_b
-                    else None,
+                    "opponent1": cls._opponent(match, match.team_a, match.team_a_notes, placeholders),
+                    "opponent2": cls._opponent(match, match.team_b, match.team_b_notes, placeholders),
                 }
 
                 if isinstance(match, Match):
@@ -270,7 +283,8 @@ class BracketsHelper:
             return None
 
         return {
-            "participants": list(participants.values()) or [{}],  # participants must not be empty
+            # participants must not be empty
+            "participants": list(participants.values()) + placeholders or [{}],
             "stages": [
                 {
                     "id": 0,

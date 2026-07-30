@@ -26,6 +26,8 @@ export interface BeachMatch {
     pk: string;
     team_a: Team;
     team_b: Team;
+    team_a_notes: string;
+    team_b_notes: string;
     date_time: string;
     group: Group;
     team_a_set_1: number;

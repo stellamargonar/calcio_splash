@@ -3,7 +3,7 @@ import {getSoccerMatchActionsHelper, SoccerMatch} from "./SoccerMatchActionsHelp
 import {boundMethod} from "autobind-decorator";
 import {Badge, Button, ButtonGroup, Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import { formatDate } from "../utils/Utils";
+import { formatDate, teamLabel } from "../utils/Utils";
 
 export interface SoccerMatchListUIProps {
     match: SoccerMatch;
@@ -71,7 +71,11 @@ export class SoccerMatchListUI extends React.Component<SoccerMatchListUIProps, {
                     {this.renderGroup()}
                 </Card.Header>
                 <Card.Body>
-                    <Card.Title>{this.props.match.team_a?.name} vs {this.props.match.team_b?.name}</Card.Title>
+                    <Card.Title>
+                        {teamLabel(this.props.match.team_a, this.props.match.team_a_notes)}
+                        {' vs '}
+                        {teamLabel(this.props.match.team_b, this.props.match.team_b_notes)}
+                    </Card.Title>
                     <br />
                     {this.renderScore()}
                     <ButtonGroup style={{float: 'right'}}>

@@ -28,6 +28,8 @@ export interface SoccerMatch {
   pk: string;
   team_a: Team;
   team_b: Team;
+  team_a_notes: string;
+  team_b_notes: string;
   score_a: number;
   score_b: number;
   date_time: string;
